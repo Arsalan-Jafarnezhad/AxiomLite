@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% load static %} {% block title %}{{
+    profile_user.username }}{% endblock %} {% block content %}
+    <div class="min-h-[60vh] flex items-center justify-center px-6">
+        <div class="card bg-base-100 border border-base-300 shadow-sm max-w-sm w-full">
+            <div class="card-body items-center text-center gap-3">
+                <span class="material-symbols-rounded text-5xl text-base-content/20">lock</span>
+                <h1 class="text-xl font-bold">This profile is private</h1>
+                <p class="text-base-content/60 text-sm">
+                    @{{ profile_user.username }} has chosen to keep their profile
+                    details hidden.
+                </p>
+                <a href="{% url 'core:index' %}" class="btn btn-outline btn-sm mt-2">Back to home</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/badges/server.css' %}" />
+{% endblock style %}
+<svg width="100%"
+     height="100%"
+     viewBox="0 0 120 140"
+     xmlns="http://www.w3.org/2000/svg">
+    <defs>
+    <radialGradient id="be-bg2" cx="50%" cy="45%" r="60%">
+    <stop offset="0%" stop-color="#1d2939" />
+    <stop offset="100%" stop-color="#090d12" />
+    </radialGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#dbe6f3" />
+    <stop offset="45%" stop-color="#95a3b8" />
+    <stop offset="100%" stop-color="#3b4657" />
+    </linearGradient>
+    <radialGradient id="coreGlow">
+    <stop offset="0%" stop-color="#22d3ee" stop-opacity=".55" />
+    <stop offset="100%" stop-color="#22d3ee" stop-opacity="0" />
+    </radialGradient>
+    <filter id="coreBlur">
+    <feGaussianBlur stdDeviation="4" />
+    </filter>
+    </defs>
+    <g class="gear">
+    <path d="
+M60,8
+L65,15
+L74,12
+L75,22
+L84,23
+L80,31
+L88,37
+L82,46
+L88,55
+L80,61
+L84,69
+L75,70
+L74,80
+L65,77
+L60,84
+L55,77
+L46,80
+L45,70
+L36,69
+L40,61
+L32,55
+L38,46
+L32,37
+L40,31
+L36,23
+L45,22
+L46,12
+L55,15
+Z" fill="url(#be-bg2)" stroke="url(#steel)" stroke-width="2" />
+    <circle cx="60" cy="46" r="26" fill="#121820" stroke="#6f8097" stroke-width="1.4" />
+    </g>
+    <circle cx="60" cy="46" r="18" fill="url(#coreGlow)" filter="url(#coreBlur)" class="corePulse" />
+    <g>
+    <rect x="43" y="30" width="34" height="10" rx="2" fill="#10141c" stroke="#94a3b8" />
+    <circle cx="48" cy="35" r="1.5" class="led" />
+    <circle cx="53" cy="35" r="1.5" fill="#fbbf24" />
+    <circle cx="58" cy="35" r="1.5" fill="#22d3ee" />
+    <rect x="43" y="43" width="34" height="10" rx="2" fill="#10141c" stroke="#94a3b8" />
+    <circle cx="48" cy="48" r="1.5" class="led" />
+    <circle cx="53" cy="48" r="1.5" fill="#fbbf24" />
+    <circle cx="58" cy="48" r="1.5" fill="#22d3ee" />
+    <rect x="43" y="56" width="34" height="10" rx="2" fill="#10141c" stroke="#94a3b8" />
+    <circle cx="48" cy="61" r="1.5" class="led" />
+    <circle cx="53" cy="61" r="1.5" fill="#fbbf24" />
+    <circle cx="58" cy="61" r="1.5" fill="#22d3ee" />
+    </g>
+    <path d="M28 46 H42" stroke="#22d3ee" stroke-width="1" class="trace" />
+    <path d="M78 46 H92" stroke="#22d3ee" stroke-width="1" class="trace" />
+    <path d="M60 20 V28" stroke="#22d3ee" stroke-width="1" class="trace" />
+    <path d="M60 66 V76" stroke="#22d3ee" stroke-width="1" class="trace" />
+    <circle cx="28" cy="46" r="2" fill="#22d3ee" />
+    <circle cx="92" cy="46" r="2" fill="#22d3ee" />
+    <circle cx="60" cy="20" r="2" fill="#22d3ee" />
+    <circle cx="60" cy="76" r="2" fill="#22d3ee" />
+    <circle cx="60" cy="46" r="33" fill="none" stroke="#22d3ee" stroke-width=".8" stroke-dasharray="5 6" class="ring" />
+    <!-- Label
+
+    <text
+        x="60"
+        y="132"
+        text-anchor="middle"
+        font-size="8"
+        font-family="Segoe UI"
+        font-weight="700"
+        letter-spacing=".18em"
+        fill="#a8b6ca">
+        BACKEND
+    </text> -->
+</svg>

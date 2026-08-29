@@ -1,0 +1,18 @@
+{% if is_paginated %}
+    <div class="flex justify-center mt-10">
+        <div class="join">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}"
+                   class="join-item btn">
+                    <span class="material-symbols-rounded">chevron_left</span>
+                </a>
+            {% endif %}
+            <button class="join-item btn btn-primary">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</button>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="join-item btn">
+                    <span class="material-symbols-rounded">chevron_right</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

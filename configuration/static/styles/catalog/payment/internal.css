@@ -1,0 +1,197 @@
+/* ── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+    --p-accent: #6366f1;
+    --p-accent-h: #4f46e5;
+    --p-success: #10b981;
+    --p-danger: #ef4444;
+    --p-surface: #f8fafc;
+    --p-border: #e2e8f0;
+    --p-text: #0f172a;
+    --p-muted: #64748b;
+    --p-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Card 3-D flip ───────────────────────────────────────────────────────── */
+.card-3d-scene {
+    perspective: 1200px;
+    width: 100%;
+    height: 200px;
+    cursor: pointer; /* clickable to flip */
+    user-select: none;
+}
+.card-3d-scene:focus-visible {
+    outline: 3px solid var(--p-accent);
+    outline-offset: 4px;
+    border-radius: 0.5rem;
+}
+.card-3d-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+.card-3d-inner.is-flipped {
+    transform: rotateY(180deg);
+}
+.card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgb(79, 70, 229) 0%, rgb(124, 58, 237) 100%);
+}
+.card-face-back {
+    transform: rotateY(180deg);
+}
+
+/* card blob decorations ---------------------------------------------------- */
+.card-blob {
+    pointer-events: none;
+    position: absolute;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.12);
+}
+.card-blob-tr {
+    width: 11rem;
+    height: 11rem;
+    top: -3rem;
+    right: -3rem;
+}
+.card-blob-bl {
+    width: 9rem;
+    height: 9rem;
+    bottom: -2.5rem;
+    left: -2.5rem;
+}
+
+/* flip hint badge ---------------------------------------------------------- */
+.flip-hint {
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+}
+.card-3d-scene:hover .flip-hint {
+    opacity: 1;
+}
+
+/* ── EMV chip ────────────────────────────────────────────────────────────── */
+.emv-chip {
+    width: 40px;
+    height: 30px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #c9a227 0%, #f5e27a 45%, #c9991e 100%);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+/* ── Shimmer skeleton ────────────────────────────────────────────────────── */
+@keyframes shimmer {
+    from {
+        background-position: -600px 0;
+    }
+    to {
+        background-position: 600px 0;
+    }
+}
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1200px 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+
+/* ── Input focus-ring ────────────────────────────────────────────────────── */
+.pay-input:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.28);
+    border-color: var(--p-accent);
+}
+.pay-input.input-error {
+    border-color: var(--p-danger);
+}
+.pay-input.input-error:focus-within {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.22);
+    border-color: var(--p-danger);
+}
+
+
+/* ── Field error text ────────────────────────────────────────────────────── */
+.field-error {
+    display: none;
+    font-size: 0.75rem;
+    color: var(--p-danger);
+    margin-top: 0.25rem;
+    padding-left: 0.25rem;
+}
+.field-error.visible {
+    display: block;
+}
+
+/* ── Global error alert ──────────────────────────────────────────────────── */
+#global-error {
+    display: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+#global-error.visible {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Processing overlay ──────────────────────────────────────────────────── */
+#processing-overlay {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+#processing-overlay.visible {
+    display: flex;
+    opacity: 1;
+}
+
+/* ── Submit button states ────────────────────────────────────────────────── */
+#submit-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+#btn-idle {
+    display: flex;
+}
+#btn-busy {
+    display: none;
+}
+#submit-btn.is-loading #btn-idle {
+    display: none;
+}
+#submit-btn.is-loading #btn-busy {
+    display: flex;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .card-3d-inner {
+        transition: none;
+    }
+    .shimmer {
+        animation: none;
+    }
+    #global-error,
+    #processing-overlay {
+        transition: none;
+    }
+}

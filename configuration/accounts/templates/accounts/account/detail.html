@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/accounts/account/detail.css' %}">
+{% endblock style %}
+{% block content %}
+    <main class="container mx-auto max-w-7xl px-4 py-10">
+        <!-- =========================================================
+         Page Header
+         ========================================================= -->
+        <section class="mb-8">
+            <div class="account-hero rounded-3xl border border-base-300 shadow-xl">
+                <div class="p-6 lg:p-8">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                        <div class="flex items-center gap-5">
+                            <div class="hero-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl lg:text-4xl font-black">Account Details</h1>
+                                <p class="mt-2 text-base-content/60 max-w-2xl">
+                                    View your account information, profile data,
+                                    activity, and account status.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="{% url 'accounts:account-edit' %}"
+                               class="btn btn-primary rounded-xl">
+                                <i class="fa-solid fa-pen"></i>
+                                Edit Account
+                            </a>
+                            <a href="{% url 'accounts:profile' request.user.username %}"
+                               class="btn btn-outline rounded-xl">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                Public Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- =========================================================
+         Account Overview
+         ========================================================= -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                <div class="card-body items-center text-center">
+                    <div class="account-avatar">
+                        {% if request.user.profile.avatar %}
+                            <img src="{{ request.user.profile.avatar.url }}"
+                                 alt="{{ request.user.profile.name }}">
+                        {% else %}
+                            <div class="account-avatar-placeholder">{{ request.user.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="account-status-dot"></div>
+                    </div>
+                    <h2 class="text-2xl font-black mt-4">{{ request.user.profile.name }}</h2>
+                    <p class="text-base-content/60">@{{ request.user.username }}</p>
+                    {% if request.user.is_staff %}
+                        <div class="badge badge-primary mt-3 gap-1">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Staff
+                        </div>
+                    {% endif %}
+                    <div class="divider"></div>
+                    <a href="{% url 'accounts:profile' request.user.username %}"
+                       class="btn btn-outline btn-primary w-full rounded-xl">
+                        <i class="fa-solid fa-id-card"></i>
+                        View Public Profile
+                    </a>
+                </div>
+            </div>
+            <div class="card bg-base-200 border border-base-300 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-6">
+                        <i class="fa-solid fa-user text-primary"></i>
+                        Personal Information
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="text-sm text-base-content/60">First Name</div>
+                            <div class="font-semibold mt-1">{{ account_user.first_name|default:"Not provided" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-base-content/60">Last Name</div>
+                            <div class="font-semibold mt-1">{{ account_user.last_name|default:"Not provided" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-base-content/60">Username</div>
+                            <div class="font-semibold mt-1">@{{ account_user.username }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-base-content/60">Display Name</div>
+                            <div class="font-semibold mt-1">{{ profile.display_name|default:"Not provided" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-base-content/60">Email</div>
+                            <div class="font-semibold mt-1 break-all">{{ account_user.email }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-base-content/60">Phone Number</div>
+                            <div class="font-semibold mt-1">{{ account_user.phone_number|default:"Not provided" }}</div>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div>
+                        <div class="text-sm text-base-content/60">Biography</div>
+                        <div class="mt-2 text-base-content/80 whitespace-pre-line">
+                            {{ profile.biography|default:"No biography has been added." }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-base-content/50">ACCOUNT LEVEL</p>
+                            <p class="text-5xl font-black text-primary mt-2">{{ request.user.profile.level }}</p>
+                        </div>
+                        <div class="overview-icon text-primary">
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <p class="text-sm text-base-content/60">Your current account progression level.</p>
+                </div>
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-base-content/50">TOTAL POINTS</p>
+                            <p class="text-5xl font-black text-warning mt-2">{{ request.user.profile.points }}</p>
+                        </div>
+                        <div class="overview-icon text-warning">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <p class="text-sm text-base-content/60">Points currently associated with your account.</p>
+                </div>
+            </div>
+        </section>
+        <!-- =========================================================
+         Main Content
+         ========================================================= -->
+        <section class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- =====================================================
+             Account Information
+             ===================================================== -->
+            <div class="xl:col-span-2 space-y-6">
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <div class="account-section-title">
+                            <div class="section-icon text-primary">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black">Personal Information</h2>
+                                <p class="text-sm text-base-content/50">Basic information associated with your account.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="info-item">
+                                <span class="info-label">
+                                    <i class="fa-solid fa-user"></i>
+                                    Username
+                                </span>
+                                <span class="info-value">@{{ request.user.username }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">
+                                    <i class="fa-solid fa-signature"></i>
+                                    Display Name
+                                </span>
+                                <span class="info-value">{{ request.user.profile.name|default:"Not provided" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    Email
+                                </span>
+                                <span class="info-value break-all">{{ request.user.email|default:"Not provided" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    Joined
+                                </span>
+                                <span class="info-value">{{ request.user.date_joined|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <div class="account-section-title">
+                            <div class="section-icon text-secondary">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black">Public Profile</h2>
+                                <p class="text-sm text-base-content/50">Information that may be visible to other users.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="info-label mb-2">
+                                    <i class="fa-solid fa-heading"></i>
+                                    Display Name
+                                </div>
+                                <div class="readonly-box">
+                                    {{ request.user.profile.display_name|default:request.user.profile.name|default:"Not provided" }}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="info-label mb-2">
+                                    <i class="fa-solid fa-align-left"></i>
+                                    Biography
+                                </div>
+                                <div class="readonly-box biography">
+                                    {% if request.user.profile.biography %}
+                                        {{ request.user.profile.biography|linebreaksbr }}
+                                    {% else %}
+                                        <span class="text-base-content/40">No biography has been added yet.</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <a href="{% url 'accounts:profile' request.user.username %}"
+                               class="btn btn-ghost rounded-xl">
+                                <i class="fa-solid fa-eye"></i>
+                                See what others see
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <div class="account-section-title">
+                            <div class="section-icon text-success">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black">Account Status</h2>
+                                <p class="text-sm text-base-content/50">Current state of your account.</p>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="status-item">
+                                <div class="status-icon success">
+                                    <i class="fa-solid fa-user-check"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Account</p>
+                                    {% if request.user.is_active %}
+                                        <p class="text-sm text-success">Active</p>
+                                    {% else %}
+                                        <p class="text-sm text-error">Disabled</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon primary">
+                                    <i class="fa-solid fa-envelope-circle-check"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Email</p>
+                                    {% if request.user.email %}
+                                        <p class="text-sm text-success">Email configured</p>
+                                    {% else %}
+                                        <p class="text-sm text-warning">No email configured</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon warning">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Account Type</p>
+                                    {% if request.user.is_superuser %}
+                                        <p class="text-sm">Superuser</p>
+                                    {% elif request.user.is_staff %}
+                                        <p class="text-sm">Staff</p>
+                                    {% else %}
+                                        <p class="text-sm">Standard Account</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-icon secondary">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Profile Updated</p>
+                                    <p class="text-sm text-base-content/60">{{ request.user.profile.updated_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =====================================================
+             Sidebar
+             ===================================================== -->
+            <aside class="space-y-6">
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <div class="account-section-title">
+                            <div class="section-icon text-primary">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black">Account Timeline</h2>
+                                <p class="text-sm text-base-content/50">Important account dates.</p>
+                            </div>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot bg-primary">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Account Created</p>
+                                    <p class="text-sm text-base-content/50">{{ request.user.date_joined|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot bg-secondary">
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Profile Updated</p>
+                                    <p class="text-sm text-base-content/50">{{ request.user.profile.updated_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <div class="account-section-title">
+                            <div class="section-icon text-warning">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black">Security</h2>
+                                <p class="text-sm text-base-content/50">Keep your account protected.</p>
+                            </div>
+                        </div>
+                        <div class="security-notice">
+                            <i class="fa-solid fa-lock"></i>
+                            <p>
+                                Your password and security credentials are never
+                                displayed on this page.
+                            </p>
+                        </div>
+                        <a href="{% url 'account_change_password' %}"
+                           class="btn btn-warning w-full rounded-xl mt-4">
+                            <i class="fa-solid fa-key"></i>
+                            Change Password
+                        </a>
+                    </div>
+                </div>
+                <div class="account-card rounded-3xl bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="font-black text-lg mb-3">Quick Actions</h2>
+                        <div class="space-y-2">
+                            <a href="{% url 'accounts:account-edit' %}" class="quick-action">
+                                <i class="fa-solid fa-pen"></i>
+                                <span>Edit Account</span>
+                                <i class="fa-solid fa-chevron-right ml-auto opacity-40"></i>
+                            </a>
+                            <a href="{% url 'accounts:profile' request.user.username %}"
+                               class="quick-action">
+                                <i class="fa-solid fa-user"></i>
+                                <span>Public Profile</span>
+                                <i class="fa-solid fa-chevron-right ml-auto opacity-40"></i>
+                            </a>
+                            <a href="{% url 'accounts:account' %}" class="quick-action">
+                                <i class="fa-solid fa-gauge-high"></i>
+                                <span>Dashboard</span>
+                                <i class="fa-solid fa-chevron-right ml-auto opacity-40"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/accounts/account/detail.js' %}" defer></script>
+{% endblock script %}

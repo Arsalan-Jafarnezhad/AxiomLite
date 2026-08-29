@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/accounts/profile/public.css' %}">
+{% endblock style %}
+{% block content %}
+    <section class="py-10">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="card bg-base-200 shadow-xl overflow-visible">
+                <div class="relative">
+                    <!-- {% if user.profile.avatar_url %}
+                        <img
+                            src="{{ user.profile.avatar_url|default:'/static/images/defaults/avatar.webp' }}"
+                            alt="{{ user.profile.name|default:user.username }}'s avatar"
+                            class="w-full h-full object-cover">
+                    {% endif %} -->
+                    <div class="h-36 sm:h-48 w-full rounded-t-box overflow-hidden bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800">
+                    </div>
+                    <div class="avatar absolute left-1/2 -translate-x-1/2 -bottom-14">
+                        <div class="profile-avatar-ring w-28 rounded-full ring ring-primary ring-offset-base-200 ring-offset-4">
+                            <img src="{{ user.profile.avatar_url|default:'/static/images/defaults/avatar.webp' }}"
+                                 alt="{{ user.profile.name|default:user.username }}'s avatar">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body items-center text-center pt-20 space-y-6">
+                    <div>
+                        <div class="flex justify-center items-center gap-2 flex-wrap">
+                            {% if user.profile.role.icon_name %}
+                                <i class="fa-solid fa-{{ user.profile.role.icon_name }} text-primary"
+                                   aria-hidden="true"></i>
+                            {% endif %}
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight">{{ user.profile.name|default:user.username }}</h1>
+                            {% if user.is_official %}
+                                <span class="tooltip mt-1" data-tip="Official account">
+                                    <i class="fa-solid fa-certificate text-xl text-blue-400"
+                                       aria-label="Official account"></i>
+                                </span>
+                            {% endif %}
+                            {% if user.is_verified %}
+                                <span class="tooltip mt-1" data-tip="Verified account">
+                                    <i class="fa-solid fa-circle-check text-xl text-green-400"
+                                       aria-label="Verified account"></i>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex justify-center gap-2 mt-3 flex-wrap">
+                            {% if user.profile.level %}
+                                <span class="badge badge-primary badge-outline">Level {{ user.profile.level }}</span>
+                            {% endif %}
+                            {% if user.is_staff %}
+                                <span class="badge badge-info badge-outline gap-1">
+                                    <i class="fa-solid fa-certificate text-blue-400" aria-hidden="true"></i> Official
+                                </span>
+                            {% endif %}
+                            {% if user.is_verified %}
+                                <span class="badge badge-success badge-outline gap-1">
+                                    <i class="fa-solid fa-circle-check text-green-400" aria-hidden="true"></i> Verified
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if user.profile.biography %}
+                        <p class="profile-bio max-w-xl text-base-content/80 leading-relaxed">{{ user.profile.biography }}</p>
+                    {% endif %}
+                    <div class="flex items-center gap-2 flex-wrap justify-center">
+                        <button type="button"
+                                class="btn btn-sm btn-ghost gap-2"
+                                data-copy="{{ user.username }}"
+                                data-copy-btn>
+                            <i class="fa-solid fa-at" aria-hidden="true"></i>
+                            {{ user.username }}
+                            <i class="fa-regular fa-copy opacity-60" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-ghost gap-2" data-share-btn>
+                            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                            Share profile
+                        </button>
+                        <div class="w-full flex flex-col items-center gap-2">
+                            <div class="tooltip"
+                                 data-tip="Progress {{ user.profile.current_points }} / {{ user.profile.level_points }} points">
+                                <div class="w-full">
+                                    <progress class="progress w-56 text-blue-600"
+                                              value="{{ user.profile.progress_percent }}"
+                                              max="100"></progress>
+                                </div>
+                                <div class="w-full">
+                                    <b class="">Level 213</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="sr-only" role="status" aria-live="polite" data-copy-status></p>
+                    <div class="divider"></div>
+                    <div class="grid sm:grid-cols-2 gap-4 w-full text-left">
+                        <div class="profile-detail">
+                            <i class="fa-solid fa-user text-primary" aria-hidden="true"></i>
+                            <div>
+                                <div class="text-xs uppercase opacity-60">Full name</div>
+                                <div class="font-semibold">{{ user.full_name|default:"—" }}</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail">
+                            {% if user.gender == 1 %}
+                                <i class="fa-solid fa-mars text-primary" aria-hidden="true"></i>
+                            {% elif user.gender == 2 %}
+                                <i class="fa-solid fa-venus text-accent" aria-hidden="true"></i>
+                            {% else %}
+                                <i class="fa-solid fa-genderless text-base-content/60"
+                                   aria-hidden="true"></i>
+                            {% endif %}
+                            <div>
+                                <div class="text-xs uppercase opacity-60">Gender</div>
+                                <div class="font-semibold">{{ user.get_gender_display|default:"—" }}</div>
+                            </div>
+                        </div>
+                        <div class="profile-detail">
+                            <i class="fa-solid fa-calendar-plus text-secondary" aria-hidden="true"></i>
+                            <div>
+                                <div class="text-xs uppercase opacity-60">Joined</div>
+                                <div class="font-semibold">{{ user.date_joined|date:"d F Y" }}</div>
+                                <div class="text-xs opacity-60">{{ user.date_joined|naturaltime }}</div>
+                            </div>
+                        </div>
+                        {% if user.born_date %}
+                            <div class="profile-detail">
+                                <i class="fa-solid fa-cake-candles text-accent" aria-hidden="true"></i>
+                                <div>
+                                    <div class="text-xs uppercase opacity-60">Birthday</div>
+                                    <div class="font-semibold">{{ user.born_date|date:"d F Y" }}</div>
+                                    <div class="text-xs opacity-60">{{ user.born_date|timesince }} ago</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/accounts/profile/public.js' %}" defer></script>
+{% endblock script %}

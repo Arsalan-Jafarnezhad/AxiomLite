@@ -1,0 +1,51 @@
+<div class="card bg-base-200 shadow-md hover:shadow-xl transition group">
+    {% if article.cover %}
+        <figure class="overflow-hidden">
+            <img src="{{ article.cover.url }}"
+                 alt="{{ article.title }}"
+                 class="h-56 w-full object-cover group-hover:scale-105 transition duration-300" />
+        </figure>
+    {% endif %}
+    <div class="card-body">
+        <div class="flex flex-wrap gap-2">
+            {% if article.category %}
+                <a href="{{ article.category.get_absolute_url }}"
+                   class="badge badge-primary badge-sm">{{ article.category.name }}</a>
+            {% endif %}
+            {% if article.is_featured %}
+                <span class="badge badge-warning badge-sm">
+                    <span class="material-symbols-rounded text-sm">star</span>
+                    Featured
+                </span>
+            {% endif %}
+        </div>
+        <h2 class="card-title">
+            <a href="{{ article.get_absolute_url }}"
+               class="hover:text-primary transition">{{ article.title }}</a>
+        </h2>
+        {% if article.summary %}
+            <p class="text-base-content/70 line-clamp-3">{{ article.summary }}</p>
+        {% endif %}
+        <div class="flex items-center gap-4 text-sm text-base-content/60 mt-3">
+            <span class="flex items-center gap-1">
+                <span class="material-symbols-rounded text-base">schedule</span>
+                {{ article.reading_time }} min
+            </span>
+            <span class="flex items-center gap-1">
+                <span class="material-symbols-rounded text-base">visibility</span>
+                {{ article.views_count }}
+            </span>
+            <span class="flex items-center gap-1">
+                <span class="material-symbols-rounded text-base">comment</span>
+                {{ article.comments_count }}
+            </span>
+        </div>
+        <div class="card-actions justify-between items-center mt-4">
+            <div class="text-sm text-base-content/60">{{ article.published_at|date:"M d, Y" }}</div>
+            <a href="{{ article.get_absolute_url }}" class="btn btn-primary btn-sm">
+                Read
+                <span class="material-symbols-rounded">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</div>

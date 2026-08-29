@@ -1,0 +1,64 @@
+.questions-markdown {
+    min-width: 0;
+}
+
+.questions-markdown pre {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+}
+
+.questions-markdown code {
+    overflow-wrap: anywhere;
+}
+
+.questions-markdown img {
+    max-width: 100%;
+    height: auto;
+}
+
+.questions-markdown table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.question-code-editor textarea {
+    min-height: 0;
+    tab-size: 4;
+    -moz-tab-size: 4;
+}
+
+.question-code-textarea {
+    height: 360px;
+    min-height: 360px;
+    width: 100%;
+    line-height: 1.5rem;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    overflow-x: auto;
+    overflow-y: hidden;
+    resize: none;
+    box-sizing: border-box;
+}
+.question-code-editor textarea::placeholder {
+    opacity: 0.35;
+}
+
+.question-code-editor textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.question-line-numbers {
+    width: 3.5rem;
+    min-height: 360px;
+    padding: 1rem 0.75rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    text-align: right;
+}
+
+.question-line-number {
+    height: 1.5rem;
+    line-height: 1.5rem;
+}

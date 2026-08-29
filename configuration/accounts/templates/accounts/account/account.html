@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/accounts/account/account.css' %}" />
+{% endblock style %}
+{% block content %}
+    <section class="container mx-auto max-w-7xl px-4 py-8 sm:py-10">
+        <div class="hero card-gradient relative overflow-hidden rounded-3xl text-primary-content shadow-2xl">
+            <div class="absolute -top-20 -right-16 w-72 h-72 rounded-full bg-base-100/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-10 w-72 h-72 rounded-full bg-base-100/10 blur-3xl pointer-events-none"></div>
+            <div class="hero-content relative z-10 w-full justify-between flex-col lg:flex-row gap-8 py-12">
+                <div class="max-w-xl">
+                    <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+                        Welcome back,
+                        <span class="hero-name-pill">
+                            {{ request.user.first_name|default:request.user.username
+                            }}
+                        </span>
+                        <span aria-hidden="true">👋</span>
+                    </h1>
+                    <p class="mt-4 opacity-90">
+                        Manage your products, blog posts, support tickets and
+                        account information from one place.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-8">
+                        <a href="{% url 'accounts:account-edit' %}"
+                           class="btn btn-sm bg-base-100 text-primary border-none hover:bg-base-200">
+                            <i class="fa-solid fa-user-pen" aria-hidden="true"></i>
+                            Edit Profile
+                        </a>
+                        <a href="{% url 'account_email' %}"
+                           class="btn btn-sm btn-ghost text-primary-content border-primary-content/30 hover:bg-base-100/10">
+                            <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                            Account Settings
+                        </a>
+                    </div>
+                </div>
+                <img src="{% static 'images/logo.webp' %}"
+                     class="hidden lg:block w-36 drop-shadow-2xl"
+                     alt="Site logo" />
+            </div>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-6 mt-8">
+            <div class="card bg-base-100 shadow-xl border border-base-300">
+                <div class="card-body items-center text-center">
+                    <div class="avatar">
+                        <div class="avatar-ring w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            {% if request.user.profile.avatar %}
+                                <img src="{{ request.user.profile.avatar.url }}"
+                                     alt="{{ request.user.username }}'s avatar" />
+                            {% else %}
+                                <img src="{% static 'images/defaults/avatar.webp' %}" alt="Default avatar" />
+                            {% endif %}
+                        </div>
+                    </div>
+                    <h2 class="text-2xl font-bold mt-3">
+                        {{ request.user.get_full_name|default:request.user.username
+                        }}
+                    </h2>
+                    <div class="w-full flex justify-evenly items-center">
+                        <div class="w-1/4">
+                            <p class="text-base-content/70">@{{ request.user.username }}</p>
+                        </div>
+                        <div class="w-12 h-16">
+                            <i class="!w-full !h-full cif-{{ country }}" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="divider my-3"></div>
+                    <div class="grid grid-cols-2 gap-5 w-full text-center">
+                        <div>
+                            <div class="text-xs uppercase opacity-60">Member Since</div>
+                            <div class="font-bold mt-1">{{ request.user.date_joined|date:"Y" }}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase opacity-60">Last Login</div>
+                            <div class="font-bold mt-1">{{ request.user.last_login|date:"M d" }}</div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-6">
+                        <progress class="progress progress-primary w-full"
+                                  value="{{ user.profile.completion_percent|default:88 }}"
+                                  max="100"
+                                  aria-label="Profile completion"></progress>
+                        <div class="text-sm opacity-70 mt-1">
+                            Profile Completion • {{
+                                user.profile.completion_percent|default:88 }}%
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col items-start mt-6">
+                        <b class="text-xl font-bold">Missing Profile Items:</b>
+                        <div class="w-full flex flex-col items-center gap-2">
+                            {% for missing_profile_item in user.profile.missing_profile_items %}
+                                <span class="badge badge-ghost gap-2 badge-pop">
+                                    <i class="material-symbols-rounded text-red-400" aria-hidden="true">
+                                        error_outline
+                                    </i>
+                                    {{ missing_profile_item }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if request.user.is_verified or request.user.is_premium or request.user.is_staff or request.user.is_media %}
+                        <div class="divider my-3"></div>
+                        <div class="w-full flex flex-wrap justify-center gap-2">
+                            {% if request.user.is_verified %}
+                                <span class="badge badge-ghost gap-2 badge-pop">
+                                    <i class="fa-solid fa-circle-check text-green-400" aria-hidden="true"></i>
+                                    Verified
+                                </span>
+                            {% endif %}
+                            {% if request.user.is_premium %}
+                                <span class="badge badge-ghost gap-2 badge-pop">
+                                    <i class="fa-solid fa-crown text-amber-400" aria-hidden="true"></i>
+                                    Premium
+                                </span>
+                            {% endif %}
+                            {% if request.user.is_staff %}
+                                <span class="badge badge-ghost gap-2 badge-pop">
+                                    <i class="fa-solid fa-user-shield text-red-400" aria-hidden="true"></i>
+                                    Staff
+                                </span>
+                            {% endif %}
+                            {% if request.user.is_media %}
+                                <span class="badge badge-ghost gap-2 badge-pop">
+                                    <i class="fa-solid fa-blog text-sky-400" aria-hidden="true"></i>
+                                    Media
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'accounts:account-edit' %}"
+                       class="btn btn-outline btn-primary btn-sm w-full mt-6">
+                        <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-2">
+                <div class="grid sm:grid-cols-2 gap-5">
+                    <div class="stat stat-card bg-base-100 rounded-2xl shadow border border-base-300">
+                        <div class="stat-figure text-primary text-4xl">
+                            <i class="fa-solid fa-box-open" aria-hidden="true"></i>
+                        </div>
+                        <div class="stat-title">Products</div>
+                        <div class="stat-value" data-count="{{ product_count|default:0 }}">0</div>
+                        <div class="stat-desc">Active products</div>
+                    </div>
+                    <div class="stat stat-card bg-base-100 rounded-2xl shadow border border-base-300">
+                        <div class="stat-figure text-secondary text-4xl">
+                            <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
+                        </div>
+                        <div class="stat-title">Blog Posts</div>
+                        <div class="stat-value" data-count="{{ weblog_count|default:0 }}">0</div>
+                        <div class="stat-desc">Published articles</div>
+                    </div>
+                    <div class="stat stat-card bg-base-100 rounded-2xl shadow border border-base-300">
+                        <div class="stat-figure text-success text-4xl">
+                            <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+                        </div>
+                        <div class="stat-title">Tickets</div>
+                        <div class="stat-value" data-count="{{ ticket_count|default:0 }}">0</div>
+                        <div class="stat-desc">Total support tickets</div>
+                    </div>
+                    <div class="stat stat-card bg-base-100 rounded-2xl shadow border border-base-300">
+                        <div class="stat-figure text-warning text-4xl">
+                            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        </div>
+                        <div class="stat-title">Favorites</div>
+                        <div class="stat-value" data-count="{{ favorite_count|default:0 }}">0</div>
+                        <div class="stat-desc">Saved items</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/accounts/account/account.js' %}" defer></script>
+{% endblock script %}

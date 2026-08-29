@@ -1,0 +1,21 @@
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 0 3px oklch(var(--p) / 0.2);
+}
+
+.search-filter {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.5rem;
+}

@@ -1,0 +1,54 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en"
+      data-theme="night"
+      data-website-title="{{ website_title }}"
+      id="html">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <link rel="stylesheet" href="{% static 'styles/base/styles.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'styles/rounded.css' %}" />
+            <link rel="stylesheet" href="{% static 'styles/base/fonts.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'styles/libraries/coreui/brand.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'styles/libraries/coreui/flag.css' %}" />
+            {% block icon %}
+                  <link rel="shortcut icon"
+                        href="{% static 'images/A-1.ico' %}"
+                        type="image/x-icon" />
+            {% endblock icon %}
+            <script src="{% static 'scripts/index.js' %}"></script>
+            {% block head %}
+            {% endblock head %}
+            {% block style %}
+            {% endblock style %}
+            <title>{% block title %}{{ website_title }}{% endblock title %}</title>
+      </head>
+      <body>
+            {% block header %}
+            {% endblock header %}
+            {% include "includes/header.html" %}
+            {% include "includes/messages.html" %}
+            <main class="flex w-full min-h-screen">
+                  {% block sidebar %}
+                  {% endblock sidebar %}
+                  {% include "includes/sidebar.html" %}
+                  <div class="content-wrapper w-full flex flex-col min-h-screen main-wrapper transition-all duration-200 ease-in-out"
+                       id="content">
+                        {% block content %}
+                        {% endblock content %}
+                  </div>
+            </main>
+            {% block footer %}
+            {% endblock footer %}
+            {% include "includes/footer.html" %}
+            <script src="{% static 'scripts/base/base.js' %}"></script>
+            {% block script %}
+            {% endblock script %}
+      </body>
+</html>

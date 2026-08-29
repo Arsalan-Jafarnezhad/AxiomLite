@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/accounts/authentication/sign-in.css' %}">
+{% endblock style %}
+{% block content %}
+    <section class="relative min-h-screen overflow-hidden bg-base-300 flex items-center justify-center px-4 py-10 sm:py-16">
+        <div class="absolute -top-32 -left-24 w-96 h-96 rounded-full bg-primary/25 blur-3xl signin-blob"></div>
+        <div class="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-secondary/20 blur-3xl signin-blob"
+             style="animation-delay:-4s"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-accent/20 blur-3xl signin-blob"
+             style="animation-delay:-8s"></div>
+        <div class="signin-card relative z-10 w-full max-w-4xl grid lg:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl border border-base-content/10 bg-base-100/85 backdrop-blur-xl">
+            <aside class="hidden lg:flex relative flex-col justify-between p-10 bg-gradient-to-br from-primary to-secondary text-primary-content overflow-hidden">
+                <div class="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-base-100/10 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-10 w-64 h-64 rounded-full bg-base-100/10 blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 space-y-8">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-base-300/70 flex items-center justify-center backdrop-blur">
+                            <img src="{% static 'images/logo.webp' %}"
+                                 alt="Logo"
+                                 class="w-9 h-9 object-contain">
+                        </div>
+                        <div>
+                            <p class="font-black leading-none">Arsalan</p>
+                            <p class="text-xs opacity-80">Django Developer</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-black leading-tight">
+                            Build. Ship.
+                            <br>
+                            Sign in to pick up where you left off.
+                        </h2>
+                        <p class="opacity-80 mt-4 leading-7">Your projects, saved work and account settings are one sign-in away.</p>
+                    </div>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-lock mt-1"></i>
+                            <div>
+                                <p class="font-semibold">Encrypted by default</p>
+                                <p class="text-sm opacity-75">Passwords are hashed, never stored in plain text.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-user-shield mt-1"></i>
+                            <div>
+                                <p class="font-semibold">Session protection</p>
+                                <p class="text-sm opacity-75">Unusual sign-ins are flagged automatically.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-bolt mt-1"></i>
+                            <div>
+                                <p class="font-semibold">Built for speed</p>
+                                <p class="text-sm opacity-75">A lightweight Django backend keeps things fast.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative z-10 bg-base-100/90 font-mono text-xs text-white rounded-xl overflow-hidden border border-base-100/20 mt-10">
+                    <div class="signin-terminal-bar">
+                        <span class="signin-dot bg-error"></span>
+                        <span class="signin-dot bg-warning"></span>
+                        <span class="signin-dot bg-success"></span>
+                        <span class="ml-3 opacity-60">auth_session.py</span>
+                    </div>
+                    <div class="signin-terminal-body bg-base-100/80 text-white">
+                        <p class="opacity-70">&gt;&gt;&gt; <span class="text-emerald-400">user</span> = <span class="text-sky-400">authenticate</span>(<span class="text-orange-400">email</span>, <span class="text-orange-400">password</span>)</p>
+                        <p data-line="1"></p>
+                        <p data-line="2"></p>
+                        <p data-line="3"></p>
+                    </div>
+                </div>
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-base-content/50 hover:text-primary transition pl-10 pr-16 hidden">
+                </div>
+            </aside>
+            <div class="p-8 md:p-10 relative">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <div class="w-16 h-16 lg:hidden rounded-2xl bg-base-200 shadow-lg p-3 mb-5">
+                            <img src="{% static 'images/logo.webp' %}"
+                                 alt="Logo"
+                                 class="w-full h-full object-contain">
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-black">Welcome Back 👋</h1>
+                        <p class="opacity-70 mt-2">Sign in to continue to your account.</p>
+                    </div>
+                    <a href="{% url 'core:index' %}"
+                       class="btn btn-circle btn-ghost"
+                       aria-label="Close and return home">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </a>
+                </div>
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-error mb-5">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>{{ error }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" novalidate class="space-y-6">
+                    {% csrf_token %}
+                    {% for fieldset in form.fieldsets %}
+                        {% if fieldset.name %}
+                            <div class="space-y-4">
+                                <h3 class="text-sm uppercase tracking-wider text-base-content/60 font-bold">{{ fieldset.name }}</h3>
+                        {% endif %}
+                        {% for field in fieldset.fields %}
+                            {% if field.name == "remember" %}
+                                <div class="flex items-center justify-between rounded-xl bg-base-200 px-4 py-3">
+                                    <label for="{{ field.id_for_label }}"
+                                           class="flex items-center gap-3 cursor-pointer select-none">
+                                        {{ field }}
+                                        <span class="font-medium">{{ field.label }}</span>
+                                    </label>
+                                    <i class="fa-solid fa-shield-check text-success text-lg"></i>
+                                </div>
+                                {% for error in field.errors %}
+                                    <div class="alert alert-error text-sm">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% elif field.name == "password" %}
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <label for="{{ field.id_for_label }}" class="label p-0">
+                                            <span class="label-text font-semibold">{{ field.label }}</span>
+                                        </label>
+                                        <a href="{% url 'account_reset_password' %}"
+                                           class="text-xs font-semibold text-primary hover:underline">
+                                            Forgot password?
+                                        </a>
+                                    </div>
+                                    <div class="relative">
+                                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40"></i>
+                                        {{ field }}
+                                    </div>
+                                    {% if field.help_text %}
+                                        <p class="text-xs text-base-content/60">{{ field.help_text }}</p>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-error py-2">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% elif field.name == "login" %}
+                                <div class="space-y-2">
+                                    <label for="{{ field.id_for_label }}" class="label p-0">
+                                        <span class="label-text font-semibold">{{ field.label }}</span>
+                                    </label>
+                                    <div class="relative">
+                                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40"></i>
+                                        {{ field }}
+                                    </div>
+                                    {% if field.help_text %}
+                                        <p class="text-xs text-base-content/60">{{ field.help_text }}</p>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-error py-2">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="space-y-2">
+                                    <label for="{{ field.id_for_label }}" class="label">
+                                        <span class="label-text font-semibold">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <p class="text-xs text-base-content/60">{{ field.help_text }}</p>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-error py-2">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if fieldset.name %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <button id="submit-btn"
+                            type="submit"
+                            class="btn btn-primary btn-lg w-full rounded-xl">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Sign In
+                    </button>
+                    <p class="text-center text-sm text-base-content/70">
+                        New here?
+                        <a href="{% url 'account_signup' %}"
+                           class="font-semibold text-primary hover:underline">Create an account</a>
+                    </p>
+                    <div class="divider text-xs opacity-50">Secure Authentication</div>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="rounded-xl bg-base-200 py-4">
+                            <i class="fa-solid fa-lock text-success text-xl"></i>
+                            <p class="mt-2 text-xs font-semibold">Encrypted</p>
+                        </div>
+                        <div class="rounded-xl bg-base-200 py-4">
+                            <i class="fa-solid fa-user-shield text-info text-xl"></i>
+                            <p class="mt-2 text-xs font-semibold">Protected</p>
+                        </div>
+                        <div class="rounded-xl bg-base-200 py-4">
+                            <i class="fa-solid fa-bolt text-warning text-xl"></i>
+                            <p class="mt-2 text-xs font-semibold">Fast</p>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-base-content/50">
+                        Press <kbd class="kbd kbd-sm">/</kbd> to jump to email
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/accounts/authentication/sign-in.js' %}" defer></script>
+{% endblock script %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}{{ model_label }} form{% endblock %}
+{% block content %}
+    <div class="mb-8">
+        <p class="text-primary font-mono text-xs tracking-widest uppercase mb-1">
+            {% if object %}Edit{% else %}Create{% endif %}
+        </p>
+        <h1 class="text-3xl font-black">{% if object %}Edit{% else %}Add{% endif %} {{ model_label }}</h1>
+    </div>
+    <div class="card bg-base-100 shadow-sm border border-base-300 max-w-2xl">
+        <div class="card-body">
+            <form method="post"
+                  enctype="multipart/form-data"
+                  novalidate
+                  class="space-y-4">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-error">
+                        <i class="material-symbols-rounded">error</i>
+                        <span>{{ form.non_field_errors }}</span>
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                    <div class="form-control">
+                        <label class="label" for="{{ field.id_for_label }}">
+                            <span class="label-text font-semibold">{{ field.label }}</span>
+                        </label>
+                        {{ field }} {% if field.help_text %}
+                        <span class="label-text-alt text-base-content/50 mt-1">{{ field.help_text }}</span>
+                {% endif %}
+                {% if field.errors %}
+                    <span class="label-text-alt text-error mt-1">{{ field.errors }}</span>
+                {% endif %}
+            </div>
+{% endfor %}
+<div class="flex gap-2 pt-2">
+    <button type="submit" class="btn btn-primary gap-2">
+        <i class="material-symbols-rounded text-lg">save</i>
+        Save
+    </button>
+    {% if list_url %}
+        <a class="btn btn-ghost" href="{{ list_url }}">Cancel</a>
+    {% elif list_url_name %}
+        <a class="btn btn-ghost" href="{% url list_url_name %}">Cancel</a>
+    {% endif %}
+</div>
+</form>
+</div>
+</div>
+{% endblock %}

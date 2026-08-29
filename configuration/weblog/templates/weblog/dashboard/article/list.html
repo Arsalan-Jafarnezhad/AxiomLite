@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/dashboard/article/list.css' %}" />
+{% endblock %}
+{% block content %}
+    <main id="dashboard-articles" class="mx-auto max-w-7xl space-y-8">
+        <section class="articles-header rounded-3xl border border-base-300 bg-base-200 shadow-xl">
+            <div class="flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <div class="dashboard-eyebrow">
+                        <span class="material-symbols-rounded">library_books</span>
+                        Content Management
+                    </div>
+                    <h1 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">My Articles</h1>
+                    <p class="mt-2 max-w-2xl text-base-content/60">
+                        Create, manage, edit, and organize your published articles
+                        and drafts.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'weblog:dashboard:index' %}"
+                       class="btn btn-ghost rounded-xl gap-2">
+                        <span class="material-symbols-rounded">dashboard</span>
+                        Dashboard
+                    </a>
+                    <a href="{% url 'weblog:dashboard:article-create' %}"
+                       class="btn btn-primary rounded-xl gap-2 shadow-lg">
+                        <span class="material-symbols-rounded">add</span>
+                        New Article
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="grid gap-4 sm:grid-cols-3">
+            <div class="article-stat">
+                <div class="article-stat-icon text-primary">
+                    <span class="material-symbols-rounded">article</span>
+                </div>
+                <div>
+                    <p class="text-sm text-base-content/50">Total Articles</p>
+                    <p class="text-2xl font-black">{{ articles.paginator.count|default:articles|length }}</p>
+                </div>
+            </div>
+            <div class="article-stat">
+                <div class="article-stat-icon text-success">
+                    <span class="material-symbols-rounded">public</span>
+                </div>
+                <div>
+                    <p class="text-sm text-base-content/50">Published</p>
+                    <p class="text-2xl font-black">
+                        {% if published_articles_count %} {{
+                            published_articles_count }} {% else %} — {% endif %}
+                            </p>
+                            </div>
+                            </div>
+                            <div class="article-stat">
+                                <div class="article-stat-icon text-warning">
+                                    <span class="material-symbols-rounded">edit_note</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-base-content/50">Current Page</p>
+                                    <p class="text-2xl font-black">
+                                        {% if articles.number %} {{ articles.number }} {% else %} 1
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            </section>
+                            <section class="rounded-2xl border border-base-300 bg-base-200 shadow-lg">
+                                <div class="flex flex-col gap-4 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+                                    <div class="relative w-full lg:max-w-md">
+                                        <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40">search</span>
+                                        <input id="article-search"
+                                               type="search"
+                                               placeholder="Search your articles..."
+                                               class="input input-bordered w-full rounded-xl bg-base-100 pl-12"
+                                               autocomplete="off" />
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button type="button"
+                                                class="btn btn-sm btn-primary rounded-lg article-filter active"
+                                                data-filter="all">All</button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-ghost rounded-lg article-filter"
+                                                data-filter="published">Published</button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-ghost rounded-lg article-filter"
+                                                data-filter="draft">Drafts</button>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="overflow-hidden rounded-3xl border border-base-300 bg-base-200 shadow-xl">
+                                <div class="hidden overflow-x-auto lg:block">
+                                    <table class="table article-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Article</th>
+                                                <th>Status</th>
+                                                <th>Score</th>
+                                                <th>AI Score</th>
+                                                <th>Published</th>
+                                                <th>Created</th>
+                                                <th class="text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for article in articles %}
+                                                <tr class="article-row"
+                                                    data-title="{{ article.title|lower }}"
+                                                    data-status="{{ article.status|lower }}">
+                                                    <td>
+                                                        <div class="flex min-w-[280px] items-center gap-4">
+                                                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                                                <span class="material-symbols-rounded">article</span>
+                                                            </div>
+                                                            <div class="min-w-0">
+                                                                <a href="{{ article.get_absolute_url }}"
+                                                                   class="block truncate font-bold transition hover:text-primary">
+                                                                    {{ article.title }}
+                                                                </a>
+                                                                {% if article.summary %}
+                                                                    <p class="mt-1 max-w-md truncate text-xs text-base-content/45">{{ article.summary }}</p>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {% if article.status == "published" %}
+                                                            <span class="badge badge-success badge-outline gap-1">
+                                                                <span class="material-symbols-rounded text-[15px]">check_circle</span>
+                                                                Published
+                                                            </span>
+                                                        {% elif article.status == "draft" %}
+                                                            <span class="badge badge-warning badge-outline gap-1">
+                                                                <span class="material-symbols-rounded text-[15px]">edit_note</span>
+                                                                Draft
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="badge badge-ghost gap-1">
+                                                                <span class="material-symbols-rounded text-[15px]">description</span>
+                                                                {{ article.get_status_display }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if article.score >= 80 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-success/15 px-3 py-1.5 text-sm font-black text-success"
+                                                                  title="Excellent article score">
+                                                                {{ article.score }}
+                                                            </span>
+                                                        {% elif article.score >= 60 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-info/15 px-3 py-1.5 text-sm font-black text-info"
+                                                                  title="Good article score">{{ article.score }}</span>
+                                                        {% elif article.score >= 40 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-warning/15 px-3 py-1.5 text-sm font-black text-warning"
+                                                                  title="Average article score">
+                                                                {{ article.score }}
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-error/15 px-3 py-1.5 text-sm font-black text-error"
+                                                                  title="Low article score">{{ article.score }}</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if article.ai_score >= 80 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-success/15 px-3 py-1.5 text-sm font-black text-success"
+                                                                  title="Excellent article score">
+                                                                {{ article.ai_score }}
+                                                            </span>
+                                                        {% elif article.ai_score >= 60 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-info/15 px-3 py-1.5 text-sm font-black text-info"
+                                                                  title="Good article score">
+                                                                {{ article.ai_score }}
+                                                            </span>
+                                                        {% elif article.ai_score >= 40 %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-warning/15 px-3 py-1.5 text-sm font-black text-warning"
+                                                                  title="Average article score">
+                                                                {{ article.ai_score }}
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="inline-flex min-w-14 items-center justify-center rounded-lg bg-error/15 px-3 py-1.5 text-sm font-black text-error"
+                                                                  title="Low article score">
+                                                                {{ article.ai_score|default_if_none:"N/A" }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if article.published_at %}
+                                                            <div class="flex items-center gap-2 text-sm">
+                                                                <span class="material-symbols-rounded text-[18px] text-base-content/40">calendar_today</span>
+                                                                {{ article.published_at|date:"M d, Y" }}
+                                                            </div>
+                                                        {% else %}
+                                                            <span class="text-sm text-base-content/35">Not published</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-sm text-base-content/55">{{ article.created_at|date:"M d, Y" }}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="flex justify-end gap-2">
+                                                            <a href="{{ article.get_absolute_url }}"
+                                                               class="btn btn-square btn-sm btn-ghost"
+                                                               title="View article">
+                                                                <span class="material-symbols-rounded">visibility</span>
+                                                            </a>
+                                                            <a href="{% url 'weblog:dashboard:article-update' article.pk %}"
+                                                               class="btn btn-square btn-sm btn-ghost"
+                                                               title="Edit article">
+                                                                <span class="material-symbols-rounded">edit</span>
+                                                            </a>
+                                                            <a href="{% url 'weblog:dashboard:article-delete' article.pk %}"
+                                                               class="btn btn-square btn-sm btn-ghost text-error"
+                                                               title="Delete article">
+                                                                <span class="material-symbols-rounded">delete</span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <div class="article-empty-state">
+                                                            <div class="article-empty-icon">
+                                                                <span class="material-symbols-rounded">article</span>
+                                                            </div>
+                                                            <h3 class="mt-5 text-xl font-bold">No articles yet</h3>
+                                                            <p class="mt-2 max-w-md text-base-content/55">
+                                                                You haven't created any articles yet. Start
+                                                                writing your first article and share it with
+                                                                the community.
+                                                            </p>
+                                                            <a href="{% url 'weblog:dashboard:article-create' %}"
+                                                               class="btn btn-primary mt-6 rounded-xl gap-2">
+                                                                <span class="material-symbols-rounded">add</span>
+                                                                Create Your First Article
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="space-y-3 p-4 lg:hidden">
+                                    {% for article in articles %}
+                                        <article class="mobile-article-card"
+                                                 data-title="{{ article.title|lower }}"
+                                                 data-status="{{ article.status|lower }}">
+                                            <div class="flex items-start gap-4">
+                                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                                    <span class="material-symbols-rounded">article</span>
+                                                </div>
+                                                <div class="min-w-0 flex-1">
+                                                    <a href="{{ article.get_absolute_url }}"
+                                                       class="font-bold hover:text-primary">{{ article.title }}</a>
+                                                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                                                        {% if article.status == "published" %}
+                                                            <span class="badge badge-success badge-sm badge-outline">Published</span>
+                                                        {% elif article.status == "draft" %}
+                                                            <span class="badge badge-warning badge-sm badge-outline">Draft</span>
+                                                        {% else %}
+                                                            <span class="badge badge-sm">{{ article.get_status_display }}</span>
+                                                        {% endif %}
+                                                        <span class="text-xs text-base-content/40">{{ article.created_at|date:"M d, Y" }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 flex justify-end gap-2 border-t border-base-300 pt-3">
+                                                <a href="{{ article.get_absolute_url }}"
+                                                   class="btn btn-sm btn-ghost gap-1">
+                                                    <span class="material-symbols-rounded text-[18px]">visibility</span>
+                                                    View
+                                                </a>
+                                                <a href="{% url 'weblog:dashboard:article-update' article.pk %}"
+                                                   class="btn btn-sm btn-primary gap-1">
+                                                    <span class="material-symbols-rounded text-[18px]">edit</span>
+                                                    Edit
+                                                </a>
+                                                <a href="{% url 'weblog:dashboard:article-delete' article.pk %}"
+                                                   class="btn btn-sm btn-error btn-outline">
+                                                    <span class="material-symbols-rounded text-[18px]">delete</span>
+                                                </a>
+                                            </div>
+                                        </article>
+                                    {% empty %}
+                                        <div class="article-empty-state">
+                                            <div class="article-empty-icon">
+                                                <span class="material-symbols-rounded">article</span>
+                                            </div>
+                                            <h3 class="mt-5 text-xl font-bold">No articles yet</h3>
+                                            <p class="mt-2 text-center text-base-content/55">Create your first article to get started.</p>
+                                            <a href="{% url 'weblog:dashboard:article-create' %}"
+                                               class="btn btn-primary mt-6 rounded-xl gap-2">
+                                                <span class="material-symbols-rounded">add</span>
+                                                New Article
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </section>
+                            {% if articles.paginator.num_pages > 1 %}
+                                <div class="dashboard-pagination">{% include "partials/pagination.html" %}</div>
+                            {% endif %}
+                            </main>
+                        {% endblock %}
+                        {% block script %}
+                            <script src="{% static 'scripts/weblog/dashboard/article/list.js' %}" defer></script>
+                        {% endblock %}

@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/dashboard/comment/list.css' %}">
+{% endblock style %}
+{% block content %}
+    <section class="mx-auto w-full max-w-6xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+        <!-- =========================================================
+         Header
+         ========================================================= -->
+        <header class="space-y-5">
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <div class="space-y-2">
+                    <div class="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                        <span class="material-symbols-rounded text-lg">forum</span>
+                        Community
+                    </div>
+                    <h1 class="text-3xl font-black tracking-tight sm:text-4xl">Comments</h1>
+                    <p class="max-w-xl text-sm leading-relaxed text-base-content/60 sm:text-base">
+                        Review and manage conversations happening on your
+                        articles.
+                    </p>
+                </div>
+                {% if comments %}
+                    <div class="inline-flex w-fit items-center gap-2 rounded-2xl border border-base-300 bg-base-200/60 px-4 py-2.5 shadow-sm">
+                        <span class="material-symbols-rounded text-lg text-primary">forum</span>
+                        <span class="font-bold">{{ comments.paginator.count }}</span>
+                        <span class="text-sm text-base-content/50">comment{{ comments.paginator.count|pluralize }}</span>
+                    </div>
+                {% endif %}
+            </div>
+            {% if comments %}
+                <!-- =====================================================
+             Toolbar
+             ===================================================== -->
+                <div class="flex flex-col gap-3 rounded-2xl border border-base-300 bg-base-100 p-3 shadow-sm sm:flex-row sm:items-center">
+                    <label class="input input-bordered input-sm flex w-full items-center gap-2 sm:max-w-sm">
+                        <span class="material-symbols-rounded text-base-content/40">search</span>
+                        <input id="comment-search"
+                               type="search"
+                               placeholder="Search comments..."
+                               autocomplete="off"
+                               class="grow">
+                        <kbd class="hidden rounded border border-base-300 bg-base-200 px-1.5 py-0.5 text-[10px] text-base-content/50 sm:inline-block">
+                            /
+                        </kbd>
+                    </label>
+                    <div class="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-0.5"
+                         role="tablist"
+                         aria-label="Comment filters">
+                        <button type="button"
+                                class="comment-filter btn btn-sm shrink-0 gap-1.5"
+                                data-filter="all"
+                                aria-pressed="true">
+                            <span class="material-symbols-rounded text-base">forum</span>
+                            All
+                        </button>
+                        <button type="button"
+                                class="comment-filter btn btn-sm btn-ghost shrink-0 gap-1.5"
+                                data-filter="pending"
+                                aria-pressed="false">
+                            <span class="material-symbols-rounded text-base">schedule</span>
+                            Pending
+                        </button>
+                        <button type="button"
+                                class="comment-filter btn btn-sm btn-ghost shrink-0 gap-1.5"
+                                data-filter="approved"
+                                aria-pressed="false">
+                            <span class="material-symbols-rounded text-base">check_circle</span>
+                            Approved
+                        </button>
+                        <button type="button"
+                                class="comment-filter btn btn-sm btn-ghost shrink-0 gap-1.5"
+                                data-filter="rejected"
+                                aria-pressed="false">
+                            <span class="material-symbols-rounded text-base">cancel</span>
+                            Rejected
+                        </button>
+                    </div>
+                    <select id="comment-sort"
+                            class="select select-bordered select-sm w-full sm:w-auto"
+                            aria-label="Sort comments">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                        <option value="author">Author A–Z</option>
+                    </select>
+                </div>
+            {% endif %}
+        </header>
+        <!-- =========================================================
+         Comment list
+         ========================================================= -->
+        <div id="comment-list" class="space-y-4">
+            {% for comment in comments %}
+                <article class="comment-card group relative overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm transition-all duration-200 hover:border-primary/20 hover:shadow-md"
+                         data-comment-id="{{ comment.pk }}"
+                         data-status="{{ comment.status }}"
+                         data-author="{{ comment.author.username|lower }}"
+                         data-date="{{ comment.created_at|date:'U' }}"
+                         data-search="{{ comment.body|lower }} {{ comment.article.title|lower }} {{ comment.author.username|lower }}">
+                    <div class="comment-status-indicator absolute inset-y-0 left-0 w-1 {% if comment.status == 'approved' %} bg-success {% elif comment.status == 'pending' %} bg-warning {% else %} bg-error {% endif %}">
+                    </div>
+                    <div class="p-4 ps-5 sm:p-6 sm:ps-7">
+                        <!-- =================================================
+                     Comment header
+                     ================================================= -->
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <div class="flex min-w-0 items-center gap-3">
+                                <div class="avatar placeholder shrink-0">
+                                    <div class="flex size-11 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-content ring-4 ring-primary/10">
+                                        <img src="{{ comment.author.profile.avatar.url }}"
+                                             alt="{{ comment.author.display_name }}"
+                                             class="w-10 h-10 rounded-full">
+                                    </div>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="truncate font-bold">{{ comment.author.username }}</div>
+                                    <time datetime="{{ comment.created_at|date:'c' }}"
+                                          class="block text-xs text-base-content/50">
+                                        {{ comment.created_at|date:"M d, Y · H:i" }}
+                                    </time>
+                                </div>
+                            </div>
+                            <div class="comment-badges flex flex-wrap items-center gap-2">
+                                {% if comment.status == "approved" %}
+                                    <span class="comment-status badge badge-success badge-sm gap-1.5 font-semibold">
+                                        <span class="material-symbols-rounded text-sm">check_circle</span>
+                                        Approved
+                                    </span>
+                                {% elif comment.status == "pending" %}
+                                    <span class="comment-status badge badge-warning badge-sm gap-1.5 font-semibold">
+                                        <span class="material-symbols-rounded text-sm">schedule</span>
+                                        Needs review
+                                    </span>
+                                {% else %}
+                                    <span class="comment-status badge badge-error badge-sm gap-1.5 font-semibold">
+                                        <span class="material-symbols-rounded text-sm">cancel</span>
+                                        Rejected
+                                    </span>
+                                {% endif %}
+                                {% if comment.sentiment_label == "positive" %}
+                                    <span class="badge badge-success badge-outline badge-sm gap-1"
+                                          title="Positive sentiment">
+                                        <span class="material-symbols-rounded text-sm">sentiment_satisfied</span>
+                                        Positive
+                                    </span>
+                                {% elif comment.sentiment_label == "negative" %}
+                                    <span class="badge badge-error badge-outline badge-sm gap-1"
+                                          title="Negative sentiment">
+                                        <span class="material-symbols-rounded text-sm">sentiment_dissatisfied</span>
+                                        Negative
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-ghost badge-sm gap-1" title="Neutral sentiment">
+                                        <span class="material-symbols-rounded text-sm">sentiment_neutral</span>
+                                        Neutral
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- =================================================
+                     Comment body
+                     ================================================= -->
+                        <div class="relative mt-5 rounded-xl bg-base-200/45 p-4">
+                            <span class="absolute -top-2 left-4 rounded bg-base-100 px-1.5 text-xs text-base-content/30">Comment</span>
+                            <p class="whitespace-pre-line text-sm leading-7 text-base-content/85 sm:text-base">{{ comment.body }}</p>
+                        </div>
+                        <!-- =================================================
+                     Article context
+                     ================================================= -->
+                        <div class="mt-4 flex min-w-0 items-center gap-3">
+                            <div class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                <span class="material-symbols-rounded text-lg">article</span>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-base-content/40">On article</div>
+                                <a href="{{ comment.article.get_absolute_url }}"
+                                   class="block truncate text-sm font-semibold transition-colors hover:text-primary"
+                                   title="{{ comment.article.title }}">{{ comment.article.title }}</a>
+                            </div>
+                        </div>
+                        <!-- =================================================
+                     Actions
+                     ================================================= -->
+                        <!-- =================================================
+     Actions
+     ================================================= -->
+                        <div class="comment-actions mt-6 flex flex-col gap-2 border-t border-base-300 pt-4 sm:flex-row sm:items-center sm:justify-end">
+                            <a href="{{ comment.article.get_absolute_url }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="btn btn-ghost btn-sm gap-2 sm:mr-auto">
+                                <span class="material-symbols-rounded text-lg">open_in_new</span>
+                                View Article
+                            </a>
+                            <form method="post"
+                                  action="{% url 'weblog:comment-approve' comment.pk %}"
+                                  class="comment-action-form"
+                                  data-action="approve"
+                                  {% if comment.status == "approved" %} hidden {% endif %}>
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm w-full gap-2 sm:w-auto">
+                                    <span class="material-symbols-rounded text-lg">check</span>
+                                    <span>Approve</span>
+                                </button>
+                            </form>
+                            <form method="post"
+                                  action="{% url 'weblog:comment-reject' comment.pk %}"
+                                  class="comment-action-form"
+                                  data-action="reject"
+                                  {% if comment.status == "rejected" %} hidden {% endif %}>
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-warning btn-outline btn-sm w-full gap-2 sm:w-auto">
+                                    <span class="material-symbols-rounded text-lg">block</span>
+                                    <span>Reject</span>
+                                </button>
+                            </form>
+                            <form method="post"
+                                  action="{% url 'weblog:comment-delete' comment.pk %}"
+                                  class="comment-action-form"
+                                  data-action="delete">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-error btn-outline btn-sm w-full gap-2 sm:w-auto">
+                                    <span class="material-symbols-rounded text-lg">delete</span>
+                                    <span>Delete</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                {% include "components/empty_state.html" %}
+            {% endfor %}
+        </div>
+        <div id="comment-no-results"
+             class="hidden rounded-2xl border border-dashed border-base-300 bg-base-200/30 px-6 py-12 text-center">
+            <span class="material-symbols-rounded text-4xl text-base-content/25">search_off</span>
+            <h2 class="mt-3 font-bold">No comments found</h2>
+            <p class="mt-1 text-sm text-base-content/50">Try changing your search or filter.</p>
+        </div>
+        <!-- =========================================================
+         Pagination
+         ========================================================= -->
+        {% include "partials/pagination.html" %}
+    </section>
+    <!-- =============================================================
+     Delete confirmation dialog
+     ============================================================= -->
+    <dialog id="delete-comment-dialog" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box max-w-md">
+            <div class="flex items-start gap-4">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-error/10 text-error">
+                    <span class="material-symbols-rounded">delete</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold">Delete comment?</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-base-content/60">
+                        This action cannot be undone. The comment will be
+                        permanently removed.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-action">
+                <button type="button" class="btn btn-ghost" data-delete-cancel>Cancel</button>
+                <button type="button" class="btn btn-error" data-delete-confirm>
+                    <span class="material-symbols-rounded">delete</span>
+                    Delete comment
+                </button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+{% endblock %}
+{% block script %}
+    <script type="module"
+            src="{% static 'scripts/weblog/dashboard/comment/list.js' %}"></script>
+{% endblock script %}

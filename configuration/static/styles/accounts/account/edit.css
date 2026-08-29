@@ -1,0 +1,376 @@
+/* ==========================================================
+   Account Edit Page
+========================================================== */
+
+.card {
+    transition: 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgb(0 0 0 /0.18);
+}
+
+/* ==========================================================
+   Form Controls
+========================================================== */
+
+input,
+select,
+textarea {
+    width: 100%;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="tel"],
+select,
+textarea {
+    @apply input input-bordered bg-base-100 border-base-300 w-full transition-all duration-200;
+}
+
+textarea {
+    @apply textarea textarea-bordered;
+    min-height: 180px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    @apply border-primary ring-2 ring-primary/20 outline-none;
+}
+
+/* ==========================================================
+   Labels
+========================================================== */
+
+.label-text {
+    font-weight: 600;
+}
+
+/* ==========================================================
+   Avatar
+========================================================== */
+
+#avatar-preview {
+    transition: 0.35s;
+    object-fit: cover;
+}
+
+#avatar-preview.dragging {
+    transform: scale(0.96);
+    opacity: 0.65;
+}
+
+.avatar-drop-active #avatar-preview {
+    outline: 4px dashed hsl(var(--p));
+    outline-offset: 8px;
+}
+
+/* ==========================================================
+   Buttons
+========================================================== */
+
+.btn {
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================================
+   Validation
+========================================================== */
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+}
+
+.errorlist li {
+    @apply text-error text-sm;
+}
+
+input:invalid,
+textarea:invalid {
+    border-color: hsl(var(--er));
+}
+
+/* ==========================================================
+   Biography Counter
+========================================================== */
+
+#bio-counter.warning {
+    color: #f59e0b;
+}
+
+#bio-counter.danger {
+    color: #ef4444;
+}
+
+/* ==========================================================
+   Sticky Sidebar
+========================================================== */
+
+@media (min-width: 1280px) {
+    aside .card {
+        max-height: calc(100vh - 8rem);
+        overflow: auto;
+    }
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.25);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p));
+}
+
+/* Firefox */
+
+* {
+    scrollbar-width: thin;
+}
+
+/* ==========================================================
+   Animations
+========================================================== */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+main > .hero,
+main .card {
+    animation: fadeUp 0.45s ease;
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width: 768px) {
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    .card-body {
+        padding: 1.2rem;
+    }
+
+    #avatar-preview {
+        width: 9rem;
+        height: 9rem;
+    }
+}
+
+/* ==========================================================
+   Dark polish
+========================================================== */
+
+.hero {
+    background:
+        radial-gradient(
+            circle at top right,
+            hsl(var(--p) / 0.12),
+            transparent 35%
+        ),
+        hsl(var(--b2));
+}
+
+.card {
+    backdrop-filter: blur(12px);
+}
+
+input::placeholder,
+textarea::placeholder {
+    opacity: 0.55;
+}
+
+/* account-edit.css */
+
+.account-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid hsl(var(--b3));
+    backdrop-filter: blur(14px);
+    transition: 0.25s;
+}
+
+.account-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+}
+
+.account-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        hsl(var(--p) / 0.05),
+        transparent 35%,
+        hsl(var(--s) / 0.05)
+    );
+    pointer-events: none;
+}
+
+.account-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+}
+
+.account-section-title i {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    background: hsl(var(--p) / 0.12);
+    color: hsl(var(--p));
+    font-size: 1.05rem;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.field-wrapper label {
+    font-weight: 700;
+    color: hsl(var(--bc));
+}
+
+.field-wrapper input,
+.field-wrapper textarea,
+.field-wrapper select {
+    width: 100%;
+    transition: 0.2s;
+}
+
+.field-wrapper input:focus,
+.field-wrapper textarea:focus,
+.field-wrapper select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px hsl(var(--p) / 0.18);
+}
+
+.avatar-upload {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: auto;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    object-fit: cover;
+    border: 4px solid hsl(var(--b2));
+    transition: 0.3s;
+}
+
+.avatar-upload:hover img {
+    transform: scale(1.04);
+}
+
+.avatar-upload label {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.avatar-upload input {
+    display: none;
+}
+
+.profile-stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: hsl(var(--b2));
+}
+
+.profile-stat i {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 1.2rem;
+    background: hsl(var(--p) / 0.12);
+    color: hsl(var(--p));
+}
+
+.unsaved-warning {
+    display: none;
+}
+
+.unsaved-warning.show {
+    display: flex;
+}
+
+@media (max-width: 1024px) {
+    .sticky-profile {
+        position: static !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .avatar-upload {
+        width: 130px;
+        height: 130px;
+    }
+
+    .account-section-title {
+        margin-bottom: 1rem;
+    }
+}

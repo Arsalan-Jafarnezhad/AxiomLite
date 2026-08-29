@@ -1,0 +1,107 @@
+
+
+/* ---------- BADGE ---------- */
+
+svg {
+    overflow: visible;
+}
+
+/* Gear */
+
+.gear {
+    transform-origin: 60px 46px;
+    animation: backendGear 18s linear infinite;
+}
+
+/* Orbit */
+
+.ring {
+    transform-origin: 60px 46px;
+    animation: ringSpin 10s linear infinite reverse;
+}
+
+/* Core */
+
+.corePulse {
+    animation: backendCore 2.8s ease-in-out infinite;
+}
+
+/* Data traces */
+
+.trace {
+    stroke-dasharray: 18;
+    stroke-dashoffset: 18;
+    animation: dataFlow 2.6s linear infinite;
+}
+
+/* LEDs */
+
+.led {
+    fill: #34d399;
+    animation: ledBlink 1.5s infinite;
+}
+
+/* Hover */
+
+svg:hover .ring {
+    stroke: #67e8f9;
+}
+
+svg:hover {
+    filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.45))
+        drop-shadow(0 0 28px rgba(34, 211, 238, 0.2));
+}
+
+/* Animations */
+
+@keyframes backendGear {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ringSpin {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes backendCore {
+    0%,
+    100% {
+        transform: scale(0.9);
+        opacity: 0.35;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.95;
+    }
+}
+
+@keyframes dataFlow {
+    from {
+        stroke-dashoffset: 18;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes ledBlink {
+    0%,
+    100% {
+        opacity: 0.35;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}

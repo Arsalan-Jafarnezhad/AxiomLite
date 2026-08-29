@@ -1,0 +1,566 @@
+/* ==========================================================
+   Account Detail
+========================================================== */
+
+.account-hero {
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            hsl(var(--p) / 0.14),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom left,
+            hsl(var(--s) / 0.08),
+            transparent 35%
+        ),
+        hsl(var(--b2));
+}
+
+/* ==========================================================
+   Cards
+========================================================== */
+
+.account-card {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid hsl(var(--b3));
+
+    backdrop-filter: blur(14px);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.account-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        135deg,
+        hsl(var(--p) / 0.035),
+        transparent 40%,
+        hsl(var(--s) / 0.025)
+    );
+
+    pointer-events: none;
+}
+
+.account-card:hover {
+    transform: translateY(-3px);
+
+    border-color: hsl(var(--b3));
+
+    box-shadow: 0 20px 45px rgb(0 0 0 / 0.14);
+}
+
+/* ==========================================================
+   Hero Icon
+========================================================== */
+
+.hero-icon {
+    width: 4rem;
+    height: 4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 1.25rem;
+
+    background: hsl(var(--p) / 0.12);
+    color: hsl(var(--p));
+
+    font-size: 1.5rem;
+}
+
+/* ==========================================================
+   Section Titles
+========================================================== */
+
+.account-section-title {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.9rem;
+
+    margin-bottom: 1.5rem;
+}
+
+.section-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 0.9rem;
+
+    background: hsl(var(--p) / 0.1);
+
+    font-size: 1rem;
+}
+
+/* ==========================================================
+   Avatar
+========================================================== */
+
+.account-avatar {
+    position: relative;
+
+    width: 8.5rem;
+    height: 8.5rem;
+}
+
+.account-avatar img,
+.account-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 999px;
+
+    object-fit: cover;
+
+    border: 5px solid hsl(var(--b1));
+
+    box-shadow: 0 15px 35px rgb(0 0 0 / 0.18);
+}
+
+.account-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: hsl(var(--p));
+    color: hsl(var(--pc));
+
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.account-status-dot {
+    position: absolute;
+
+    right: 0.4rem;
+    bottom: 0.5rem;
+
+    width: 1.35rem;
+    height: 1.35rem;
+
+    border-radius: 999px;
+
+    background: hsl(var(--su));
+
+    border: 4px solid hsl(var(--b2));
+
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+/* ==========================================================
+   Overview Icon
+========================================================== */
+
+.overview-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 1rem;
+
+    background: hsl(var(--p) / 0.1);
+
+    font-size: 1.4rem;
+}
+
+/* ==========================================================
+   Information Items
+========================================================== */
+
+.info-item {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+
+    padding: 1rem;
+
+    border-radius: 1rem;
+
+    background: hsl(var(--b1));
+
+    border: 1px solid hsl(var(--b3));
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-1px);
+
+    border-color: hsl(var(--p) / 0.35);
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+
+    gap: 0.55rem;
+
+    color: hsl(var(--bc) / 0.55);
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+}
+
+.info-label i {
+    width: 1rem;
+
+    text-align: center;
+
+    color: hsl(var(--p));
+}
+
+.info-value {
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================================
+   Read Only Content
+========================================================== */
+
+.readonly-box {
+    min-height: 3.2rem;
+
+    padding: 0.9rem 1rem;
+
+    border-radius: 0.9rem;
+
+    background: hsl(var(--b1));
+
+    border: 1px solid hsl(var(--b3));
+
+    line-height: 1.7;
+
+    overflow-wrap: anywhere;
+}
+
+.readonly-box.biography {
+    min-height: 7rem;
+}
+
+/* ==========================================================
+   Status
+========================================================== */
+
+.status-item {
+    display: flex;
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 1rem;
+
+    border-radius: 1rem;
+
+    background: hsl(var(--b1));
+
+    border: 1px solid hsl(var(--b3));
+}
+
+.status-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 0.9rem;
+
+    background: hsl(var(--p) / 0.1);
+}
+
+.status-icon.success {
+    color: hsl(var(--su));
+    background: hsl(var(--su) / 0.1);
+}
+
+.status-icon.primary {
+    color: hsl(var(--p));
+    background: hsl(var(--p) / 0.1);
+}
+
+.status-icon.warning {
+    color: hsl(var(--wa));
+    background: hsl(var(--wa) / 0.1);
+}
+
+.status-icon.secondary {
+    color: hsl(var(--s));
+    background: hsl(var(--s) / 0.1);
+}
+
+/* ==========================================================
+   Timeline
+========================================================== */
+
+.timeline {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.5rem;
+}
+
+.timeline::before {
+    content: "";
+
+    position: absolute;
+
+    top: 1.3rem;
+    bottom: 1.3rem;
+
+    left: 1rem;
+
+    width: 2px;
+
+    background: hsl(var(--b3));
+}
+
+.timeline-item {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+}
+
+.timeline-dot {
+    position: relative;
+
+    z-index: 1;
+
+    width: 2rem;
+    height: 2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 999px;
+
+    color: hsl(var(--pc));
+
+    font-size: 0.7rem;
+
+    border: 3px solid hsl(var(--b2));
+}
+
+/* ==========================================================
+   Security
+========================================================== */
+
+.security-notice {
+    display: flex;
+
+    gap: 0.8rem;
+
+    padding: 1rem;
+
+    border-radius: 1rem;
+
+    background: hsl(var(--wa) / 0.08);
+
+    border: 1px solid hsl(var(--wa) / 0.2);
+
+    color: hsl(var(--bc) / 0.7);
+}
+
+.security-notice i {
+    color: hsl(var(--wa));
+
+    margin-top: 0.15rem;
+}
+
+/* ==========================================================
+   Quick Actions
+========================================================== */
+
+.quick-action {
+    display: flex;
+    align-items: center;
+
+    gap: 0.8rem;
+
+    width: 100%;
+
+    padding: 0.8rem 0.9rem;
+
+    border-radius: 0.9rem;
+
+    font-weight: 600;
+
+    background: hsl(var(--b1));
+
+    border: 1px solid hsl(var(--b3));
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: translateX(3px);
+
+    background: hsl(var(--p) / 0.08);
+
+    border-color: hsl(var(--p) / 0.25);
+}
+
+.quick-action > i:first-child {
+    width: 1.2rem;
+
+    text-align: center;
+
+    color: hsl(var(--p));
+}
+
+/* ==========================================================
+   Buttons
+========================================================== */
+
+.btn {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes accountDetailFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.account-hero,
+.account-card {
+    animation: accountDetailFadeUp 0.45s ease both;
+}
+
+.account-card:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.account-card:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.account-card::-webkit-scrollbar {
+    width: 7px;
+}
+
+.account-card::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.2);
+
+    border-radius: 999px;
+}
+
+.account-card::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p));
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width: 768px) {
+    .hero-icon {
+        width: 3.3rem;
+        height: 3.3rem;
+
+        font-size: 1.2rem;
+    }
+
+    .account-avatar {
+        width: 7rem;
+        height: 7rem;
+    }
+
+    .account-avatar-placeholder {
+        font-size: 2.4rem;
+    }
+
+    .account-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .account-card:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

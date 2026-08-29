@@ -1,0 +1,781 @@
+.markdown-body {
+    min-width: 0;
+
+    color: inherit;
+
+    font-size: 1rem;
+    line-height: 1.8;
+
+    overflow-wrap: break-word;
+}
+
+/* =========================================================
+   Flow
+   ========================================================= */
+
+.markdown-body > *:first-child {
+    margin-top: 0;
+}
+
+.markdown-body > *:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-body p {
+    margin: 1.15rem 0;
+}
+
+.markdown-body strong {
+    font-weight: 700;
+}
+
+.markdown-body em {
+    font-style: italic;
+}
+
+.markdown-body del {
+    text-decoration: line-through;
+}
+
+/* =========================================================
+   Headings
+   ========================================================= */
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+
+    color: inherit;
+
+    font-weight: 750;
+    line-height: 1.2;
+
+    text-wrap: balance;
+
+    scroll-margin-top: 6rem;
+}
+
+.markdown-body h1 {
+    font-size: 2rem;
+
+    padding-bottom: 0.45rem;
+
+    border-bottom: 1px solid color-mix(in oklab, currentColor 10%, transparent);
+}
+
+.markdown-body h2 {
+    font-size: 1.55rem;
+
+    padding-bottom: 0.35rem;
+
+    border-bottom: 1px solid color-mix(in oklab, currentColor 8%, transparent);
+}
+
+.markdown-body h3 {
+    font-size: 1.3rem;
+}
+
+.markdown-body h4 {
+    font-size: 1.1rem;
+}
+
+.markdown-body h5 {
+    font-size: 1rem;
+}
+
+.markdown-body h6 {
+    font-size: 0.9rem;
+
+    opacity: 0.65;
+}
+
+/* =========================================================
+   Links
+   ========================================================= */
+
+.markdown-body a {
+    color: hsl(var(--p));
+
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+
+    transition:
+        opacity 150ms ease,
+        text-decoration-thickness 150ms ease;
+}
+
+.markdown-body a:hover {
+    opacity: 0.8;
+
+    text-decoration-thickness: 2px;
+}
+
+/* =========================================================
+   Lists
+   ========================================================= */
+
+.markdown-body ul,
+.markdown-body ol {
+    margin: 1rem 0;
+
+    padding-left: 1.75rem;
+}
+
+.markdown-body ul {
+    list-style: disc;
+}
+
+.markdown-body ol {
+    list-style: decimal;
+}
+
+.markdown-body ul ul {
+    list-style: circle;
+}
+
+.markdown-body ul ul ul {
+    list-style: square;
+}
+
+.markdown-body li {
+    display: list-item;
+
+    margin: 0.35rem 0;
+    padding-left: 0.25rem;
+}
+
+.markdown-body li::marker {
+    color: color-mix(in oklab, currentColor 55%, transparent);
+}
+
+/* =========================================================
+   Blockquote
+   ========================================================= */
+
+.markdown-body blockquote {
+    margin: 2rem 0;
+    padding: 0.8rem 1.25rem;
+
+    color: color-mix(in oklab, currentColor 65%, transparent);
+
+    border-left: 3px solid hsl(var(--p));
+
+    border-radius: 0 0.75rem 0.75rem 0;
+
+    background: color-mix(in oklab, hsl(var(--p)) 5%, transparent);
+}
+
+.markdown-body blockquote > *:first-child {
+    margin-top: 0;
+}
+
+.markdown-body blockquote > *:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   Horizontal rule
+   ========================================================= */
+
+.markdown-body hr {
+    height: 1px;
+
+    margin: 2.5rem 0;
+
+    border: 0;
+
+    background: color-mix(in oklab, currentColor 10%, transparent);
+}
+
+/* =========================================================
+   Images
+   ========================================================= */
+
+.markdown-body img {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    margin: 2rem auto;
+
+    border-radius: 1rem;
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+.markdown-body table {
+    width: 100%;
+
+    margin: 1.75rem 0;
+
+    border-spacing: 0;
+    border-collapse: separate;
+
+    border: 1px solid color-mix(in oklab, currentColor 10%, transparent);
+
+    border-radius: 0.75rem;
+
+    overflow: hidden;
+
+    table-layout: auto;
+}
+
+.markdown-body th,
+.markdown-body td {
+    padding: 0.7rem 0.9rem;
+
+    text-align: left;
+    vertical-align: top;
+
+    border-bottom: 1px solid color-mix(in oklab, currentColor 8%, transparent);
+}
+
+.markdown-body th {
+    font-weight: 700;
+
+    background: color-mix(in oklab, currentColor 5%, transparent);
+}
+
+.markdown-body tr:last-child td {
+    border-bottom: 0;
+}
+
+.markdown-body tr:nth-child(even) {
+    background: color-mix(in oklab, currentColor 2.5%, transparent);
+}
+
+/* =========================================================
+   Inline code
+   ========================================================= */
+
+.markdown-body :not(pre) > code {
+    padding: 0.15em 0.4em;
+
+    border: 1px solid color-mix(in oklab, currentColor 10%, transparent);
+
+    border-radius: 0.4rem;
+
+    background: color-mix(in oklab, currentColor 6%, transparent);
+
+    font-family:
+        "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+    font-size: 0.88em;
+}
+
+/* =========================================================
+   Normal pre blocks
+   ========================================================= */
+
+.markdown-body pre {
+    margin: 1.75rem 0;
+
+    padding: 1rem;
+
+    overflow-x: auto;
+
+    border-radius: 0.8rem;
+
+    background: color-mix(in oklab, currentColor 6%, transparent);
+}
+
+.markdown-body pre code {
+    padding: 0;
+
+    background: transparent;
+
+    font-family:
+        "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+    font-size: 0.875rem;
+    line-height: 1.7;
+
+    white-space: pre;
+}
+
+/* =========================================================
+   Keyboard
+   ========================================================= */
+
+.markdown-body kbd {
+    display: inline-block;
+
+    padding: 0.2rem 0.4rem;
+
+    border: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+
+    border-radius: 0.4rem;
+
+    background: color-mix(in oklab, currentColor 6%, transparent);
+
+    font-family: monospace;
+    font-size: 0.75rem;
+
+    box-shadow: inset 0 -1px 0
+        color-mix(in oklab, currentColor 15%, transparent);
+}
+
+/* =========================================================
+   Definition lists
+   ========================================================= */
+
+.markdown-body dt {
+    margin-top: 1rem;
+
+    font-weight: 700;
+}
+
+.markdown-body dd {
+    margin: 0 0 1rem;
+    padding-left: 1rem;
+}
+
+/* =========================================================
+   Details
+   ========================================================= */
+
+.markdown-body details {
+    margin: 1rem 0;
+}
+
+.markdown-body summary {
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+/* =========================================================
+   Mark
+   ========================================================= */
+
+.markdown-body mark {
+    padding: 0.1em 0.25em;
+
+    border-radius: 0.25rem;
+
+    background: color-mix(in oklab, #f0b429 35%, transparent);
+}
+
+/* =========================================================
+   Task lists
+   ========================================================= */
+
+.markdown-body ul.contains-task-list,
+.markdown-body .task-list-item {
+    list-style: none;
+}
+
+.markdown-body ul.contains-task-list {
+    padding-left: 0;
+}
+
+.markdown-body .task-list-item input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+
+    margin-right: 0.5rem;
+
+    vertical-align: middle;
+}
+
+/* =========================================================
+   Custom code blocks
+   ========================================================= */
+
+/* =========================================================
+   Custom code blocks
+   ========================================================= */
+
+.markdown-body .markdown-code-block {
+    width: 100%;
+
+    margin: 1.75rem 0;
+
+    overflow: hidden;
+
+    border: 1px solid color-mix(in oklab, currentColor 12%, transparent);
+
+    border-radius: 0.8rem;
+
+    background: color-mix(
+        in oklab,
+        var(--fallback-b2, oklch(var(--b2))) 94%,
+        var(--fallback-b3, oklch(var(--b3)))
+    );
+
+    box-shadow: 0 12px 35px rgb(0 0 0 / 0.08);
+
+    isolation: isolate;
+}
+
+/* Header */
+
+.markdown-body .markdown-code-language {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 42px;
+
+    color: var(--fallback-bc, oklch(var(--bc)));
+
+    background: color-mix(
+        in oklab,
+        var(--fallback-b3, oklch(var(--b3))) 92%,
+        currentColor 8%
+    );
+
+    border-bottom: 1px solid color-mix(in oklab, currentColor 10%, transparent);
+
+    user-select: none;
+}
+
+.markdown-body .markdown-code-language-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0 0.85rem;
+
+    color: color-mix(
+        in oklab,
+        var(--fallback-bc, oklch(var(--bc))) 75%,
+        transparent
+    );
+
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.markdown-body .markdown-code-language-name .material-symbols-rounded {
+    color: var(--fallback-p, oklch(var(--p)));
+
+    font-size: 1rem;
+}
+
+/* Copy */
+
+.markdown-body .markdown-code-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    color: color-mix(
+        in oklab,
+        var(--fallback-bc, oklch(var(--bc))) 70%,
+        transparent
+    );
+
+    background: transparent;
+
+    border: 0;
+
+    cursor: pointer;
+
+    transition:
+        color 150ms ease,
+        background-color 150ms ease;
+}
+
+.markdown-body .markdown-code-copy:hover {
+    color: var(--fallback-bc, oklch(var(--bc)));
+
+    background: color-mix(in oklab, currentColor 8%, transparent);
+}
+
+.markdown-body .markdown-code-copy:active {
+    transform: scale(0.94);
+}
+
+.markdown-body .markdown-code-copy:focus-visible {
+    outline: 2px solid var(--fallback-p, oklch(var(--p)));
+
+    outline-offset: -3px;
+}
+
+.markdown-body .markdown-code-copy .material-symbols-rounded {
+    font-size: 1.1rem;
+}
+
+/* Code */
+
+.markdown-body .markdown-code-block pre {
+    width: 100%;
+
+    margin: 0 !important;
+    padding: 1rem 1.1rem !important;
+
+    overflow-x: auto;
+
+    box-sizing: border-box;
+
+    color: var(--fallback-bc, oklch(var(--bc)));
+
+    background: color-mix(
+        in oklab,
+        var(--fallback-b2, oklch(var(--b2))) 97%,
+        currentColor 3%
+    ) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+.markdown-body .markdown-code-block pre code {
+    display: block;
+
+    width: max-content;
+    min-width: 100%;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: var(--fallback-bc, oklch(var(--bc)));
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    font-family:
+        "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+    font-size: inherit;
+    line-height: inherit;
+
+    white-space: pre;
+}
+
+/* =========================================================
+   Prism
+   ========================================================= */
+
+.markdown-body .markdown-code-block .token.comment,
+.markdown-body .markdown-code-block .token.prolog,
+.markdown-body .markdown-code-block .token.doctype,
+.markdown-body .markdown-code-block .token.cdata {
+    opacity: 0.55;
+
+    font-style: italic;
+}
+
+.markdown-body .markdown-code-block .token.punctuation {
+    opacity: 0.8;
+}
+
+.markdown-body .markdown-code-block .token.property,
+.markdown-body .markdown-code-block .token.tag,
+.markdown-body .markdown-code-block .token.boolean,
+.markdown-body .markdown-code-block .token.number,
+.markdown-body .markdown-code-block .token.constant,
+.markdown-body .markdown-code-block .token.symbol,
+.markdown-body .markdown-code-block .token.deleted {
+    color: oklch(65% 0.18 25);
+}
+
+.markdown-body .markdown-code-block .token.string,
+.markdown-body .markdown-code-block .token.char,
+.markdown-body .markdown-code-block .token.attr-value,
+.markdown-body .markdown-code-block .token.regex,
+.markdown-body .markdown-code-block .token.variable {
+    color: oklch(70% 0.16 145);
+}
+
+.markdown-body .markdown-code-block .token.operator,
+.markdown-body .markdown-code-block .token.entity,
+.markdown-body .markdown-code-block .token.url {
+    color: oklch(70% 0.14 195);
+}
+
+.markdown-body .markdown-code-block .token.atrule,
+.markdown-body .markdown-code-block .token.keyword {
+    color: oklch(70% 0.18 310);
+}
+
+.markdown-body .markdown-code-block .token.function,
+.markdown-body .markdown-code-block .token.class-name {
+    color: oklch(72% 0.15 250);
+}
+
+.markdown-body .markdown-code-block .token.important {
+    color: oklch(72% 0.15 70);
+
+    font-weight: 600;
+}
+
+.markdown-body .markdown-code-block .token.bold {
+    font-weight: 600;
+}
+
+.markdown-body .markdown-code-block .token.italic {
+    font-style: italic;
+}
+
+/* HTML */
+
+.markdown-body .markdown-code-block .token.tag .token.tag {
+    color: oklch(65% 0.18 25);
+}
+
+.markdown-body .markdown-code-block .token.tag .token.punctuation {
+    opacity: 0.8;
+}
+
+.markdown-body .markdown-code-block .token.tag .token.attr-name {
+    color: oklch(72% 0.15 70);
+}
+
+.markdown-body .markdown-code-block .token.tag .token.attr-value {
+    color: oklch(70% 0.16 145);
+}
+
+/* CSS */
+
+.markdown-body .markdown-code-block .language-css .token.selector {
+    color: oklch(65% 0.18 25);
+}
+
+.markdown-body .markdown-code-block .language-css .token.property {
+    color: oklch(72% 0.15 250);
+}
+
+/* JavaScript */
+
+.markdown-body .markdown-code-block .language-javascript .token.function,
+.markdown-body .markdown-code-block .language-typescript .token.function {
+    color: oklch(72% 0.15 250);
+}
+
+.markdown-body .markdown-code-block .language-javascript .token.keyword,
+.markdown-body .markdown-code-block .language-typescript .token.keyword {
+    color: oklch(70% 0.18 310);
+}
+
+/* Python */
+
+.markdown-body .markdown-code-block .language-python .token.keyword {
+    color: oklch(70% 0.18 310);
+}
+
+.markdown-body .markdown-code-block .language-python .token.function {
+    color: oklch(72% 0.15 250);
+}
+
+.markdown-body .markdown-code-block .language-python .token.decorator {
+    color: oklch(72% 0.15 70);
+}
+
+.markdown-body .markdown-code-block .language-python .token.string {
+    color: oklch(70% 0.16 145);
+}
+
+.markdown-body .markdown-code-block .language-python .token.number {
+    color: oklch(72% 0.15 70);
+}
+
+/* JSON */
+
+.markdown-body .markdown-code-block .language-json .token.property {
+    color: oklch(65% 0.18 25);
+}
+
+.markdown-body .markdown-code-block .language-json .token.string {
+    color: oklch(70% 0.16 145);
+}
+
+.markdown-body .markdown-code-block .language-json .token.number {
+    color: oklch(72% 0.15 70);
+}
+
+/* =========================================================
+   Scrollbars
+   ========================================================= */
+
+.markdown-body .markdown-code-block pre::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.markdown-body .markdown-code-block pre::-webkit-scrollbar-track {
+    background: color-mix(
+        in oklab,
+        var(--fallback-b3, oklch(var(--b3))) 80%,
+        transparent
+    );
+}
+
+.markdown-body .markdown-code-block pre::-webkit-scrollbar-thumb {
+    background: color-mix(
+        in oklab,
+        var(--fallback-bc, oklch(var(--bc))) 25%,
+        transparent
+    );
+
+    border-radius: 999px;
+}
+
+.markdown-body .markdown-code-block pre::-webkit-scrollbar-thumb:hover {
+    background: color-mix(
+        in oklab,
+        var(--fallback-bc, oklch(var(--bc))) 40%,
+        transparent
+    );
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 640px) {
+    .markdown-body {
+        font-size: 0.95rem;
+    }
+
+    .markdown-body h1 {
+        font-size: 1.75rem;
+    }
+
+    .markdown-body h2 {
+        font-size: 1.4rem;
+    }
+
+    .markdown-body table {
+        width: 100%;
+    }
+
+    .markdown-body .markdown-code-block {
+        margin-block: 1.5rem;
+
+        border-radius: 0.65rem;
+    }
+
+    .markdown-body .markdown-code-language {
+        min-height: 38px;
+    }
+
+    .markdown-body .markdown-code-copy {
+        width: 38px;
+        height: 38px;
+    }
+
+    .markdown-body .markdown-code-block pre {
+        padding: 0.8rem !important;
+
+        font-size: 0.8rem;
+    }
+}

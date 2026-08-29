@@ -1,0 +1,72 @@
+/* ==========================================================
+   Palette: "Corporate Indigo" — a clean, professional light-
+   mode gradient built on blue/indigo, evoking trust and
+   engineering precision. Works well against DaisyUI's
+   base-100/200/300 surfaces regardless of active theme.
+   ========================================================== */
+
+.card-gradient {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #2563eb 100%);
+}
+
+/* Highlighted name in the hero heading */
+
+.hero-name-pill {
+    display: inline-block;
+    padding: 0 0.5rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Subtle glow around the avatar ring */
+
+.avatar-ring {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    transition: box-shadow 0.3s ease;
+}
+
+.avatar-ring:hover {
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2);
+}
+
+/* Stat cards: gentle lift on hover */
+
+.stat-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+}
+
+/* Status badges: staggered entrance (delay set inline via JS) */
+
+.badge-pop {
+    opacity: 0;
+    animation: badge-pop-in 0.4s ease forwards;
+}
+
+@keyframes badge-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .avatar-ring,
+    .stat-card,
+    .badge-pop {
+        transition: none;
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}

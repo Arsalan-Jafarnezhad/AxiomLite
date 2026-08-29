@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% load static %} {% load humanize %} {% block
+    content %}
+    <section class="w-full min-h-400 flex justify-center items-center bg-no-repeat bg-cover bg-center"
+             style="background-image: url({% static&quot;
+                    images/A-1.webp&quot;
+                    %})">
+        <div class="card h-4/5 w-1/2 bg-base-200/70 backdrop-blur-md z-1 mx-4">
+            <form method="post" enctype="multipart/form-data">
+                <div class="flex justify-between items-center">
+                    <h2 class="card-title text-3xl font-bold text-primary">Sign up</h2>
+                    <div class="tooltip" data-tip="Back to Home">
+                        <a href="{% url 'core:index' %}"
+                           class="text-error text-2xl hover:scale-110 transition flex justify-center items-center">
+                            <i class="w-8 h-8 far fa-circle-xmark"></i>
+                        </a>
+                    </div>
+                </div>
+                {% csrf_token %}
+                {% for fieldset in form.fieldsets %}
+                    <fieldset class="border p-4 rounded-lg my-4">
+                        <legend class="text-xl font-semibold">{{ fieldset.name }}</legend>
+                        {% for field in fieldset.fields %}
+                            <div class="{{ field.name }} mb-3">
+                                <label for="{{ field.id_for_label }}"
+                                       class="block label-text mb-2 text-lg text-gray-300">{{ field.label }}:</label>
+                                {{ field }} {% for error in field.errors %}
+                                <div role="alert" class="alert alert-error my-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="stroke-current shrink-0 h-6 w-6"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>{{ error }}</span>
+                                </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <b class="w-16 mr-2"></b>
+                <b class="w-32 ml-4"></b>
+                <b class="w-24 mr-2"></b>
+            </fieldset>
+{% endfor %}
+<div class="form-control mt-4">
+    <button type="submit"
+            id="submit"
+            class="btn btn-success w-full text-base font-semibold tracking-wide"
+            onclick="verifyBornDate()">Submit</button>
+</div>
+<div class="text-center mt-2">
+    <p class="text-sm text-secondary">
+        Already have an account?
+        <a href="{% url 'accounts:sign-in' %}"
+           id="sign-in"
+           class="link link-primary link-hover font-semibold cursor-pointer">Sign in now!</a>
+    </p>
+</div>
+</form>
+</div>
+</section>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/user/user/register.js' %}"></script>
+{% endblock script %}

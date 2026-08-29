@@ -1,0 +1,16 @@
+{
+    "name": "shopping-website",
+    "private": true,
+    "scripts": {
+        "icons:copy": "node scripts/copy-material-symbols.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build:css": "npx @tailwindcss/cli -i ./configuration/tailwind/app.css -o ./configuration/static/styles/base/styles.css -m",
+        "dev:css": "npx @tailwindcss/cli -i ./configuration/tailwind/app.css -o ./configuration/static/styles/base/styles.css -m -w"
+    },
+    "dependencies": {
+        "@tailwindcss/cli": "^4.3.3",
+        "daisyui": "^5.7.22",
+        "material-symbols": "^0.32.0",
+        "prismjs": "^1.30.0"
+    }
+}

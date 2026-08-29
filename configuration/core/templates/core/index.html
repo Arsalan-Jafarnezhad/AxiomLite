@@ -1,0 +1,829 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/core/index.css' %}" />
+{% endblock style %}
+{% block content %}
+    <main class="overflow-x-hidden">
+        <section id="hero"
+                 class="hm-hero relative isolate min-h-screen flex items-center">
+            <div class="hm-grid-bg" aria-hidden="true"></div>
+            <div class="hm-glow" aria-hidden="true"></div>
+            <div class="container mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="hm-live-dot" aria-label="Available for work"></span>
+                        <span class="text-sm font-mono text-emerald-400 tracking-widest uppercase">Available for new projects</span>
+                    </div>
+                    <div class="hm-terminal rounded-2xl p-6 mb-8 font-mono text-sm leading-7">
+                        <div class="flex items-center gap-2 mb-4 opacity-50">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                            <span class="ml-2 text-xs text-slate-500">developer.py</span>
+                        </div>
+                        <pre class="text-slate-400 overflow-x-auto"><span class="text-indigo-400">class</span> <span class="text-emerald-300">BackendDeveloper</span><span class="text-slate-300">:</span>
+    <span class="text-slate-500"># Arsalan Jafarnezhad — Django · Python · Systems</span>
+
+    <span class="text-indigo-400">def</span> <span class="text-sky-300">build</span>(self, <span class="text-orange-300">idea</span>):
+        <span class="text-slate-400">"""</span>
+        <span class="text-slate-300 hm-typewriter" id="hm-tw"></span><span class="hm-cursor">▋</span>
+        <span class="text-slate-400">"""</span>
+        <span class="text-indigo-400">return</span> <span class="text-emerald-300">production_ready_software</span>
+
+    <span class="text-indigo-400">def</span> <span class="text-sky-300">contact</span>(self):
+        <span class="text-indigo-400">return</span> <span class="text-orange-300">"<a href="#contact" class="underline decoration-dotted hover:text-indigo-400 transition-colors">arsalan.jafarnezhad.2010@gmail.com</a>"</span></pre>
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-black leading-tight text-base-content mb-6">
+                        I build backend systems
+                        <span class="text-primary">that actually ship.</span>
+                    </h1>
+                    <p class="text-base-content/70 text-lg leading-relaxed max-w-xl mb-10">
+                        Django · Python · REST APIs · Linux infrastructure. I help
+                        startups and businesses go from idea to production — fast,
+                        clean, and built to last.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact"
+                           class="btn btn-primary btn-lg gap-2 shadow-lg shadow-primary/30">
+                            <i class="material-symbols-rounded">terminal</i>
+                            Start a Project
+                        </a>
+                        <a href="#projects" class="btn btn-outline btn-lg gap-2">
+                            <i class="material-symbols-rounded">folder_open</i>
+                            See My Work
+                        </a>
+                    </div>
+                    <div class="mt-10 flex flex-wrap gap-3">
+                        <span class="hm-tech-badge">Django</span>
+                        <span class="hm-tech-badge">Python</span>
+                        <span class="hm-tech-badge">DRF</span>
+                        <span class="hm-tech-badge">PostgreSQL</span>
+                        <span class="hm-tech-badge">Docker</span>
+                        <span class="hm-tech-badge">Nginx</span>
+                        <span class="hm-tech-badge">Linux</span>
+                        <span class="hm-tech-badge">Tailwind</span>
+                        <span class="hm-tech-badge">Git</span>
+                    </div>
+                </div>
+                <div class="relative z-10 hidden lg:flex flex-col gap-5">
+                    <div class="hm-stat-card">
+                        <span class="text-5xl font-black text-primary" data-count="[XX]">
+                            7
+                            <span class="text-2xl">+</span>
+                        </span>
+                        <span class="text-base-content/60 text-sm mt-1">Projects shipped</span>
+                    </div>
+                    <div class="flex gap-5">
+                        <div class="hm-stat-card flex-1">
+                            <span class="text-4xl font-black text-emerald-400">4</span>
+                            <span class="text-base-content/60 text-sm mt-1">Years experience</span>
+                        </div>
+                        <div class="hm-stat-card flex-1">
+                            <span class="text-4xl font-black text-sky-400">2</span>
+                            <span class="text-base-content/60 text-sm mt-1">Happy clients</span>
+                        </div>
+                    </div>
+                    <div class="hm-avail-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="hm-live-dot"></span>
+                            <span class="font-semibold text-emerald-400 text-sm">Open to work</span>
+                        </div>
+                        <p class="text-base-content/60 text-xs leading-relaxed">
+                            Currently accepting new client projects and consulting
+                            engagements. Typical response time: under 24 h.
+                        </p>
+                        <a href="#contact"
+                           class="btn btn-sm btn-outline btn-success mt-4 gap-1 w-full">
+                            <i class="material-symbols-rounded text-base">send</i>
+                            Let's talk
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 animate-bounce">
+                <span class="text-xs font-mono tracking-widest uppercase text-base-content/50">scroll</span>
+                <i class="material-symbols-rounded text-base">
+                    keyboard_arrow_down
+                </i>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 2  SERVICES — Four pillars, icon-led, alternating accent
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section id="services" class="py-28 bg-base-200">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-20">
+                    <p class="text-primary font-mono text-sm tracking-widest uppercase mb-3">What I do</p>
+                    <h2 class="text-4xl lg:text-5xl font-black">Four ways I can help your business</h2>
+                    <p class="mt-5 text-base-content/60 leading-relaxed">
+                        Whether you're pre-launch, scaling, or stuck — there's a
+                        shape of engagement that fits.
+                    </p>
+                </div>
+                <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <div class="hm-service-card group">
+                        <div class="hm-service-icon bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white">
+                            <i class="material-symbols-rounded text-2xl">stacks</i>
+                        </div>
+                        <h3 class="text-lg font-bold mt-5 mb-2">Custom Development</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            End-to-end web applications, internal tools, and SaaS
+                            products. Django backend, REST API design, database
+                            modeling — production-ready from day one.
+                        </p>
+                        <ul class="mt-5 space-y-1.5 text-sm text-base-content/50">
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-primary">
+                                    check
+                                </i>
+                                MVP to full platform
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-primary">
+                                    check
+                                </i>
+                                API-first architecture
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-primary">
+                                    check
+                                </i>
+                                Admin, auth, payments
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="hm-service-card group">
+                        <div class="hm-service-icon bg-sky-500/10 text-sky-400 group-hover:bg-sky-500 group-hover:text-white">
+                            <i class="material-symbols-rounded text-2xl">
+                                query_stats
+                            </i>
+                        </div>
+                        <h3 class="text-lg font-bold mt-5 mb-2">Technical Consulting</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Architecture reviews, performance audits, security
+                            assessments and tech-stack decisions. I'll tell you what
+                            works, what doesn't, and why.
+                        </p>
+                        <ul class="mt-5 space-y-1.5 text-sm text-base-content/50">
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-sky-400">
+                                    fact_check
+                                </i>
+                                Code & system audit
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-sky-400">
+                                    check
+                                </i>
+                                Scalability planning
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-sky-400">
+                                    check
+                                </i>
+                                Cost optimisation
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="hm-service-card group">
+                        <div class="hm-service-icon bg-violet-500/10 text-violet-400 group-hover:bg-violet-500 group-hover:text-white">
+                            <i class="material-symbols-rounded text-2xl">
+                                co_present
+                            </i>
+                        </div>
+                        <h3 class="text-lg font-bold mt-5 mb-2">1-on-1 Mentorship</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Private coaching for developers learning Django, Python,
+                            and backend fundamentals. Structured sessions, real
+                            projects, honest feedback.
+                        </p>
+                        <ul class="mt-5 space-y-1.5 text-sm text-base-content/50">
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-violet-400">
+                                    check
+                                </i>
+                                Beginner → intermediate
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-violet-400">
+                                    check
+                                </i>
+                                Live code reviews
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-violet-400">
+                                    check
+                                </i>
+                                Career guidance
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="hm-service-card group">
+                        <div class="hm-service-icon bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white">
+                            <i class="material-symbols-rounded text-2xl">
+                                handshake
+                            </i>
+                        </div>
+                        <h3 class="text-lg font-bold mt-5 mb-2">Embedded Co-working</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Join your existing team as a senior backend contributor.
+                            Sprint planning, PR reviews, pair programming — fully
+                            remote, fully committed.
+                        </p>
+                        <ul class="mt-5 space-y-1.5 text-sm text-base-content/50">
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-emerald-400">
+                                    check
+                                </i>
+                                Part or full time
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-emerald-400">
+                                    check
+                                </i>
+                                Async-friendly
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="material-symbols-rounded text-xs text-emerald-400">
+                                    check
+                                </i>
+                                Fast onboarding
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 3  ABOUT — Split layout, skill depth bars
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section id="about" class="py-28">
+            <div class="container mx-auto px-6">
+                <div class="grid lg:grid-cols-5 gap-16 items-start">
+                    <div class="lg:col-span-3">
+                        <p class="text-primary font-mono text-sm tracking-widest uppercase mb-3">About me</p>
+                        <h2 class="text-4xl font-black mb-8 leading-tight">Backend engineer who cares about the whole product.</h2>
+                        <div class="space-y-5 text-base-content/70 leading-8">
+                            <p>
+                                I'm
+                                <strong class="text-base-content">Arsalan Jafarnezhad</strong>
+                                , a software developer focused on building reliable
+                                backend systems and developer-friendly APIs. I work
+                                primarily with
+                                <strong class="text-base-content">Django and Python</strong>
+                                , and I'm comfortable across the full deployment
+                                stack — from writing models and views to configuring
+                                Nginx, Gunicorn and PostgreSQL on a Linux VPS.
+                            </p>
+                            <p>
+                                I believe good software starts with understanding
+                                the problem, not the framework. I ask uncomfortable
+                                questions early, push back on scope creep, and write
+                                code that a junior developer can maintain after I
+                                leave.
+                            </p>
+                            <p>
+                                Outside client work, I contribute to open-source
+                                tooling, mentor junior developers, and write
+                                occasionally about systems design and Python
+                                patterns.
+                                <a href="[BLOG_URL]" class="link link-primary">Read my writing →</a>
+                            </p>
+                        </div>
+                        <div class="mt-10 flex flex-wrap gap-3">
+                            <a href="[CV_URL]" class="btn btn-outline gap-2" download>
+                                <i class="material-symbols-rounded">download</i>
+                                Download CV
+                            </a>
+                            <a href="https://github.com/[GITHUB]"
+                               target="_blank"
+                               rel="noopener"
+                               class="btn btn-ghost gap-2">
+                                <i class="cib-github text-lg"></i>
+                                GitHub
+                            </a>
+                            <a href="https://linkedin.com/in/[LINKEDIN]"
+                               target="_blank"
+                               rel="noopener"
+                               class="btn btn-ghost gap-2">
+                                <i class="cib-linkedin text-lg"></i>
+                                LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 space-y-5">
+                        <p class="text-xs font-mono text-base-content/40 uppercase tracking-widest mb-6">Core skills</p>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">Python / Django</span>
+                                <span class="text-primary font-mono">Expert</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-primary" style="--w: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">Django REST Framework</span>
+                                <span class="text-primary font-mono">Expert</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-primary" style="--w: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">PostgreSQL / SQL</span>
+                                <span class="text-sky-400 font-mono">Advanced</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-sky-400" style="--w: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">Linux / DevOps</span>
+                                <span class="text-sky-400 font-mono">Advanced</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-sky-400" style="--w: 82%"></div>
+                            </div>
+                        </div>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">JavaScript / Tailwind</span>
+                                <span class="text-violet-400 font-mono">Proficient</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-violet-400" style="--w: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="hm-skill-row">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-semibold">Docker / Nginx</span>
+                                <span class="text-violet-400 font-mono">Proficient</span>
+                            </div>
+                            <div class="hm-skill-track">
+                                <div class="hm-skill-fill bg-violet-400" style="--w: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-8 p-4 rounded-xl bg-base-200 border border-base-300 text-sm">
+                            <p class="font-semibold mb-2 text-base-content/80">Certifications & recognition</p>
+                            <ul class="space-y-1 text-base-content/50">
+                                <li>
+                                    <i class="material-symbols-rounded text-xs text-amber-400 mr-2">
+                                        military_tech
+                                    </i>
+                                    [CERT OR RECOGNITION 1]
+                                </li>
+                                <li>
+                                    <i class="material-symbols-rounded text-xs text-amber-400 mr-2">
+                                        military_tech
+                                    </i>
+                                    [CERT OR RECOGNITION 2]
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 4  TECH STACK — Icon grid with tooltip labels
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section class="py-20 bg-base-200 border-y border-base-300">
+            <div class="container mx-auto px-6">
+                <p class="text-center text-xs font-mono text-base-content/30 uppercase tracking-widest mb-10">
+                    Technologies I work with daily
+                </p>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="hm-icon-pill tooltip" data-tip="Python">
+                        <i class="cib-python text-3xl text-sky-700"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Django backends">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                             version="1.0"
+                             viewBox="0 0 436.505 152.503"
+                             overflow="visible"
+                             enable-background="new 0 0 436.505 152.503"
+                             xml:space="preserve"
+                             fill="currentColor"
+                             class="w-10 h-10 text-emerald-800">
+                            <g>
+                            <g>
+                            <path fill="currentColor" d="M51.464,0h23.872v110.496c-12.246,2.325-21.237,3.255-31.002,3.255C15.191,113.75,0,100.576,0,75.308    c0-24.337,16.122-40.147,41.078-40.147c3.875,0,6.82,0.309,10.386,1.239V0z M51.464,55.62c-2.79-0.929-5.115-1.239-8.06-1.239    c-12.091,0-19.067,7.441-19.067,20.461c0,12.712,6.666,19.687,18.912,19.687c2.634,0,4.805-0.155,8.215-0.619V55.62z" />
+                            <path fill="currentColor" d="M113.312,36.865v55.338c0,19.067-1.395,28.212-5.58,36.118c-3.876,7.597-8.992,12.401-19.532,17.672    l-22.167-10.541c10.541-4.96,15.656-9.299,18.911-15.967c3.411-6.82,4.497-14.726,4.497-35.497V36.865H113.312z M89.441,0.127    h23.871v24.492H89.441V0.127z" />
+                            <path fill="currentColor" d="M127.731,42.29c10.542-4.959,20.617-7.129,31.623-7.129c12.246,0,20.306,3.254,23.872,9.61    c2.014,3.565,2.634,8.215,2.634,18.137v48.517c-10.697,1.55-24.182,2.636-34.102,2.636c-19.996,0-28.988-6.978-28.988-22.478    c0-16.742,11.936-24.492,41.234-26.973v-5.27c0-4.34-2.17-5.889-8.216-5.889c-8.835,0-18.756,2.48-28.058,7.286V42.29z     M165.089,80.268c-15.812,1.55-20.927,4.031-20.927,10.231c0,4.65,2.946,6.82,9.456,6.82c3.566,0,6.82-0.309,11.471-1.084V80.268z    " />
+                            <path fill="currentColor" d="M197.487,40.585c14.105-3.72,25.731-5.424,37.512-5.424c12.246,0,21.082,2.789,26.354,8.215    c4.96,5.114,6.509,10.694,6.509,22.632v46.812H243.99V66.938c0-9.145-3.1-12.557-11.625-12.557c-3.255,0-6.2,0.31-11.007,1.705    v56.734h-23.871V40.585z" />
+                            <path fill="currentColor" d="M277.142,125.842c8.372,4.34,16.742,6.354,25.577,6.354c15.655,0,22.321-6.354,22.321-21.546    c0-0.155,0-0.31,0-0.465c-4.65,2.324-9.301,3.255-15.5,3.255c-20.927,0-34.26-13.796-34.26-35.652    c0-27.129,19.688-42.473,54.564-42.473c10.232,0,19.688,1.084,31.159,3.409l-8.174,17.219c-6.356-1.24-0.509-0.166-5.312-0.631    v2.481l0.309,10.074l0.154,13.022c0.155,3.254,0.155,6.51,0.311,9.765c0,2.945,0,4.341,0,6.511c0,20.462-1.705,30.072-6.82,37.977    c-7.441,11.627-20.307,17.362-38.598,17.362c-9.301,0-17.36-1.395-25.732-4.651V125.842z M324.576,54.536c-0.31,0-0.619,0-0.774,0    h-1.706c-4.649-0.155-10.074,1.084-13.796,3.409c-5.734,3.256-8.681,9.147-8.681,17.517c0,11.937,5.892,18.757,16.432,18.757    c3.255,0,5.891-0.621,8.99-1.55v-1.706v-6.509c0-2.79-0.154-5.892-0.154-9.146l-0.154-11.005l-0.156-7.906V54.536z" />
+                            <path fill="currentColor" d="M398.062,34.85c23.871,0,38.443,15.037,38.443,39.373c0,24.958-15.19,40.614-39.373,40.614    c-23.873,0-38.599-15.037-38.599-39.218C358.534,50.505,373.726,34.85,398.062,34.85z M397.595,95.614    c9.147,0,14.573-7.596,14.573-20.772c0-13.02-5.271-20.771-14.415-20.771c-9.457,0-14.884,7.597-14.884,20.771    C382.87,88.019,388.296,95.614,397.595,95.614z" />
+                            </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="REST APIs">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 128 128"
+                             class="w-10 h-10 text-slate-300"
+                             fill="currentColor">
+                            <path d="m81.067 45.112c-0.09946-8.89e-4 -0.19843-4.58e-4 -0.29674 0.0011-1.5153 0.02396-4.7619 0.01795-7.6695 1.334-2.9076 1.316-5.4641 4.0435-5.4641 9.2476 0 2.1998 0.73464 4.101 1.8867 5.7299h-23.211v-10.511h15.238v-5.3507h-21.365v5.3507h0.0016v10.511h-0.0016v5.351h0.0016v12.456l-3.5798-0.02143-4.9539 0.02278-7.755-12.048c1.8177-0.74956 3.5966-1.8279 4.9658-3.3387 1.4892-1.6432 2.4864-3.7902 2.4864-6.4468v-0.76408c0-3.8875-1.4825-6.6762-3.9001-8.4542-2.4176-1.778-5.7247-2.5638-9.4006-2.6476h-11.8v5.4112h0.030159v12.708h-0.030108v5.0513h0.030108v15.854h6.1256v-15.87l6.1604-0.01736 8.4575 13.759 0.01193 0.016c0.71617 0.94845 2.2048 3.0543 4.6105 4.5709l0.2037 0.12857 4.8617-2.564 3.8936-0.02333h20.944v-5.5609h-15.237v-12.222h30.129c0.01106 0.0052 0.01931 0.0092 0.03119 0.01465 1.8665 0.85339 4.132 1.6256 5.8956 2.7382 1.7636 1.1125 2.9969 2.4888 2.9969 4.6753 0 2.3534-1.0619 3.5857-2.5589 4.3336s-3.4534 0.93306-5.064 0.93306h-0.0028c-3.087 0.01916-6.7181-1.2924-9.8188-2.3278l-0.54844-0.18309v5.8834l0.24384 0.11121c3.0434 1.3874 7.5514 1.9289 10.135 1.8306 1.8531-9.72e-4 5.2375-0.36382 8.225-1.8591 2.9915-1.4972 5.5845-4.2095 5.5845-8.7219 0-3.492-1.3144-5.9958-3.1534-7.7878-1.839-1.7919-4.1825-2.8912-6.2751-3.7065l-8.19e-4 -2.78e-4 -5.42e-4 -2.78e-4c-0.7937-0.30608-2.299-0.9071-3.7957-1.7218-1.4944-0.81348-2.9719-1.8536-3.7103-2.944-0.4595-0.74598-0.74286-1.5768-0.79256-2.3617 0.0044-2.3794 1.1134-3.6626 2.5496-4.4196 1.4391-0.75844 3.2316-0.91934 4.4019-0.83487 2.3554 0.17001 6.4131 1.4988 7.711 2.053l0.4131 0.1763 0.60079-1.7649h16.244v33.667h6.1256v-33.667h11.011v-5.3038h-11.011v-0.0236h-6.1256v0.0236h-21.167c-1.1756-0.28384-2.3573-0.46504-3.5188-0.47548zm-0.0076 0.83324c1.0998 0.0099 2.2408 0.18255 3.3897 0.46355l0.04882 0.01194h22.089v-0.0236h4.4592v0.0236h11.011v3.6373h-11.011v33.667h-4.4592v-33.667h-17.674l-0.50938 1.497c-1.6373-0.6495-5.1548-1.7857-7.5586-1.9592-1.3007-0.09389-3.2078 0.06293-4.8506 0.92872-1.6427 0.86579-2.9953 2.5105-2.9953 5.1701v0.01248l8.19e-4 0.01275c0.05757 0.9537 0.39266 1.914 0.92221 2.7704l0.0043 0.0071 0.0046 0.0068c0.88251 1.3074 2.4554 2.3702 4.0067 3.2147 1.5514 0.84447 3.0889 1.4569 3.8939 1.7674 2.0511 0.79916 4.2887 1.8638 5.9949 3.5264 1.7066 1.6629 2.9017 3.9047 2.9017 7.1911 0 4.1997-2.3126 6.5696-5.1242 7.9768-2.8117 1.4072-6.1217 1.7715-7.8608 1.7715h-0.0081l-0.0079 2.78e-4c-2.3569 0.09074-6.6803-0.44192-9.5207-1.6597v-4.1757c2.9689 1.0013 6.4059 2.2062 9.5395 2.1867 1.6703-1.38e-4 3.7322-0.17082 5.4337-1.0209 1.7024-0.85056 3.0197-2.4597 3.0197-5.0789 0-2.5097-1.4992-4.1903-3.3856-5.3803-1.8864-1.19-4.1886-1.9658-5.9936-2.791-0.0316-0.01445-0.06825-0.03215-0.11012-0.05153l-0.08327-0.03852h-31.147v13.888h15.237v3.8944h-20.114l-4.0998 0.02441-4.6062 2.4292c-2.1169-1.3966-3.4676-3.2698-4.1844-4.2199l-8.681-14.122-7.4585 0.02061v15.868h-4.4592v-15.854h-0.030108v-3.3848h0.030108v-14.375h-0.030108v-3.7447h10.948c3.5677 0.08126 6.7076 0.85422 8.9259 2.4856 2.2183 1.6314 3.5605 4.1028 3.5605 7.7829v0.76408c0 2.4505-0.89759 4.3723-2.2705 5.8872-1.3729 1.5149-3.2316 2.6104-5.1196 3.3248l-0.4798 0.18161c2.8628 4.4171 5.7035 8.8487 8.5524 13.275l5.4069-0.02495 4.4136 0.02631v-14.127h-0.0016v-3.6845h0.0016v-12.178h-0.0016v-3.6842h19.699v3.6842h-15.238v12.178h25.726l-0.55902-0.68108c-1.3488-1.6431-2.1767-3.5777-2.1767-5.8821 0-4.9391 2.2818-7.2701 4.9742-8.4887 2.6924-1.2186 5.8075-1.2354 7.3392-1.2596 0.09212-0.0015 0.18424-0.0019 0.27612-0.0011zm-69.487 4.1665v14.375h5.0564c2.1262 0 4.3615-0.31202 6.1129-1.3668 1.7514-1.0547 2.9736-2.9004 2.9736-5.7199v-0.76408c0-2.8548-1.6037-4.5536-3.3362-5.4513-1.7325-0.89779-3.5777-1.0725-4.3387-1.0725zm0.83324 0.83324h5.6347c0.62035 0 2.4042 0.17503 3.9555 0.9789 1.5513 0.80387 2.8862 2.1587 2.8862 4.7117v0.76408c0 2.5883-1.0288 4.0777-2.5703 5.006s-3.6409 1.2474-5.683 1.2474h-4.2232z" fill="currentColor" />
+                            <path d="m12.074 28.415a0.13889 0.13889 0 0 0-0.13887 0.13887v2.7444c0 0.14744 0.0092 0.33363 0.02685 0.56092 0.0075 0.09593 0.01505 0.14935 0.02251 0.22838-0.10936-0.12435-0.20838-0.25643-0.3442-0.36102-0.21961-0.17329-0.47933-0.30974-0.77655-0.40984-0.30238-0.10184-0.65005-0.15108-1.0426-0.15108-0.93303 0-1.7021 0.31987-2.2705 0.95259-0.57313 0.63368-0.85006 1.5614-0.85006 2.762 0 1.1879 0.27019 2.1055 0.83026 2.7311a0.13889 0.13889 0 0 0 2.778e-4 2.78e-4c0.5605 0.62095 1.3297 0.93333 2.2705 0.93333 0.40109 0 0.75289-0.04911 1.0557-0.15108a0.13889 0.13889 0 0 0 0.0011-2.77e-4c0.30145-0.10434 0.56336-0.24484 0.78307-0.42259l2.78e-4 -2.78e-4c0.15299-0.12138 0.26388-0.26659 0.38055-0.40848l0.12504 0.74211a0.13889 0.13889 0 0 0 0.13698 0.11582h0.88017a0.13889 0.13889 0 0 0 0.13887-0.13887v-9.7274a0.13889 0.13889 0 0 0-0.13887-0.13887zm4.1147 0.31274c-0.21589 0-0.41232 0.06873-0.56472 0.2037-0.15962 0.14108-0.23082 0.35882-0.23082 0.61652 0 0.25398 0.07168 0.47058 0.22893 0.6149a0.13889 0.13889 0 0 0 0.0016 0.0016c0.15243 0.13508 0.34902 0.20397 0.56499 0.20397 0.20801 0 0.39953-0.0698 0.55061-0.20316 0.16622-0.14284 0.2452-0.36191 0.2452-0.61734 0-0.25872-0.07859-0.47866-0.24656-0.61815-0.1509-0.13266-0.3418-0.20207-0.54926-0.20207z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="HTML5">
+                        <i class="cib-html5 text-3xl text-orange-500"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="CSS3">
+                        <i class="cib-css3 text-3xl text-blue-500"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Bootstrap components">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 50 50"
+                             class="w-10 h-10 text-violet-700"
+                             fill="currentColor"
+                             baseProfile="basic">
+                            <path d="M7.854,11.705C7.771,9.257,9.628,7,12.139,7h25.726c2.511,0,4.368,2.257,4.285,4.705c-0.08,2.351,0.024,5.397,0.77,7.88 c0.749,2.491,2.012,4.066,4.08,4.268v2.294c-2.068,0.202-3.331,1.777-4.08,4.268c-0.747,2.483-0.85,5.529-0.77,7.88 C42.232,40.743,40.375,43,37.864,43H12.139c-2.511,0-4.368-2.257-4.285-4.705c0.08-2.351-0.024-5.397-0.771-7.88 C6.335,27.924,5.069,26.349,3,26.147v-2.294c2.068-0.202,3.335-1.777,4.083-4.268C7.83,17.102,7.934,14.056,7.854,11.705z" />
+                            <path class="text-base-200" fill="currentColor" d="M27.79,24.451v-0.029c1.911-0.33,3.402-2.121,3.402-4.094c0-1.395-0.536-2.576-1.551-3.416 c-1.011-0.837-2.431-1.28-4.105-1.28h-7.669v18.734h7.709c2.003,0,3.666-0.489,4.808-1.415c1.144-0.927,1.749-2.276,1.749-3.901 C32.133,26.596,30.389,24.752,27.79,24.451z M24.199,23.568h-3.28v-5.484h3.903c2.141,0,3.32,0.939,3.32,2.645 C28.141,22.56,26.741,23.568,24.199,23.568z M20.919,25.864h3.876c2.8,0,4.22,1.012,4.22,3.007c0,1.993-1.4,3.046-4.048,3.046 h-4.048V25.864z" />
+                        </svg>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Tailwind CSS components">
+                        <svg class="w-10 h-10 text-sky-600"
+                             viewBox="0 0 24 24"
+                             fill="currentColor"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             xml:space="preserve">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.036c-2.667 0-4.333 1.325-5 3.976 1-1.325 2.167-1.822 3.5-1.491.761.189 1.305.738 1.906 1.345C13.387 10.855 14.522 12 17 12c2.667 0 4.333-1.325 5-3.976-1 1.325-2.166 1.822-3.5 1.491-.761-.189-1.305-.738-1.907-1.345-.98-.99-2.114-2.134-4.593-2.134zM7 12c-2.667 0-4.333 1.325-5 3.976 1-1.326 2.167-1.822 3.5-1.491.761.189 1.305.738 1.907 1.345.98.989 2.115 2.134 4.594 2.134 2.667 0 4.333-1.325 5-3.976-1 1.325-2.167 1.822-3.5 1.491-.761-.189-1.305-.738-1.906-1.345C10.613 13.145 9.478 12 7 12z" />
+                        </svg>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="DaisyUI components">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 450 450"
+                             class="w-10 h-10 text-yellow-500"
+                             aria-hidden="true"
+                             fill="currentColor">
+                            <path opacity="0.7" d="M149.143 41.0904C143.428 49.5065 138.887 59.2704 135.895 70.3821C127.292 102.334 102.333 127.293 70.3808 135.896C59.2688 138.888 49.5047 143.429 41.0884 149.144C29.1599 86.7502 86.7484 29.1617 149.143 41.0904Z" fill="currentColor" />
+                            <path opacity="0.7" d="M41.0895 149.144C42.9998 159.136 46.6928 169.251 52.4345 179.224C68.9449 207.901 68.9449 243.198 52.4345 271.875C46.6927 281.848 42.9996 291.963 41.0894 301.955C-11.4646 266.271 -11.4646 184.828 41.0895 149.144Z" fill="currentColor" />
+                            <path opacity="0.7" d="M149.143 410.009C143.428 401.593 138.887 391.829 135.895 380.717C127.292 348.765 102.333 323.806 70.3808 315.203C59.2688 312.211 49.5047 307.67 41.0884 301.955C29.1599 364.349 86.7484 421.938 149.143 410.009Z" fill="currentColor" />
+                            <path opacity="0.7" d="M301.953 410.008C291.961 408.097 281.846 404.404 271.873 398.663C243.196 382.152 207.899 382.152 179.222 398.663C169.249 404.404 159.134 408.098 149.142 410.008C184.826 462.562 266.269 462.562 301.953 410.008Z" fill="currentColor" />
+                            <path opacity="0.7" d="M410.01 301.956C401.594 307.671 391.83 312.212 380.719 315.203C348.767 323.806 323.808 348.765 315.205 380.718C312.213 391.829 307.672 401.593 301.957 410.009C364.35 421.937 421.938 364.349 410.01 301.956Z" fill="currentColor" />
+                            <path opacity="0.7" d="M410.007 149.145C408.096 159.136 404.403 169.251 398.662 179.224C382.151 207.901 382.151 243.198 398.662 271.875C404.404 281.848 408.097 291.963 410.007 301.955C462.56 266.27 462.56 184.829 410.007 149.145Z" fill="currentColor" />
+                            <path opacity="0.7" d="M301.957 41.0902C307.672 49.5064 312.213 59.2703 315.205 70.3821C323.808 102.334 348.767 127.293 380.719 135.896C391.83 138.888 401.594 143.429 410.01 149.144C421.938 86.7501 364.35 29.1625 301.957 41.0902Z" fill="currentColor" />
+                            <path opacity="0.7" d="M149.142 41.0913C159.134 43.0015 169.249 46.6945 179.222 52.4362C207.899 68.9466 243.196 68.9466 271.873 52.4362C281.845 46.6947 291.96 43.0017 301.952 41.0914C266.267 -11.4617 184.826 -11.4617 149.142 41.0913Z" fill="currentColor" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M135.898 70.3827C138.89 59.2711 143.431 49.5072 149.146 41.091C159.138 43.0013 169.253 46.6943 179.225 52.4359C207.902 68.9463 243.199 68.9463 271.876 52.4359C281.849 46.6941 291.965 43.001 301.957 41.0908C307.672 49.507 312.213 59.271 315.205 70.3827C323.808 102.335 348.766 127.294 380.719 135.897C391.83 138.889 401.594 143.43 410.01 149.144C408.1 159.136 404.407 169.252 398.665 179.225C382.155 207.902 382.155 243.199 398.665 271.876C404.407 281.848 408.1 291.964 410.01 301.956C401.594 307.67 391.83 312.211 380.719 315.203C348.766 323.806 323.808 348.765 315.205 380.717C312.213 391.829 307.672 401.593 301.957 410.009C291.965 408.099 281.849 404.406 271.876 398.664C243.199 382.154 207.902 382.154 179.225 398.664C169.253 404.406 159.138 408.099 149.146 410.009C143.431 401.593 138.89 391.829 135.898 380.717C127.295 348.765 102.337 323.806 70.3842 315.203C59.2722 312.211 49.5081 307.67 41.0918 301.955C43.0021 291.963 46.6951 281.848 52.4367 271.876C68.9471 243.199 68.9471 207.902 52.4367 179.225C46.6951 169.252 43.0021 159.137 41.0918 149.145C49.5081 143.43 59.2722 138.889 70.3842 135.897C102.337 127.294 127.295 102.335 135.898 70.3827Z" fill="currentColor" />
+                            <path d="M207.871 250.91C211.999 255.482 219.318 258.735 225.478 258.735C231.637 258.735 238.957 255.482 243.084 250.91" stroke="black" stroke-width="12" stroke-linecap="round" />
+                            <rect x="125.037" y="192.221" width="31.3006" height="15.6503" rx="7.82514" transform="rotate(45 125.037 192.221)" fill="black" />
+                            <rect x="117.883" y="196.134" width="58.6886" height="58.6886" rx="29.3443" fill="black" />
+                            <circle cx="140.814" cy="211.609" r="11.7377" fill="currentColor" />
+                            <circle cx="162.849" cy="227.64" r="5.86885" fill="currentColor" />
+                            <circle cx="155.524" cy="239.853" r="3.91257" fill="currentColor" />
+                            <rect x="337.18" y="203.288" width="31.3006" height="15.6503" rx="7.82514" transform="rotate(135 337.18 203.288)" fill="black" />
+                            <rect x="274.385" y="196.134" width="58.6886" height="58.6886" rx="29.3443" fill="black" />
+                            <rect x="290.035" y="211.785" width="27.388" height="27.388" rx="13.694" fill="black" />
+                            <circle cx="297.318" cy="211.609" r="11.7377" fill="currentColor" />
+                            <circle cx="319.353" cy="227.64" r="5.86885" fill="currentColor" />
+                            <circle cx="312.028" cy="239.853" r="3.91257" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="JavaScript">
+                        <i class="cib-javascript text-3xl text-yellow-300"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Linux">
+                        <i class="cib-linux text-3xl text-base-content/70"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Git">
+                        <i class="cib-git text-3xl text-orange-500"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="GitHub">
+                        <i class="cib-github text-3xl text-base-content/70"></i>
+                    </div>
+                    <div class="hm-icon-pill tooltip" data-tip="Docker">
+                        <i class="cib-docker text-3xl text-sky-400"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 5  FEATURED PROJECTS — Card grid with hover reveal
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section id="projects" class="py-28">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap justify-between items-end gap-6 mb-14">
+                    <div>
+                        <p class="text-primary font-mono text-sm tracking-widest uppercase mb-3">Portfolio</p>
+                        <h2 class="text-4xl font-black">Featured Projects</h2>
+                        <p class="text-base-content/60 mt-2 max-w-lg">
+                            Real work for real clients. Each project is a different
+                            challenge — same standard.
+                        </p>
+                    </div>
+                    <a href="[ALL_PROJECTS_URL]" class="btn btn-outline gap-2">
+                        <i class="material-symbols-rounded">grid_view</i>
+                        View all projects
+                    </a>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <article class="hm-project-card group">
+                        <div class="hm-project-thumb relative aspect-video overflow-hidden rounded-t-2xl bg-base-300">
+                            <div class="absolute inset-0 flex items-center justify-center text-base-content/20">
+                                <i class="material-symbols-rounded text-4xl">
+                                    image
+                                </i>
+                            </div>
+                            <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                                <a href="[PROJECT_URL]" class="btn btn-sm btn-white gap-1">
+                                    <i class="material-symbols-rounded text-xs">
+                                        open_in_new
+                                    </i>
+                                    Live
+                                </a>
+                                <a href="[GITHUB_REPO_URL]"
+                                   class="btn btn-sm btn-ghost text-white gap-1"
+                                   target="_blank">
+                                    <i class="cib-github text-xs"></i>
+                                    Code
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="badge badge-primary badge-sm">Django</span>
+                                <span class="badge badge-ghost badge-sm">REST API</span>
+                                <span class="badge badge-ghost badge-sm">PostgreSQL</span>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">[PROJECT NAME]</h3>
+                            <p class="text-base-content/60 text-sm leading-relaxed">
+                                [ONE OR TWO SENTENCES DESCRIBING THE PROJECT — WHAT
+                                PROBLEM IT SOLVES AND FOR WHOM]
+                            </p>
+                            <div class="mt-5 flex items-center justify-between text-xs text-base-content/40">
+                                <span>
+                                    <i class="material-symbols-rounded text-xs align-middle mr-1">
+                                        calendar_month
+                                    </i>
+                                    [YEAR]
+                                </span>
+                                <a href="[CASE_STUDY_URL]"
+                                   class="link link-primary font-semibold text-sm">Case study →</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="hm-project-card hm-oss-card group">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <i class="cib-github text-3xl text-base-content/50 group-hover:text-base-content transition-colors"></i>
+                                <span class="badge badge-outline badge-sm">Open Source</span>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2 group-hover:text-primary transition-colors">[OSS PROJECT NAME]</h3>
+                            <p class="text-base-content/60 text-sm leading-relaxed">
+                                [SHORT DESCRIPTION OF YOUR OPEN-SOURCE TOOL OR
+                                CONTRIBUTION]
+                            </p>
+                            <div class="mt-6 flex gap-3 text-xs text-base-content/40">
+                                <span>
+                                    <i class="material-symbols-rounded text-xs align-middle mr-1 text-amber-400">
+                                        star
+                                    </i>
+                                    [★ COUNT] stars
+                                </span>
+                                <span>
+                                    <i class="material-symbols-rounded text-xs align-middle mr-1">
+                                        fork_right
+                                    </i>
+                                    [FORK COUNT] forks
+                                </span>
+                            </div>
+                            <a href="[GITHUB_OSS_URL]"
+                               target="_blank"
+                               class="btn btn-sm btn-outline gap-1 mt-5 w-full">
+                                <i class="cib-github text-xs"></i>
+                                View on GitHub
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 6  PROCESS — Horizontal numbered steps
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section class="py-28 bg-base-200">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-xl mx-auto mb-18">
+                    <p class="text-primary font-mono text-sm tracking-widest uppercase mb-3">How it works</p>
+                    <h2 class="text-4xl font-black">From first message to production</h2>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">01</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Discovery call</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            We meet (30 min, free) to understand your goals,
+                            constraints and timeline. No sales pitch — just an
+                            honest conversation.
+                        </p>
+                    </div>
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">02</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Scoped proposal</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            I send a written proposal: scope, tech choices, timeline
+                            and a fixed or milestone-based price. No ambiguity.
+                        </p>
+                    </div>
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">03</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Development sprints</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            I work in weekly sprints with async updates. You see
+                            progress continuously, not just at delivery.
+                        </p>
+                    </div>
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">04</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Testing & review</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Automated tests, manual QA and a shared staging
+                            environment so you can validate everything before it
+                            goes live.
+                        </p>
+                    </div>
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">05</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Deployment</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Zero-downtime deploy to your server or cloud. I handle
+                            Linux, Nginx, Gunicorn, SSL and DNS — you just watch it
+                            go live.
+                        </p>
+                    </div>
+                    <div class="hm-process-step">
+                        <span class="hm-step-num">06</span>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Handoff & support</h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed">
+                            Full documentation, source access and a 30-day support
+                            window. Long-term retainer available if you need ongoing
+                            help.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 7  BLOG / WRITING — Latest posts teaser
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section id="writing" class="py-28">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap justify-between items-end gap-6 mb-14">
+                    <div>
+                        <p class="text-primary font-mono text-sm tracking-widest uppercase mb-3">Writing</p>
+                        <h2 class="text-4xl font-black">Things I've figured out</h2>
+                        <p class="text-base-content/60 mt-2">
+                            Notes on Django, Python, systems design and building
+                            things that scale.
+                        </p>
+                    </div>
+                    <a href="[BLOG_URL]" class="btn btn-outline gap-2">
+                        <i class="material-symbols-rounded">rss_feed</i>
+                        All posts
+                    </a>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <a href="[POST_URL]" class="hm-post-card group">
+                        <div class="flex items-center gap-2 text-xs text-base-content/40 mb-3">
+                            <span>
+                                <i class="material-symbols-rounded text-xs align-middle mr-1">
+                                    calendar_today
+                                </i>
+                                [DATE]
+                            </span>
+                            <span>·</span>
+                            <span>
+                                <i class="material-symbols-rounded text-xs align-middle mr-1">
+                                    schedule
+                                </i>
+                                [X] min read
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors mb-3">
+                            [POST TITLE — E.G. "Why I stopped using class-based
+                            views in Django"]
+                        </h3>
+                        <p class="text-base-content/60 text-sm leading-relaxed line-clamp-3">
+                            [POST EXCERPT — 2–3 sentences summarising the article]
+                        </p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="badge badge-ghost badge-sm">[TAG 1]</span>
+                            <span class="badge badge-ghost badge-sm">[TAG 2]</span>
+                        </div>
+                        <span class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-semibold group-hover:gap-2 transition-all">
+                            Read more
+                            <i class="material-symbols-rounded text-xs">
+                                arrow_forward
+                            </i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 8  TESTIMONIALS — Quote carousel (no JS carousel lib needed)
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section class="py-28 bg-base-200">
+            <div class="container mx-auto px-6">
+                <p class="text-center text-primary font-mono text-sm tracking-widest uppercase mb-3">Testimonials</p>
+                <h2 class="text-4xl font-black text-center mb-14">What clients say</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="hm-testimonial-card">
+                        <i class="material-symbols-rounded text-3xl text-primary/20 mb-5 block">
+                            format_quote
+                        </i>
+                        <p class="text-base-content/75 leading-relaxed italic text-sm">
+                            "[CLIENT TESTIMONIAL — 2–4 sentences. Authentic,
+                            specific language works far better than generic praise
+                            like 'great work'."]"
+                        </p>
+                        <div class="mt-6 flex items-center gap-3">
+                            <div class="avatar placeholder">
+                                <div class="bg-primary/20 text-primary rounded-full w-10">
+                                    <span class="text-sm font-bold">[INITIALS]</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm">[CLIENT NAME]</p>
+                                <p class="text-xs text-base-content/40">[ROLE] · [COMPANY]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ═══════════════════════════════════════════════════════════════════
+       § 9  CTA — Full-bleed contact prompt
+       ═══════════════════════════════════════════════════════════════════ -->
+        <section id="contact" class="py-28 relative isolate">
+            <div class="hm-cta-glow" aria-hidden="true"></div>
+            <div class="container mx-auto px-6">
+                <div class="hm-cta-card text-center max-w-3xl mx-auto">
+                    <p class="font-mono text-primary text-sm tracking-widest uppercase mb-4">Let's work together</p>
+                    <h2 class="text-5xl font-black mb-6 leading-tight">
+                        Got a project in mind?
+                        <br />
+                        <span class="text-primary">Let's build it.</span>
+                    </h2>
+                    <p class="text-base-content/60 leading-relaxed mb-10 max-w-xl mx-auto">
+                        I'm currently taking on new client work and open to
+                        interesting collaborations. Drop me a line — even a rough
+                        idea is enough to start a conversation.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="mailto:[YOUR_EMAIL]"
+                           class="btn btn-primary btn-lg gap-2 shadow-xl shadow-primary/30">
+                            <i class="material-symbols-rounded">mail</i>
+                            Email me directly
+                        </a>
+                        <a href="[CONTACT_FORM_URL]" class="btn btn-outline btn-lg gap-2">
+                            <i class="material-symbols-rounded">description</i>
+                            Fill contact form
+                        </a>
+                    </div>
+                    <div class="mt-10 flex justify-center gap-5 text-xl text-base-content/30">
+                        <a href="https://github.com/[GITHUB]"
+                           target="_blank"
+                           rel="noopener"
+                           class="hover:text-base-content transition-colors"
+                           aria-label="GitHub">
+                            <i class="cib-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/[LINKEDIN]"
+                           target="_blank"
+                           rel="noopener"
+                           class="hover:text-base-content transition-colors"
+                           aria-label="LinkedIn">
+                            <i class="cib-linkedin"></i>
+                        </a>
+                        <a href="https://twitter.com/[TWITTER]"
+                           target="_blank"
+                           rel="noopener"
+                           class="hover:text-base-content transition-colors"
+                           aria-label="X / Twitter">
+                            <i class="cib-x"></i>
+                        </a>
+                        <a href="[TELEGRAM_URL]"
+                           target="_blank"
+                           rel="noopener"
+                           class="hover:text-base-content transition-colors"
+                           aria-label="Telegram">
+                            <i class="cib-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/core/index.js' %}"></script>
+{% endblock script %}

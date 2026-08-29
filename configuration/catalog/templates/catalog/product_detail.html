@@ -1,0 +1,114 @@
+{% extends "catalog/generic_detail.html" %}
+{% block extra %}
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-sm uppercase tracking-wider text-base-content/50">
+                    <i class="material-symbols-rounded text-primary">payments</i>
+                    Pricing
+                </h2>
+                <ul class="mt-2 divide-y divide-base-300">
+                    <li class="flex justify-between py-2">
+                        <span>Base price</span>
+                        <strong>{{ object.price_display }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Discount</span>
+                        <strong>{{ object.discount_percentage_display }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Final price</span>
+                        <strong class="text-primary">{{ object.final_price_display }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Rating</span>
+                        <strong class="flex items-center gap-1">
+                            <i class="material-symbols-rounded text-amber-400 text-base">
+                                star
+                            </i>
+                            {{ object.average_rating }} ({{ object.rating_count }})
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-sm uppercase tracking-wider text-base-content/50">
+                    <i class="material-symbols-rounded text-sky-400">query_stats</i>
+                    Stats
+                </h2>
+                <ul class="mt-2 divide-y divide-base-300">
+                    <li class="flex justify-between py-2">
+                        <span>Views</span>
+                        <strong>{{ object.views }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Sold</span>
+                        <strong>{{ object.selling_count }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Stock</span>
+                        <strong>{{ object.stock }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm border border-base-300 mt-6">
+        <div class="card-body p-0">
+            <div class="flex justify-between items-center p-4 border-b border-base-300">
+                <h2 class="font-bold flex items-center gap-2">
+                    <i class="material-symbols-rounded text-violet-400">
+                        rate_review
+                    </i>
+                    Comments
+                </h2>
+                <a class="btn btn-sm btn-primary gap-1"
+                   href="{% url 'catalog:comment-create' %}">
+                    <i class="material-symbols-rounded text-sm">add</i>
+                    Add comment
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-wider text-base-content/40">
+                            <th>User</th>
+                            <th>Rating</th>
+                            <th>Text</th>
+                            <th>Posted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                            <tr>
+                                <td>{{ comment.user }}</td>
+                                <td>
+                                    {% if comment.rating %}
+                                        <span class="badge badge-warning gap-1">
+                                            {{ comment.rating }}
+                                            <i class="material-symbols-rounded text-xs">
+                                                star
+                                            </i>
+                                        </span>
+                        {% else %}—{% endif %}
+                            </td>
+                            <td>{{ comment.text|truncatewords:20 }}</td>
+                            <td class="text-base-content/50 text-sm">
+                                {{
+                                    comment.created_at_display|default:comment.created
+                                }}
+                            </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-base-content/40 py-8">No comments yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

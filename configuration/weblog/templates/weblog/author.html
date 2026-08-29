@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="space-y-8">
+        <div class="card bg-base-200 shadow-xl">
+            <div class="card-body">
+                <div class="flex items-center gap-5">
+                    <div class="avatar placeholder">
+                        <div class="bg-primary text-primary-content rounded-full w-24">
+                            <span class="text-4xl">{{ author.username|first|upper }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold">{{ author.username }}</h1>
+                        <p class="text-base-content/60">{{ total_articles }} published articles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if featured_articles %}
+            <section>
+                <h2 class="text-3xl font-bold mb-5 flex gap-2 items-center">
+                    <span class="material-symbols-rounded text-warning">star</span>
+                    Featured
+                </h2>
+                <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {% for article in featured_articles %} {% include
+                        "partials/article_card.html" %} {% endfor %}
+                        </div>
+                        </section>
+                    {% endif %}
+                    <section>
+                        <h2 class="text-3xl font-bold mb-5">Articles</h2>
+                        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            {% for article in articles %} {% include
+                                "partials/article_card.html" %} {% empty %} {% include
+                                    "components/empty_state.html" %} {% endfor %}
+                        </div>
+                    </section>
+                    {% include "partials/pagination.html" %}
+                </section>
+{% endblock %}

@@ -1,0 +1,332 @@
+/* ============================================================
+   home_styles.css — Personal × Business Homepage
+   Companion to home_main.html
+   Requires: Tailwind CSS (JIT) + DaisyUI already loaded
+   ============================================================ */
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+
+.hm-hero {
+  background-color: oklch(var(--b1));   /* DaisyUI base-100 */
+}
+
+/* Subtle dot-grid overlay */
+.hm-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle, oklch(var(--p) / 0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* Large radial glow from primary colour */
+.hm-glow {
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, oklch(var(--p) / 0.18) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Live availability pulsing dot */
+.hm-live-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #10b981;            /* emerald-400 */
+  box-shadow: 0 0 0 0 rgba(16,185,129,.6);
+  animation: hm-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes hm-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(16,185,129,.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+
+/* Terminal code block */
+.hm-terminal {
+  background: #0d1117;             /* GitHub dark */
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 4px 32px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+.hm-terminal pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+
+/* Typewriter cursor blink */
+.hm-cursor {
+  display: inline-block;
+  color: oklch(var(--p));
+  animation: hm-blink .9s step-end infinite;
+}
+@keyframes hm-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Tech badge pills in hero */
+.hm-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: .25rem .75rem;
+  border-radius: 9999px;
+  font-size: .75rem;
+  font-family: ui-monospace, monospace;
+  border: 1px solid oklch(var(--p) / 0.25);
+  background: oklch(var(--p) / 0.07);
+  color: oklch(var(--p));
+  transition: background .2s, border-color .2s;
+}
+.hm-tech-badge:hover {
+  background: oklch(var(--p) / 0.15);
+  border-color: oklch(var(--p) / 0.5);
+}
+
+/* Hero stat cards */
+.hm-stat-card {
+  background: oklch(var(--b2));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+  transition: transform .25s, box-shadow .25s;
+}
+.hm-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.1);
+}
+
+/* Availability mini-card */
+.hm-avail-card {
+  background: oklch(var(--b2));
+  border: 1px solid rgba(16,185,129,.25);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 32px rgba(16,185,129,.06);
+}
+
+
+/* ── SERVICES ───────────────────────────────────────────────────────── */
+
+.hm-service-card {
+  background: oklch(var(--b1));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  padding: 2rem;
+  transition: transform .28s cubic-bezier(.4,0,.2,1),
+              box-shadow .28s cubic-bezier(.4,0,.2,1),
+              border-color .28s;
+}
+.hm-service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.1);
+  border-color: oklch(var(--p) / 0.35);
+}
+
+.hm-service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: .875rem;
+  transition: background .28s, color .28s;
+}
+
+
+/* ── ABOUT / SKILLS ─────────────────────────────────────────────────── */
+
+.hm-skill-row {
+  padding: .25rem 0;
+}
+.hm-skill-track {
+  width: 100%;
+  height: 6px;
+  background: oklch(var(--b3));
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.hm-skill-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 9999px;
+  transition: width 1.1s cubic-bezier(.4,0,.2,1);
+}
+/* JS adds .hm-animated to trigger the fill */
+.hm-skill-fill.hm-animated {
+  width: var(--w);
+}
+
+
+/* ── TECH ICON PILLS ────────────────────────────────────────────────── */
+
+.hm-icon-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background: oklch(var(--b1));
+  border: 1px solid oklch(var(--b3));
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  cursor: default;
+}
+.hm-icon-pill:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  border-color: oklch(var(--p) / 0.4);
+}
+
+
+/* ── PROJECT CARDS ──────────────────────────────────────────────────── */
+
+.hm-project-card {
+  background: oklch(var(--b2));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: transform .28s cubic-bezier(.4,0,.2,1),
+              box-shadow .28s cubic-bezier(.4,0,.2,1);
+}
+.hm-project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,.12);
+}
+
+.hm-project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+.hm-project-card:hover .hm-project-thumb img {
+  transform: scale(1.06);
+}
+
+.hm-oss-card {
+  border-style: dashed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 260px;
+}
+
+
+/* ── PROCESS STEPS ──────────────────────────────────────────────────── */
+
+.hm-process-step {
+  background: oklch(var(--b1));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  padding: 2rem;
+  position: relative;
+}
+
+.hm-step-num {
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  background: linear-gradient(135deg, oklch(var(--p)), oklch(var(--s)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ── BLOG POST CARDS ────────────────────────────────────────────────── */
+
+.hm-post-card {
+  display: block;
+  background: oklch(var(--b2));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.hm-post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,.1);
+  border-color: oklch(var(--p) / 0.35);
+}
+
+
+/* ── TESTIMONIALS ───────────────────────────────────────────────────── */
+
+.hm-testimonial-card {
+  background: oklch(var(--b1));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 1.25rem;
+  padding: 2rem;
+  transition: box-shadow .25s;
+}
+.hm-testimonial-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+}
+
+
+/* ── CTA SECTION ────────────────────────────────────────────────────── */
+
+.hm-cta-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, oklch(var(--p) / 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hm-cta-card {
+  background: oklch(var(--b2));
+  border: 1px solid oklch(var(--b3));
+  border-radius: 2rem;
+  padding: 4rem 3rem;
+  box-shadow: 0 4px 48px rgba(0,0,0,.08);
+}
+
+
+/* ── SCROLL-REVEAL ──────────────────────────────────────────────────── */
+
+.hm-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .65s cubic-bezier(.4,0,.2,1),
+              transform .65s cubic-bezier(.4,0,.2,1);
+}
+.hm-reveal.hm-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hm-reveal-delay-1 { transition-delay: .1s; }
+.hm-reveal-delay-2 { transition-delay: .2s; }
+.hm-reveal-delay-3 { transition-delay: .3s; }
+
+
+/* ── REDUCED MOTION ─────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-live-dot                          { animation: none; }
+  .hm-cursor                            { animation: none; }
+  .hm-skill-fill                        { transition: none; }
+  .hm-reveal                            { transition: none; }
+  .hm-service-card,
+  .hm-project-card,
+  .hm-post-card,
+  .hm-stat-card,
+  .hm-icon-pill                         { transition: none; }
+}

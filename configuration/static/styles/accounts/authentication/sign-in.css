@@ -1,0 +1,110 @@
+/* Input focus lift */
+
+.input {
+    transition: all 0.25s ease;
+}
+
+.input:focus {
+    transform: translateY(-1px);
+}
+
+/* Card entrance */
+
+.signin-card {
+    animation: signin-fade-up 0.5s ease;
+}
+
+/* Buttons */
+
+.btn {
+    transition: 0.25s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Ambient background blobs */
+
+.signin-blob {
+    animation: signin-float 10s ease-in-out infinite;
+}
+
+/* Terminal signature */
+
+.signin-terminal {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+.signin-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.9rem;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.signin-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.signin-terminal-body {
+    padding: 0.9rem 1rem 1.1rem;
+    line-height: 1.7;
+    min-height: 5.5rem;
+}
+
+.signin-cursor {
+    display: inline-block;
+    width: 0.55em;
+    animation: signin-blink 1s step-end infinite;
+}
+
+@keyframes signin-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes signin-float {
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(0, -18px);
+    }
+}
+
+@keyframes signin-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .signin-card,
+    .signin-blob,
+    .signin-cursor,
+    .input,
+    .btn {
+        animation: none;
+        transition: none;
+    }
+}

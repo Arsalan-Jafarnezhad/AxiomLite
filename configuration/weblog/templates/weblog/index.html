@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <main id="weblog-home"
+          class="mx-auto max-w-7xl space-y-14 px-4 py-8 sm:py-10">
+        <section class="weblog-hero relative overflow-hidden rounded-[2rem] border border-base-300 bg-base-200 shadow-xl">
+            <div class="weblog-hero-glow weblog-hero-glow-one"></div>
+            <div class="weblog-hero-glow weblog-hero-glow-two"></div>
+            <div class="relative grid gap-10 px-6 py-14 lg:grid-cols-[1.4fr_.6fr] lg:px-12 lg:py-20">
+                <div class="flex flex-col justify-center">
+                    <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                        <span class="material-symbols-rounded text-[18px]">auto_stories</span>
+                        AxiomLite Weblog
+                    </div>
+                    <h1 class="max-w-3xl text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                        Learn.
+                        <span class="text-primary">Build.</span>
+                        Explore.
+                    </h1>
+                    <p class="mt-6 max-w-2xl text-base leading-8 text-base-content/65 sm:text-lg">
+                        A place for programming, Linux, Django, web development, and
+                        practical technology knowledge. Discover tutorials,
+                        technical articles, experiments, and useful ideas from the
+                        AxiomLite community.
+                    </p>
+                    <div class="mt-8 flex flex-wrap items-center gap-3">
+                        <a href="{% url 'weblog:articles' %}"
+                           class="btn btn-primary rounded-xl gap-2">
+                            <span class="material-symbols-rounded">explore</span>
+                            Explore Articles
+                        </a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'weblog:dashboard:index' %}"
+                               class="btn btn-outline rounded-xl gap-2 border-base-300 hover:border-primary hover:bg-primary/10 hover:text-primary">
+                                <span class="material-symbols-rounded">dashboard</span>
+                                Dashboard
+                            </a>
+                        {% endif %}
+                        {% if total_articles %}
+                            <div class="flex items-center gap-2 rounded-xl border border-base-300 bg-base-100/70 px-4 py-2 text-sm">
+                                <span class="font-bold">{{ total_articles }}</span>
+                                <span class="text-base-content/50">published articles</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="hidden items-center justify-center lg:flex">
+                    <div class="weblog-hero-orbit">
+                        <div class="weblog-orbit-ring weblog-orbit-ring-one"></div>
+                        <div class="weblog-orbit-ring weblog-orbit-ring-two"></div>
+                        <div class="weblog-hero-icon">
+                            <span class="material-symbols-rounded">terminal</span>
+                        </div>
+                        <div class="weblog-floating-icon weblog-floating-icon-one">
+                            <span class="material-symbols-rounded">code</span>
+                        </div>
+                        <div class="weblog-floating-icon weblog-floating-icon-two">
+                            <span class="material-symbols-rounded">dns</span>
+                        </div>
+                        <div class="weblog-floating-icon weblog-floating-icon-three">
+                            <span class="material-symbols-rounded">language</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
+            <div>
+                <div class="weblog-section-label">
+                    <span class="material-symbols-rounded">info</span>
+                    About the Weblog
+                </div>
+                <h2 class="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
+                    More than just
+                    <span class="text-primary">articles.</span>
+                </h2>
+                <p class="mt-5 max-w-xl leading-8 text-base-content/65">
+                    The AxiomLite Weblog is designed to collect practical knowledge
+                    for developers and technology enthusiasts. Instead of simply
+                    presenting information, articles focus on things you can
+                    actually understand, build, test, and use.
+                </p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div class="weblog-feature-box">
+                    <div class="weblog-feature-icon">
+                        <span class="material-symbols-rounded">code</span>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold">Practical Development</h3>
+                    <p class="mt-2 text-sm leading-6 text-base-content/55">
+                        Programming concepts, Django, Python, JavaScript, databases,
+                        and real-world development.
+                    </p>
+                </div>
+                <div class="weblog-feature-box">
+                    <div class="weblog-feature-icon">
+                        <span class="material-symbols-rounded">terminal</span>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold">Linux & Systems</h3>
+                    <p class="mt-2 text-sm leading-6 text-base-content/55">
+                        Linux, servers, networking, tools, automation, and system
+                        administration.
+                    </p>
+                </div>
+                <div class="weblog-feature-box">
+                    <div class="weblog-feature-icon">
+                        <span class="material-symbols-rounded">lightbulb</span>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold">Experiments & Ideas</h3>
+                    <p class="mt-2 text-sm leading-6 text-base-content/55">
+                        Experiments, technical discoveries, and interesting ideas
+                        worth exploring.
+                    </p>
+                </div>
+                <div class="weblog-feature-box">
+                    <div class="weblog-feature-icon">
+                        <span class="material-symbols-rounded">school</span>
+                    </div>
+                    <h3 class="mt-4 text-lg font-bold">Learn by Building</h3>
+                    <p class="mt-2 text-sm leading-6 text-base-content/55">
+                        Content intended to help you move from understanding an idea
+                        to actually implementing it.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <div class="weblog-section-label">
+                        <span class="material-symbols-rounded">trending_up</span>
+                        Community Favorites
+                    </div>
+                    <h2 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Top Articles</h2>
+                    <p class="mt-2 text-base-content/55">The most viewed articles on the Weblog.</p>
+                </div>
+                <a href="{% url 'weblog:articles' %}"
+                   class="btn btn-ghost rounded-xl gap-2">
+                    All Articles
+                    <span class="material-symbols-rounded">arrow_forward</span>
+                </a>
+            </div>
+            {% if popular_articles %}
+                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    {% for article in popular_articles %}
+                        <div class="weblog-article-reveal">{% include "partials/article_card.html" %}</div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {% include "components/empty_state.html" %}
+            {% endif %}
+        </section>
+        {% if featured_articles %}
+            <section>
+                <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <div class="weblog-section-label">
+                            <span class="material-symbols-rounded">star</span>
+                            Editor's Picks
+                        </div>
+                        <h2 class="mt-3 text-3xl font-black tracking-tight">Featured Articles</h2>
+                    </div>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    {% for article in featured_articles %}
+                        <div class="weblog-article-reveal">{% include "partials/article_card.html" %}</div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+        {% if latest_articles %}
+            <section>
+                <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <div class="weblog-section-label">
+                            <span class="material-symbols-rounded">schedule</span>
+                            Fresh Content
+                        </div>
+                        <h2 class="mt-3 text-3xl font-black tracking-tight">Recently Published</h2>
+                    </div>
+                    <a href="{% url 'weblog:articles' %}" class="link link-primary">Browse everything</a>
+                </div>
+                <div class="space-y-3">
+                    {% for article in latest_articles %}
+                        <a href="{{ article.get_absolute_url }}" class="weblog-latest-row group">
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    {% if article.category %}
+                                        <span class="badge badge-primary badge-sm">{{ article.category.name }}</span>
+                                    {% endif %}
+                                    <span class="text-xs text-base-content/40">{{ article.published_at|date:"M d, Y" }}</span>
+                                </div>
+                                <h3 class="mt-2 truncate text-lg font-bold transition group-hover:text-primary">{{ article.title }}</h3>
+                                {% if article.summary %}
+                                    <p class="mt-1 line-clamp-1 text-sm text-base-content/50">{{ article.summary }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="flex shrink-0 items-center gap-3 text-sm text-base-content/45">
+                                <span class="hidden items-center gap-1 sm:flex">
+                                    <span class="material-symbols-rounded text-[18px]">schedule</span>
+                                    {{ article.reading_time }} min
+                                </span>
+                                <span class="material-symbols-rounded transition group-hover:translate-x-1 group-hover:text-primary">
+                                    arrow_forward
+                                </span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+        {% if categories %}
+            <section>
+                <div class="mb-7">
+                    <div class="weblog-section-label">
+                        <span class="material-symbols-rounded">category</span>
+                        Explore Topics
+                    </div>
+                    <h2 class="mt-3 text-3xl font-black tracking-tight">Browse by Category</h2>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    {% for category in categories %}
+                        <a href="{{ category.get_absolute_url }}" class="weblog-category group">
+                            <span class="material-symbols-rounded text-[19px]">folder</span>
+                            {{ category.name }}
+                            <span class="material-symbols-rounded text-[17px] opacity-40 transition group-hover:translate-x-0.5 group-hover:opacity-100">
+                                arrow_forward
+                            </span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+        <section class="relative overflow-hidden rounded-[2rem] border border-primary/20 bg-primary/10">
+            <div class="absolute inset-0 weblog-cta-pattern"></div>
+            <div class="relative flex flex-col items-start justify-between gap-6 px-6 py-10 sm:px-10 lg:flex-row lg:items-center">
+                <div>
+                    <h2 class="text-2xl font-black sm:text-3xl">Ready to explore?</h2>
+                    <p class="mt-2 max-w-xl text-base-content/60">
+                        Browse the complete collection of AxiomLite articles and
+                        find something worth building.
+                    </p>
+                </div>
+                <a href="{% url 'weblog:articles' %}"
+                   class="btn btn-primary rounded-xl gap-2">
+                    Explore Weblog
+                    <span class="material-symbols-rounded">arrow_forward</span>
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock content %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/weblog/index.css' %}" />
+{% endblock style %}
+{% block script %}
+    <script src="{% static 'scripts/weblog/index.js' %}" defer></script>
+{% endblock script %}

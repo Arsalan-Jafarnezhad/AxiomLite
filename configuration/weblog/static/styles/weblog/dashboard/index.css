@@ -1,0 +1,569 @@
+/* =========================================================
+   Weblog Dashboard
+   ========================================================= */
+
+#weblog-dashboard {
+    animation: dashboardFadeIn 0.45s ease both;
+}
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.dashboard-header {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 2rem;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            hsl(var(--p) / 0.15),
+            transparent 35%
+        ),
+        hsl(var(--b2));
+
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.08);
+}
+
+.dashboard-header::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(135deg, hsl(var(--p) / 0.04), transparent 45%);
+
+    pointer-events: none;
+}
+
+.dashboard-header-content {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    padding: 2.5rem;
+}
+
+.dashboard-eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    padding: 0.45rem 0.8rem;
+
+    border-radius: 999px;
+
+    background: hsl(var(--p) / 0.1);
+    color: hsl(var(--p));
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.dashboard-eyebrow .material-symbols-rounded {
+    font-size: 18px;
+}
+
+.dashboard-title {
+    margin-top: 0.9rem;
+
+    font-size: clamp(2rem, 4vw, 3.25rem);
+
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.dashboard-description {
+    max-width: 650px;
+
+    margin-top: 0.75rem;
+
+    color: hsl(var(--bc) / 0.6);
+
+    line-height: 1.7;
+}
+
+.dashboard-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 0.75rem;
+
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   Section headings
+   ========================================================= */
+
+.dashboard-section-heading {
+    margin-bottom: 1rem;
+}
+
+.dashboard-section-label {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 0.45rem;
+
+    color: hsl(var(--p));
+
+    font-size: 0.75rem;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dashboard-section-label .material-symbols-rounded {
+    font-size: 18px;
+}
+
+.dashboard-section-heading h2,
+.dashboard-panel-header h2,
+.dashboard-navigation h2 {
+    font-size: 1.45rem;
+    font-weight: 850;
+    letter-spacing: -0.025em;
+}
+
+.dashboard-panel-header p,
+.dashboard-navigation p {
+    margin-top: 0.3rem;
+
+    color: hsl(var(--bc) / 0.5);
+
+    font-size: 0.9rem;
+}
+
+/* =========================================================
+   Statistics
+   ========================================================= */
+
+.dashboard-stats {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.dashboard-stat {
+    display: flex;
+    align-items: center;
+
+    gap: 1rem;
+
+    min-width: 0;
+
+    padding: 1.35rem;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 1.25rem;
+
+    background: hsl(var(--b2));
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dashboard-stat:hover {
+    transform: translateY(-3px);
+
+    border-color: hsl(var(--p) / 0.25);
+
+    box-shadow: 0 15px 35px rgb(0 0 0 / 0.08);
+}
+
+.dashboard-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3rem;
+    height: 3rem;
+
+    flex-shrink: 0;
+
+    border-radius: 1rem;
+}
+
+.dashboard-stat-icon .material-symbols-rounded {
+    font-size: 24px;
+}
+
+.dashboard-stat-label {
+    color: hsl(var(--bc) / 0.55);
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.dashboard-stat-value {
+    margin-top: 0.1rem;
+
+    font-size: 1.8rem;
+    line-height: 1.2;
+
+    font-weight: 900;
+}
+
+.dashboard-stat-description {
+    margin-top: 0.15rem;
+
+    color: hsl(var(--bc) / 0.4);
+
+    font-size: 0.72rem;
+}
+
+/* =========================================================
+   Panels
+   ========================================================= */
+
+.dashboard-panel {
+    overflow: hidden;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 1.5rem;
+
+    background: hsl(var(--b2));
+
+    box-shadow: 0 10px 35px rgb(0 0 0 / 0.05);
+}
+
+.dashboard-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 1.5rem;
+
+    padding: 1.5rem;
+
+    border-bottom: 1px solid hsl(var(--b3));
+}
+
+/* =========================================================
+   Article list
+   ========================================================= */
+
+.dashboard-article-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-article-row {
+    display: flex;
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 1rem 1.5rem;
+
+    border-bottom: 1px solid hsl(var(--b3));
+
+    transition:
+        background 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+.dashboard-article-row:last-child {
+    border-bottom: 0;
+}
+
+.dashboard-article-row:hover {
+    background: hsl(var(--b1));
+    padding-left: 1.7rem;
+}
+
+.dashboard-article-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.6rem;
+    height: 2.6rem;
+
+    flex-shrink: 0;
+
+    border-radius: 0.8rem;
+
+    background: hsl(var(--p) / 0.1);
+    color: hsl(var(--p));
+}
+
+.dashboard-article-icon .material-symbols-rounded {
+    font-size: 20px;
+}
+
+/* =========================================================
+   Quick actions
+   ========================================================= */
+
+.dashboard-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-action {
+    display: flex;
+    align-items: center;
+
+    gap: 0.9rem;
+
+    padding: 1rem 1.5rem;
+
+    border-bottom: 1px solid hsl(var(--b3));
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.dashboard-action:last-child {
+    border-bottom: 0;
+}
+
+.dashboard-action:hover {
+    background: hsl(var(--b1));
+}
+
+.dashboard-action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.8rem;
+    height: 2.8rem;
+
+    flex-shrink: 0;
+
+    border-radius: 0.9rem;
+}
+
+.dashboard-action h3 {
+    font-size: 0.9rem;
+    font-weight: 750;
+}
+
+.dashboard-action p {
+    margin-top: 0.15rem;
+
+    color: hsl(var(--bc) / 0.48);
+
+    font-size: 0.72rem;
+}
+
+.dashboard-action-arrow {
+    margin-left: auto;
+
+    color: hsl(var(--bc) / 0.25);
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.dashboard-action:hover .dashboard-action-arrow {
+    transform: translateX(4px);
+
+    color: hsl(var(--p));
+}
+
+/* =========================================================
+   Breakdown
+   ========================================================= */
+
+.dashboard-breakdown {
+    padding: 1.25rem;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 1rem;
+
+    background: hsl(var(--b1));
+}
+
+.dashboard-breakdown-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.4rem;
+    height: 2.4rem;
+
+    border-radius: 0.75rem;
+}
+
+.dashboard-breakdown-icon .material-symbols-rounded {
+    font-size: 19px;
+}
+
+.dashboard-comment-bar {
+    width: 65%;
+}
+
+/* =========================================================
+   Empty state
+   ========================================================= */
+
+.dashboard-empty {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 2rem;
+
+    text-align: center;
+}
+
+.dashboard-empty > .material-symbols-rounded {
+    font-size: 4rem;
+
+    color: hsl(var(--bc) / 0.18);
+}
+
+.dashboard-empty h3 {
+    margin-top: 0.8rem;
+
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.dashboard-empty p {
+    margin-top: 0.3rem;
+
+    color: hsl(var(--bc) / 0.5);
+
+    font-size: 0.85rem;
+}
+
+/* =========================================================
+   Navigation
+   ========================================================= */
+
+.dashboard-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    padding: 1.5rem 1.75rem;
+
+    border: 1px solid hsl(var(--p) / 0.18);
+    border-radius: 1.5rem;
+
+    background: linear-gradient(135deg, hsl(var(--p) / 0.08), transparent);
+}
+
+/* =========================================================
+   Animations
+   ========================================================= */
+
+@keyframes dashboardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.dashboard-stat,
+.dashboard-panel,
+.dashboard-navigation {
+    animation: dashboardItemIn 0.45s ease both;
+}
+
+@keyframes dashboardItemIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 1.75rem;
+    }
+
+    .dashboard-header-actions {
+        width: 100%;
+    }
+
+    .dashboard-header-actions .btn {
+        flex: 1;
+    }
+
+    .dashboard-navigation {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-panel-header {
+        flex-direction: column;
+    }
+
+    .dashboard-panel-header .btn {
+        width: 100%;
+    }
+
+    .dashboard-stat {
+        padding: 1.1rem;
+    }
+
+    .dashboard-navigation {
+        padding: 1.25rem;
+    }
+
+    .dashboard-action {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+    }
+
+    .dashboard-article-row {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+    }
+}

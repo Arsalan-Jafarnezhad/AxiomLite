@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %}{{ model_label }} Specs{% endblock %}
+{% block content %}
+    <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+        <div>
+            <p class="text-primary font-mono text-xs tracking-widest uppercase mb-1">Hardware Specs</p>
+            <h1 class="text-3xl font-black flex items-center gap-2">
+                <i class="material-symbols-rounded text-primary text-3xl">
+                    {{ spec_icon }}
+                </i>
+                {{ model_label }}
+            </h1>
+        </div>
+        <a class="btn btn-primary gap-2"
+           href="{% url 'catalog:spec-create' spec_type=spec_type %}">
+            <i class="material-symbols-rounded text-lg">add</i>
+            Add {{ model_label }}
+        </a>
+    </div>
+    <div class="tabs tabs-boxed mb-6 bg-base-100 border border-base-300 w-fit">
+        {% for key, entry in spec_registry.items %}
+            <a href="{% url 'catalog:spec-list' spec_type=key %}"
+               class="tab gap-1 {% if key == spec_type %}tab-active{% endif %}">
+                <i class="material-symbols-rounded text-base">{{ entry.icon }}</i>
+                {{ entry.label }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="card bg-base-100 shadow-sm border border-base-300">
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr class="text-xs uppercase tracking-wider text-base-content/40">
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Details</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in object_list %}
+                        <tr class="hover">
+                            <td class="font-mono text-xs text-base-content/40">{{ obj.pk }}</td>
+                            <td>
+                                {% if obj.product %}
+                                    <a href="{% url 'catalog:product-detail' slug=obj.product.slug %}"
+                                       class="link link-hover font-semibold">{{ obj.product.name }}</a>
+                                {% else %}
+                                    <span class="text-base-content/40 italic">No linked product</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-base-content/70">{{ obj }}</td>
+                            <td class="text-right space-x-1 whitespace-nowrap">
+                                <a class="btn btn-xs btn-ghost"
+                                   href="{% url 'catalog:spec-detail' spec_type=spec_type pk=obj.pk %}">
+                                    <i class="material-symbols-rounded text-sm">
+                                        visibility
+                                    </i>
+                                </a>
+                                <a class="btn btn-xs btn-ghost text-primary"
+                                   href="{% url 'catalog:spec-update' spec_type=spec_type pk=obj.pk %}">
+                                    <i class="material-symbols-rounded text-sm">edit</i>
+                                </a>
+                                <a class="btn btn-xs btn-ghost text-error"
+                                   href="{% url 'catalog:spec-delete' spec_type=spec_type pk=obj.pk %}">
+                                    <i class="material-symbols-rounded text-sm">
+                                        delete
+                                    </i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-base-content/40 py-10">
+                                <i class="material-symbols-rounded text-3xl block mb-2 opacity-40">
+                                    {{ spec_icon }}
+                                </i>
+                                No {{ model_label|lower }} specs yet.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if is_paginated %}
+        <div class="join mt-6 flex justify-center">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}"
+                   class="join-item btn btn-sm">«</a>
+            {% endif %}
+            <span class="join-item btn btn-sm btn-disabled">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}"
+                   class="join-item btn btn-sm">»</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

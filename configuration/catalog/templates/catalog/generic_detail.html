@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% load catalog_extras %} {% block title %}{{
+    model_label }} — {{ object }}{% endblock %} {% block content %}
+    <div class="flex flex-wrap justify-between items-start gap-4 mb-8">
+        <div>
+            <p class="text-primary font-mono text-xs tracking-widest uppercase mb-1">{{ model_label }}</p>
+            <h1 class="text-3xl font-black">{{ object }}</h1>
+        </div>
+        <div class="flex gap-2">
+            {% if update_url %}
+                <a class="btn btn-outline btn-primary btn-sm gap-1"
+                   href="{{ update_url }}">
+                    <i class="material-symbols-rounded text-sm">edit</i>
+                    Edit
+                </a>
+            {% endif %}
+            {% if delete_url %}
+                <a class="btn btn-outline btn-error btn-sm gap-1"
+                   href="{{ delete_url }}">
+                    <i class="material-symbols-rounded text-sm">delete</i>
+                    Delete
+                </a>
+            {% endif %}
+            {% if list_url %}
+                <a class="btn btn-ghost btn-sm gap-1" href="{{ list_url }}">
+                    <i class="material-symbols-rounded text-sm">arrow_back</i>
+                    Back
+                </a>
+            {% elif list_url_name %}
+                <a class="btn btn-ghost btn-sm gap-1" href="{% url list_url_name %}">
+                    <i class="material-symbols-rounded text-sm">arrow_back</i>
+                    Back
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm border border-base-300">
+        <div class="card-body p-0">
+            <table class="table">
+                <tbody>
+                    {% for row in object|model_fields %}
+                        <tr>
+                            <th class="w-56 text-xs uppercase tracking-wider text-base-content/40 font-medium">{{ row.label|capfirst }}</th>
+                            <td>{{ row.value|default:"—" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% block extra %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,115 @@
+/* =========================================================
+   Comment list
+   ========================================================= */
+
+.comment-card {
+    --comment-transition: 200ms ease;
+}
+
+/* =========================================================
+   Pending comments
+   ========================================================= */
+
+.comment-card[data-status="pending"] {
+    border-color: color-mix(in oklab, hsl(var(--wa)) 18%, hsl(var(--b3)));
+}
+
+.comment-card[data-status="pending"]:hover {
+    border-color: color-mix(in oklab, hsl(var(--wa)) 35%, hsl(var(--b3)));
+}
+
+/* =========================================================
+   Search result animation
+   ========================================================= */
+
+.comment-card.is-hidden {
+    display: none;
+}
+
+.comment-card.is-removing {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        max-height 250ms ease,
+        margin 250ms ease;
+}
+
+/* =========================================================
+   Filter buttons
+   ========================================================= */
+
+.comment-filter {
+    transition:
+        background-color 150ms ease,
+        color 150ms ease,
+        border-color 150ms ease;
+}
+
+/* =========================================================
+   Dialog
+   ========================================================= */
+
+#delete-comment-dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(4px);
+}
+
+/* =========================================================
+   Mobile horizontal scrolling
+   ========================================================= */
+
+@media (max-width: 640px) {
+    .comment-filter {
+        min-height: 2.25rem;
+    }
+}
+/* =========================================================
+   AJAX toast
+   ========================================================= */
+
+.comment-toast {
+    animation: comment-toast-in 180ms ease-out;
+}
+
+.comment-toast-hide {
+    animation: comment-toast-out 180ms ease-in forwards;
+}
+
+@keyframes comment-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes comment-toast-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .comment-toast,
+    .comment-card {
+        animation: none;
+        transition: none;
+    }
+}

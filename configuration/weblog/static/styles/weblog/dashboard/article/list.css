@@ -1,0 +1,250 @@
+/* =========================================================
+   Dashboard Articles
+========================================================= */
+
+#dashboard-articles {
+    animation: dashboardArticlesFade 0.45s ease both;
+}
+
+/* =========================================================
+   Header
+========================================================= */
+
+.articles-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.articles-header::before {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    right: -150px;
+    top: -180px;
+    border-radius: 999px;
+    background: hsl(var(--p) / 0.09);
+    pointer-events: none;
+}
+
+/* =========================================================
+   Eyebrow
+========================================================= */
+
+.dashboard-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    width: fit-content;
+
+    padding: 0.45rem 0.75rem;
+
+    border: 1px solid hsl(var(--p) / 0.18);
+    border-radius: 999px;
+
+    background: hsl(var(--p) / 0.08);
+
+    color: hsl(var(--p));
+
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.dashboard-eyebrow .material-symbols-rounded {
+    font-size: 18px;
+}
+
+/* =========================================================
+   Statistics
+========================================================= */
+
+.article-stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    min-height: 100px;
+
+    padding: 1.25rem;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 1.25rem;
+
+    background: hsl(var(--b2));
+
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.article-stat:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 16px 35px rgb(0 0 0 / 0.11);
+}
+
+.article-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 3rem;
+    height: 3rem;
+
+    flex-shrink: 0;
+
+    border-radius: 0.9rem;
+
+    background: currentColor;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.article-stat-icon .material-symbols-rounded {
+    font-size: 25px;
+}
+
+/* =========================================================
+   Table
+========================================================= */
+
+.article-table {
+    width: 100%;
+}
+
+.article-table thead {
+    background: hsl(var(--b3) / 0.35);
+}
+
+.article-table th {
+    padding: 1rem 1.25rem;
+
+    color: hsl(var(--bc) / 0.55);
+
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.article-table td {
+    padding: 1.15rem 1.25rem;
+}
+
+.article-row {
+    transition:
+        background-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.article-row:hover {
+    background: hsl(var(--p) / 0.035);
+}
+
+/* =========================================================
+   Mobile Cards
+========================================================= */
+
+.mobile-article-card {
+    padding: 1rem;
+
+    border: 1px solid hsl(var(--b3));
+    border-radius: 1rem;
+
+    background: hsl(var(--b1));
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.mobile-article-card:hover {
+    transform: translateY(-2px);
+
+    border-color: hsl(var(--p) / 0.35);
+
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.08);
+}
+
+/* =========================================================
+   Empty State
+========================================================= */
+
+.article-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 320px;
+
+    padding: 3rem;
+
+    text-align: center;
+}
+
+.article-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 4.5rem;
+    height: 4.5rem;
+
+    border-radius: 1.5rem;
+
+    background: hsl(var(--p) / 0.08);
+
+    color: hsl(var(--p));
+}
+
+.article-empty-icon .material-symbols-rounded {
+    font-size: 2.2rem;
+}
+
+/* =========================================================
+   Pagination
+========================================================= */
+
+.dashboard-pagination {
+    display: flex;
+    justify-content: center;
+
+    padding: 0.5rem 0 1rem;
+}
+
+/* =========================================================
+   Animations
+========================================================= */
+
+@keyframes dashboardArticlesFade {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 640px) {
+    .article-stat {
+        min-height: 84px;
+        padding: 1rem;
+    }
+
+    .article-stat-icon {
+        width: 2.6rem;
+        height: 2.6rem;
+    }
+}

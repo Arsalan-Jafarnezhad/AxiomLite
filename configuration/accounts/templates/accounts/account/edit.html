@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/accounts/account/edit.css' %}">
+{% endblock style %}
+{% block content %}
+    <main class="container mx-auto max-w-7xl px-4 py-10">
+        <section class="mb-10">
+            <div class="hero rounded-3xl bg-base-200 border border-base-300 shadow-xl">
+                <div class="hero-content w-full justify-between flex-col lg:flex-row">
+                    <div>
+                        <h1 class="text-4xl font-black flex items-center gap-3">
+                            <i class="fa-solid fa-user-gear text-primary"></i>
+                            Account Settings
+                        </h1>
+                        <p class="mt-3 text-base-content/70 max-w-2xl">
+                            Manage your personal information, account details,
+                            profile, and public appearance.
+                        </p>
+                    </div>
+                    <div class="stats shadow bg-base-100">
+                        <div class="stat px-6">
+                            <div class="stat-figure text-primary">
+                                <i class="fa-solid fa-ranking-star text-3xl"></i>
+                            </div>
+                            <div class="stat-title">Level</div>
+                            <div class="stat-value text-primary">{{ request.user.profile.level }}</div>
+                        </div>
+                        <div class="stat px-6">
+                            <div class="stat-figure text-warning">
+                                <i class="fa-solid fa-star text-3xl"></i>
+                            </div>
+                            <div class="stat-title">Points</div>
+                            <div class="stat-value text-warning">{{ request.user.profile.points }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <form method="post"
+              enctype="multipart/form-data"
+              class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {% csrf_token %}
+            <aside class="xl:col-span-1">
+                <div class="card bg-base-200 border border-base-300 shadow-xl sticky top-28">
+                    <div class="card-body items-center text-center">
+                        <div class="relative group">
+                            {% if request.user.profile.avatar %}
+                                <img id="avatar-preview"
+                                     src="{{ request.user.profile.avatar.url }}"
+                                     class="w-44 h-44 rounded-full object-cover border-[6px] border-base-100 shadow-xl transition duration-300 group-hover:brightness-75">
+                            {% else %}
+                                <img id="avatar-preview"
+                                     src="https://placehold.co/500x500"
+                                     class="w-44 h-44 rounded-full object-cover border-[6px] border-base-100 shadow-xl transition duration-300 group-hover:brightness-75">
+                            {% endif %}
+                            <label for="id_avatar"
+                                   class="absolute inset-0 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition">
+                                <div class="btn btn-circle btn-primary">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
+                            </label>
+                        </div>
+                        <input type="file"
+                               id="id_avatar"
+                               name="avatar"
+                               accept="image/*"
+                               class="hidden">
+                        <h2 class="text-2xl font-bold mt-5">{{ request.user.profile.name }}</h2>
+                        <p class="text-base-content/70">@{{ request.user.username }}</p>
+                        <div class="divider"></div>
+                        <div class="grid grid-cols-2 gap-3 w-full">
+                            <div class="stat bg-base-100 rounded-xl">
+                                <div class="stat-title">Level</div>
+                                <div class="stat-value text-primary text-2xl">{{ request.user.profile.level }}</div>
+                            </div>
+                            <div class="stat bg-base-100 rounded-xl">
+                                <div class="stat-title">Points</div>
+                                <div class="stat-value text-warning text-2xl">{{ request.user.profile.points }}</div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="w-full space-y-3 text-left">
+                            <div class="flex justify-between">
+                                <span class="text-base-content/60">
+                                    <i class="fa fa-calendar-plus mr-2"></i>
+                                    Joined
+                                </span>
+                                <span class="font-semibold">{{ request.user.date_joined|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-base-content/60">
+                                    <i class="fa fa-clock-rotate-left mr-2"></i>
+                                    Updated
+                                </span>
+                                <span class="font-semibold">{{ request.user.profile.updated_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="{% url 'accounts:profile' request.user.username %}"
+                           class="btn btn-outline btn-primary w-full">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            View Public Profile
+                        </a>
+                    </div>
+                </div>
+            </aside>
+            <section class="xl:col-span-2 space-y-8">
+                <div class="card bg-base-200 border border-base-300 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title text-2xl mb-6">
+                            <i class="fa-solid fa-user text-primary"></i>
+                            Personal Information
+                        </h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            {% for field in form.fieldsets.0.fields %}
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text font-semibold">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small class="text-xs text-base-content/60">{{ field.help_text }}</small>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <p class="text-error text-sm mt-1">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-base-200 border border-base-300 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title text-2xl mb-6">
+                            <i class="fa-solid fa-shield-halved text-primary"></i>
+                            Account Information
+                        </h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            {% for field in form.fieldsets.1.fields %}
+                                <div>
+                                    <label class="label">
+                                        <span class="label-text font-semibold">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small class="text-xs text-base-content/60">{{ field.help_text }}</small>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <p class="text-error text-sm mt-1">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="h-16 flex flex-col gap-2">
+                                <span class="text-base-content/70 font-semibold">Country</span>
+                                <div class="w-24 h-12 flex">
+                                    <i class="!w-full !h-full cif-{ user.get_phone_number_country_short_name }}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-base-200 border border-base-300 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title text-2xl mb-6">
+                            <i class="fa-solid fa-id-card text-primary"></i>
+                            Public Profile
+                        </h2>
+                        <div class="grid gap-6">
+                            <div>
+                                <label class="label">
+                                    <span class="label-text font-semibold">Display Name</span>
+                                </label>
+                                {{ profile_form.display_name }}
+                                {% for error in profile_form.display_name.errors %}
+                                    <p class="text-error text-sm mt-1">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                <label class="label">
+                                    <span class="label-text font-semibold">Biography</span>
+                                    <span id="bio-counter" class="label-text-alt text-base-content/60">0</span>
+                                </label>
+                                {{ profile_form.biography }}
+                                <div class="label">
+                                    <span class="label-text-alt text-base-content/60">Tell visitors something about yourself.</span>
+                                </div>
+                                {% for error in profile_form.biography.errors %}
+                                    <p class="text-error text-sm mt-1">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-base-200 border border-base-300 shadow-xl">
+                    <div class="card-body flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                        <div>
+                            <h2 class="text-xl font-bold flex items-center gap-2">
+                                <i class="fa-solid fa-key text-warning"></i>
+                                Password & Security
+                            </h2>
+                            <p class="text-base-content/70 mt-2">Change your password to keep your account secure.</p>
+                        </div>
+                        <a href="{% url 'account_change_password' %}" class="btn btn-warning">
+                            <i class="fa-solid fa-lock"></i>
+                            Change Password
+                        </a>
+                    </div>
+                </div>
+                <div class="card bg-base-200 border border-base-300 shadow-xl">
+                    <div class="card-body">
+                        <div class="flex flex-col md:flex-row gap-4 justify-end">
+                            <a href="{% url 'accounts:account' %}" class="btn btn-ghost">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                Cancel
+                            </a>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                Reset
+                            </button>
+                            <button id="save-btn" type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-2 border-error shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title text-error">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Danger Zone
+                        </h2>
+                        <p class="text-base-content/70">Deleting your account is permanent and cannot be undone.</p>
+                        <div class="mt-5">
+                            <a href="{% url 'accounts:account-edit' %}" class="btn btn-error">
+                                <i class="fa-solid fa-trash"></i>
+                                Delete Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </main>
+{% endblock content %}
+{% block script %}
+    <script src="{% static 'scripts/accounts/account/edit.js' %}" defer></script>
+{% endblock script %}

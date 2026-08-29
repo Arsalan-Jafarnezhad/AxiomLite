@@ -1,0 +1,429 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="min-h-screen bg-base-200/40">
+        <div class="container mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="mb-6">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <div class="mb-2 flex items-center gap-2 text-sm text-base-content/50">
+                            <span class="material-symbols-rounded text-[18px]">code</span>
+                            <span>Problemset</span>
+                        </div>
+                        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Questions</h1>
+                        <p class="mt-2 max-w-2xl text-sm leading-6 text-base-content/60">
+                            Practice programming problems, improve your skills,
+                            and challenge yourself at your own pace.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="{% url 'questions:submission-list' %}"
+                           class="btn btn-outline btn-sm gap-2">
+                            <span class="material-symbols-rounded text-[18px]">history</span>
+                            My submissions
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Search -->
+            <div class="mb-5 rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                <form method="get" class="p-3 sm:p-4">
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <label class="input input-bordered flex h-12 flex-1 items-center gap-3">
+                            <span class="material-symbols-rounded text-base-content/50">search</span>
+                            <input type="search"
+                                   name="q"
+                                   value="{{ query }}"
+                                   placeholder="Search questions..."
+                                   class="grow"
+                                   autocomplete="off" />
+                            {% if query %}
+                                <button type="button"
+                                        onclick="this.previousElementSibling.value=''; this.form.submit();"
+                                        class="btn btn-ghost btn-circle btn-xs"
+                                        aria-label="Clear search">
+                                    <span class="material-symbols-rounded text-[18px]">close</span>
+                                </button>
+                            {% endif %}
+                        </label>
+                        <button type="submit" class="btn btn-primary h-12 px-7">
+                            <span class="material-symbols-rounded text-[20px]">search</span>
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Mobile filter button -->
+            <div class="mb-4 lg:hidden">
+                <button type="button"
+                        class="btn btn-outline w-full justify-between"
+                        onclick="document.getElementById('question-filters').showModal()">
+                    <span class="flex items-center gap-2">
+                        <span class="material-symbols-rounded">tune</span>
+                        Filters
+                    </span>
+                    <span class="material-symbols-rounded">chevron_right</span>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-[250px_minmax(0,1fr)]">
+                <!-- Desktop Filters -->
+                <aside class="hidden lg:block">
+                    <div class="sticky top-6 rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                        <div class="border-b border-base-300 px-5 py-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-rounded text-[20px]">tune</span>
+                                    <h2 class="font-semibold">Filters</h2>
+                                </div>
+                                {% if query or request.GET.difficulty or request.GET.language or request.GET.tag %}
+                                    <a href="{% url 'questions:question-list' %}"
+                                       class="text-xs font-medium text-primary hover:underline">Clear all</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <form method="get" class="space-y-5 p-5">
+                            <!-- Preserve search -->
+                            {% if query %}
+                                <input type="hidden" name="q" value="{{ query }}">
+                            {% endif %}
+                            <!-- Difficulty -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-base-content/50">Difficulty</label>
+                                <select name="difficulty" class="select select-bordered w-full">
+                                    <option value="">All difficulties</option>
+                                    {% for value, label in question_difficulties %}
+                                        <option value="{{ value }}"
+                                                {% if request.GET.difficulty == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- Language -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-base-content/50">Language</label>
+                                <select name="language" class="select select-bordered w-full">
+                                    <option value="">All languages</option>
+                                    {% for item in languages %}
+                                        <option value="{{ item.slug }}"
+                                                {% if request.GET.language == item.slug %}selected{% endif %}>{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- Tag -->
+                            <div>
+                                <label class="mb-2 block text-xs font-semibold uppercase tracking-wide text-base-content/50">Tag</label>
+                                <select name="tag" class="select select-bordered w-full">
+                                    <option value="">All tags</option>
+                                    {% for item in tags %}
+                                        <option value="{{ item.slug }}"
+                                                {% if request.GET.tag == item.slug %}selected{% endif %}>{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">Apply filters</button>
+                        </form>
+                    </div>
+                </aside>
+                <!-- Questions -->
+                <main class="min-w-0">
+                    <!-- Result toolbar -->
+                    <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm font-medium">
+                                {% if questions.paginator.count %}
+                                    {{ questions.paginator.count }}
+                                    question{{ questions.paginator.count|pluralize }}
+                                {% else %}
+                                    No questions
+                                {% endif %}
+                            </p>
+                            {% if query %}
+                                <p class="mt-0.5 text-xs text-base-content/50">
+                                    Results for
+                                    <span class="font-medium text-base-content">"{{ query }}"</span>
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="hidden text-xs text-base-content/50 sm:inline">Sort by</span>
+                            <form method="get" class="flex items-center gap-2">
+                                {% if query %}
+                                    <input type="hidden" name="q" value="{{ query }}">
+                                {% endif %}
+                                {% if request.GET.difficulty %}
+                                    <input type="hidden" name="difficulty" value="{{ request.GET.difficulty }}">
+                                {% endif %}
+                                {% if request.GET.language %}
+                                    <input type="hidden" name="language" value="{{ request.GET.language }}">
+                                {% endif %}
+                                {% if request.GET.tag %}
+                                    <input type="hidden" name="tag" value="{{ request.GET.tag }}">
+                                {% endif %}
+                                <select name="sort"
+                                        class="select select-bordered select-sm"
+                                        onchange="this.form.submit()"
+                                        aria-label="Sort questions">
+                                    <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option>
+                                    <option value="oldest" {% if sort == "oldest" %}selected{% endif %}>Oldest</option>
+                                    <option value="most_solved" {% if sort == "most_solved" %}selected{% endif %}>Most solved</option>
+                                    <option value="least_solved"
+                                            {% if sort == "least_solved" %}selected{% endif %}>Least solved</option>
+                                    <option value="most_attempted"
+                                            {% if sort == "most_attempted" %}selected{% endif %}>Most attempted</option>
+                                    <option value="least_attempted"
+                                            {% if sort == "least_attempted" %}selected{% endif %}>Least attempted</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Active filters -->
+                    {% if request.GET.difficulty or request.GET.language or request.GET.tag %}
+                        <div class="mb-4 flex flex-wrap items-center gap-2">
+                            <span class="text-xs font-medium text-base-content/50">Active filters:</span>
+                            {% if request.GET.difficulty %}
+                                <a href="?q={{ query|urlencode }}&language={{ request.GET.language }}&tag={{ request.GET.tag }}"
+                                   class="badge badge-primary badge-outline gap-1 px-3 py-3">
+                                    Difficulty
+                                    <span class="material-symbols-rounded text-[15px]">close</span>
+                                </a>
+                            {% endif %}
+                            {% if request.GET.language %}
+                                <a href="?q={{ query|urlencode }}&difficulty={{ request.GET.difficulty }}&tag={{ request.GET.tag }}"
+                                   class="badge badge-primary badge-outline gap-1 px-3 py-3">
+                                    {{ request.GET.language }}
+                                    <span class="material-symbols-rounded text-[15px]">close</span>
+                                </a>
+                            {% endif %}
+                            {% if request.GET.tag %}
+                                <a href="?q={{ query|urlencode }}&difficulty={{ request.GET.difficulty }}&language={{ request.GET.language }}"
+                                   class="badge badge-primary badge-outline gap-1 px-3 py-3">
+                                    {{ request.GET.tag }}
+                                    <span class="material-symbols-rounded text-[15px]">close</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <!-- Question table -->
+                    <div class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                        <!-- Table header -->
+                        <div class="hidden grid-cols-[minmax(0,1fr)_130px_150px_130px] border-b border-base-300 bg-base-200/50 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-base-content/50 md:grid">
+                            <div>Question</div>
+                            <div>Difficulty</div>
+                            <div>Solves</div>
+                            <div>Language</div>
+                            <div>Status</div>
+                        </div>
+                        <div class="divide-y divide-base-300">
+                            {% for question in questions %}
+                                <a href="{{ question.get_absolute_url }}"
+                                   class="group block transition-colors hover:bg-base-200/40">
+                                    <div class="grid gap-3 px-4 py-4 sm:px-5 md:grid-cols-[minmax(0,1fr)_110px_110px_130px_130px] md:items-center">
+                                        <!-- Question -->
+                                        <div class="min-w-0">
+                                            <div class="flex items-start gap-3">
+                                                <!-- Status icon -->
+                                                <div class="mt-0.5 hidden shrink-0 md:block">
+                                                    {% if question.has_solved %}
+                                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-success/10 text-success">
+                                                            <span class="material-symbols-rounded text-[18px]">check</span>
+                                                        </div>
+                                                    {% elif question.has_attempted %}
+                                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-warning/10 text-warning">
+                                                            <span class="material-symbols-rounded text-[18px]">pending</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-base-200 text-base-content/40">
+                                                            <span class="material-symbols-rounded text-[18px]">code</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="min-w-0 flex-1">
+                                                    <h2 class="truncate font-semibold transition-colors group-hover:text-primary">{{ question.title }}</h2>
+                                                    <div class="mt-2 flex flex-wrap gap-1.5">
+                                                        {% for tag in question.tags.all %}
+                                                            <span class="badge badge-ghost badge-sm font-normal">{{ tag.name }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- Mobile metadata -->
+                                                    <div class="mt-3 flex flex-wrap items-center gap-2 md:hidden">
+                                                        <span class="badge badge-sm badge-outline">{{ question.get_difficulty_display }}</span>
+                                                        <span class="badge badge-sm badge-ghost">{{ question.language.name }}</span>
+                                                        {% if question.has_solved %}
+                                                            <span class="badge badge-sm badge-success gap-1">
+                                                                <span class="material-symbols-rounded text-[14px]">check</span>
+                                                                Solved
+                                                            </span>
+                                                        {% elif question.has_attempted %}
+                                                            <span class="badge badge-sm badge-warning gap-1">
+                                                                <span class="material-symbols-rounded text-[14px]">pending</span>
+                                                                Attempted
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Difficulty -->
+                                        <div class="hidden md:block">
+                                            {% if question.get_difficulty_display == "Easy" %}
+                                                <span class="badge badge-success badge-outline">{{ question.get_difficulty_display }}</span>
+                                            {% elif question.get_difficulty_display == "Medium" %}
+                                                <span class="badge badge-warning badge-outline">{{ question.get_difficulty_display }}</span>
+                                            {% elif question.get_difficulty_display == "Hard" %}
+                                                <span class="badge badge-error badge-outline">{{ question.get_difficulty_display }}</span>
+                                            {% else %}
+                                                <span class="badge badge-outline">{{ question.get_difficulty_display }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Solves -->
+                                        <div class="hidden md:block">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="material-symbols-rounded text-[18px] text-success">check_circle</span>
+                                                <span class="text-sm font-medium">{{ question.solve_count }}</span>
+                                                <span class="text-xs text-base-content/40">/</span>
+                                                <span class="text-sm text-base-content/60">{{ question.try_count }}</span>
+                                            </div>
+                                            <div class="mt-0.5 text-[11px] text-base-content/40">solves / tries</div>
+                                        </div>
+                                        <!-- Language -->
+                                        <div class="hidden md:flex md:items-center md:gap-2">
+                                            <span class="material-symbols-rounded text-[18px] text-base-content/50">terminal</span>
+                                            <span class="truncate text-sm text-base-content/70">{{ question.language.name }}</span>
+                                        </div>
+                                        <!-- Status -->
+                                        <div class="hidden md:block">
+                                            {% if question.has_solved %}
+                                                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-success">
+                                                    <span class="material-symbols-rounded text-[18px]">check_circle</span>
+                                                    Solved
+                                                </span>
+                                            {% elif question.has_attempted %}
+                                                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-warning">
+                                                    <span class="material-symbols-rounded text-[18px]">pending</span>
+                                                    Attempted
+                                                </span>
+                                            {% else %}
+                                                <span class="inline-flex items-center gap-1.5 text-sm text-base-content/40">
+                                                    <span class="material-symbols-rounded text-[18px]">radio_button_unchecked</span>
+                                                    Not attempted
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </a>
+                            {% empty %}
+                                <!-- Empty state -->
+                                <div class="px-6 py-20 text-center">
+                                    <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-base-200">
+                                        <span class="material-symbols-rounded text-3xl text-base-content/40">search_off</span>
+                                    </div>
+                                    <h2 class="text-lg font-semibold">No questions found</h2>
+                                    <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-base-content/50">
+                                        Try changing your search query or removing some
+                                        filters to find more questions.
+                                    </p>
+                                    <a href="{% url 'questions:question-list' %}"
+                                       class="btn btn-outline btn-sm mt-5">Clear filters</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Pagination -->
+                        {% if questions.paginator.num_pages > 1 %}
+                            <div class="border-t border-base-300 px-4 py-4 sm:px-5">
+                                <div class="flex flex-col items-center justify-between gap-3 sm:flex-row">
+                                    <p class="text-xs text-base-content/50">
+                                        Page
+                                        <span class="font-medium text-base-content">{{ questions.number }}</span>
+                                        of
+                                        <span class="font-medium text-base-content">{{ questions.paginator.num_pages }}</span>
+                                    </p>
+                                    <div class="join">
+                                        {% if questions.has_previous %}
+                                            <a href="?page={{ questions.previous_page_number }}&q={{ query|urlencode }}&difficulty={{ request.GET.difficulty }}&language={{ request.GET.language }}&tag={{ request.GET.tag }}"
+                                               class="btn btn-sm join-item"
+                                               aria-label="Previous page">
+                                                <span class="material-symbols-rounded text-[18px]">chevron_left</span>
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-sm join-item" disabled>
+                                                <span class="material-symbols-rounded text-[18px]">chevron_left</span>
+                                            </button>
+                                        {% endif %}
+                                        <span class="btn btn-sm join-item pointer-events-none">{{ questions.number }}</span>
+                                        {% if questions.has_next %}
+                                            <a href="?page={{ questions.next_page_number }}&q={{ query|urlencode }}&difficulty={{ request.GET.difficulty }}&language={{ request.GET.language }}&tag={{ request.GET.tag }}"
+                                               class="btn btn-sm join-item"
+                                               aria-label="Next page">
+                                                <span class="material-symbols-rounded text-[18px]">chevron_right</span>
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-sm join-item" disabled>
+                                                <span class="material-symbols-rounded text-[18px]">chevron_right</span>
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Filters -->
+    <dialog id="question-filters" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box max-w-lg">
+            <div class="mb-5 flex items-center justify-between">
+                <h2 class="text-lg font-bold">Filters</h2>
+                <form method="dialog">
+                    <button class="btn btn-ghost btn-circle btn-sm">
+                        <span class="material-symbols-rounded">close</span>
+                    </button>
+                </form>
+            </div>
+            <form method="get" class="space-y-5">
+                {% if query %}
+                    <input type="hidden" name="q" value="{{ query }}">
+                {% endif %}
+                <div>
+                    <label class="mb-2 block text-sm font-medium">Difficulty</label>
+                    <select name="difficulty" class="select select-bordered w-full">
+                        <option value="">All difficulties</option>
+                        {% for value, label in question_difficulties %}
+                            <option value="{{ value }}"
+                                    {% if request.GET.difficulty == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium">Language</label>
+                    <select name="language" class="select select-bordered w-full">
+                        <option value="">All languages</option>
+                        {% for item in languages %}
+                            <option value="{{ item.slug }}"
+                                    {% if request.GET.language == item.slug %}selected{% endif %}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="mb-2 block text-sm font-medium">Tag</label>
+                    <select name="tag" class="select select-bordered w-full">
+                        <option value="">All tags</option>
+                        {% for item in tags %}
+                            <option value="{{ item.slug }}"
+                                    {% if request.GET.tag == item.slug %}selected{% endif %}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <a href="{% url 'questions:question-list' %}"
+                       class="btn btn-outline flex-1">Clear</a>
+                    <button type="submit" class="btn btn-primary flex-1">Apply filters</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+{% endblock %}

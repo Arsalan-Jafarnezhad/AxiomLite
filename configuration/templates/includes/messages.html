@@ -1,0 +1,49 @@
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "info" %}
+            <div role="alert" class="alert alert-info my-2">
+                <i class="text-xl far fa-circle-info"></i>
+                <span class="text-xl">{{ message }}</span>
+                <div class="alert-remover">
+                    <i class="text-xl far fa-circle-xmark self-center cursor-pointer"></i>
+                </div>
+            </div>
+        {% endif %}
+        {% if message.tags == "success" %}
+            <div role="alert" class="alert alert-success my-2">
+                <i class="text-xl far fa-check-circle"></i>
+                <span class="text-xl">{{ message }}</span>
+                <div class="alert-remover">
+                    <i class="text-xl far fa-circle-xmark self-center cursor-pointer"></i>
+                </div>
+            </div>
+        {% endif %}
+        {% if message.tags == "warning" %}
+            <div role="alert" class="alert alert-warning my-2">
+                <i class="text-xl far fa-circle-exclamation"></i>
+                <span class="text-xl">{{ message }}</span>
+                <div class="alert-remover">
+                    <i class="text-xl far fa-circle-xmark self-center cursor-pointer"></i>
+                </div>
+            </div>
+        {% endif %}
+        {% if message.tags == "error" %}
+            <div role="alert" class="alert alert-error my-2">
+                <i class="text-xl far fa-circle-xmark"></i>
+                <span class="text-xl">{{ message }}</span>
+                <div class="alert-remover">
+                    <i class="text-xl far fa-circle-xmark self-center cursor-pointer"></i>
+                </div>
+            </div>
+        {% endif %}
+        {% if message.tags == "debug" %}
+            <div role="alert" class="alert alert-warning my-2">
+                <i class="text-xl far fa-dev"></i>
+                <span class="text-xl"># {{ message }}</span>
+                <div class="alert-remover">
+                    <i class="text-xl far fa-circle-xmark self-center cursor-pointer"></i>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

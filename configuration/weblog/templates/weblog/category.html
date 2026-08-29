@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="space-y-8">
+        <div class="card bg-base-200 shadow-xl">
+            <div class="card-body">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-rounded text-primary text-4xl">category</span>
+                    <div>
+                        <h1 class="text-4xl font-bold">{{ category.name }}</h1>
+                        {% if category.description %}
+                            <p class="text-base-content/70 mt-2">{{ category.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="stats stats-vertical lg:stats-horizontal mt-5">
+                    <div class="stat">
+                        <div class="stat-title">Articles</div>
+                        <div class="stat-value text-primary">{{ total_articles }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for article in articles %}
+                {% include "partials/article_card.html" %}
+            {% empty %}
+                {% include "components/empty_state.html" %}
+            {% endfor %}
+        </div>
+        {% include "partials/pagination.html" %}
+    </section>
+{% endblock %}

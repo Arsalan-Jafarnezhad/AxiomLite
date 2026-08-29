@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="space-y-8">
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-rounded text-primary text-5xl">tag</span>
+            <div>
+                <h1 class="text-4xl font-bold">#{{ tag.name }}</h1>
+                <p class="text-base-content/60">{{ total_articles }} articles</p>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for article in articles %}
+                {% include "partials/article_card.html" %}
+            {% empty %}
+                {% include "components/empty_state.html" %}
+            {% endfor %}
+        </div>
+        {% include "partials/pagination.html" %}
+    </section>
+{% endblock %}

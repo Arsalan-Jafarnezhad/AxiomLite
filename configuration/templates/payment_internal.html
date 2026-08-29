@@ -1,0 +1,373 @@
+{% extends "base.html" %} {% load static %} {% load i18n %} {% block title %}{%
+    trans "Complete Payment" %} — {{ payment.payment_id }}{% endblock %} {% block
+        style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/catalog/payment/internal.css' %}" />
+    {% endblock %} {% block content %} {# NO Alpine.js. NO external JS framework.
+Pure vanilla ES2020. Translations for JS strings are injected via
+window.PAY_I18N below. #}
+    <header class="sticky top-0 z-40 bg-base-100 border-b border-base-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved text-xl text-primary"></i>
+                <span class="font-semibold text-sm tracking-tight">{% trans "Secure Checkout" %}</span>
+            </div>
+            <div class="hidden sm:flex items-center gap-3 text-xs text-base-content/60">
+                <span class="flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-success text-xs"></i>
+                    SSL / TLS
+                </span>
+                <div class="flex items-center gap-1 text-base">
+                    {% for card in supported_cards %}
+                        {% if card == "Visa" %}
+                            <i class="fa-brands fa-cc-visa text-blue-700"></i>
+                        {% elif card == "Mastercard" %}
+                            <i class="fa-brands fa-cc-mastercard text-orange-500"></i>
+                        {% elif card == "Amex" %}
+                            <i class="fa-brands fa-cc-amex text-blue-500"></i>
+                        {% endif %}
+                    {% empty %}
+                        <i class="fa-brands fa-cc-visa text-blue-700"></i>
+                        <i class="fa-brands fa-cc-mastercard text-orange-500"></i>
+                        <i class="fa-brands fa-cc-amex text-blue-500"></i>
+                    {% endfor %}
+                </div>
+            </div>
+            <span class="badge badge-ghost font-mono text-xs">#{{ order.order_id|truncatechars:14 }}</span>
+        </div>
+    </header>
+    <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <section class="lg:col-span-3 flex flex-col gap-6">
+            <ul class="steps steps-horizontal w-full text-xs">
+                <li class="step step-primary font-medium">{% trans "Card Details" %}</li>
+                <li class="step">{% trans "Confirm" %}</li>
+                <li class="step">{% trans "Receipt" %}</li>
+            </ul>
+            <!-- ── 3-D card preview ─────────────────────────────────────────────
+         Click anywhere on the card to flip front ↔ back.
+         Focusing the CVV input also flips to back automatically.
+         The scene is keyboard-accessible (tabindex + Space/Enter).
+    ──────────────────────────────────────────────────────────────────── -->
+            <div id="card-scene"
+                 class="card-3d-scene"
+                 tabindex="0"
+                 role="button"
+                 aria-label="{% trans 'Card preview — click to flip' %}"
+                 title="{% trans 'Click to flip card' %}">
+                <div id="card-inner" class="card-3d-inner">
+                    <div class="card-face card-face-front p-6 flex flex-col justify-between text-white select-none">
+                        <span class="card-blob card-blob-tr"></span>
+                        <span class="card-blob card-blob-bl"></span>
+                        <div class="relative flex items-start justify-between">
+                            <div class="emv-chip"></div>
+                            <span id="disp-network"
+                                  class="font-bold text-xs tracking-widest uppercase opacity-90 drop-shadow">{{ website_title }} Card</span>
+                        </div>
+                        <div class="relative">
+                            <p id="disp-number"
+                               class="font-mono text-lg tracking-[.18em] mb-3 drop-shadow">•••• •••• •••• ••••</p>
+                            <div class="flex justify-between text-xs opacity-80">
+                                <div>
+                                    <p class="uppercase mb-0.5 opacity-70"
+                                       style="font-size: 0.6rem;
+                                              letter-spacing: 0.1em">{% trans "Cardholder" %}</p>
+                                    <p id="disp-name"
+                                       data-placeholder="{{ user.full_name|upper|default:'YOUR NAME' }}"
+                                       class="font-semibold uppercase tracking-wider truncate max-w-[180px]">
+                                        {{ user.full_name|upper|default:"YOUR NAME"
+                                        }}
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="uppercase mb-0.5 opacity-70"
+                                       style="font-size: 0.6rem;
+                                              letter-spacing: 0.1em">{% trans "Expires" %}</p>
+                                    <p id="disp-expiry" class="font-semibold">MM/YY</p>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="flip-hint">{% trans "click to flip" %} ↩</span>
+                    </div>
+                    <div class="card-face card-face-back p-6 flex flex-col justify-center text-white select-none">
+                        <div class="w-full h-10 bg-black/60 rounded mb-5"></div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex-1 h-8 rounded bg-white/20"></div>
+                            <div id="disp-cvv"
+                                 class="bg-white rounded px-3 py-2 text-gray-800 font-mono font-bold text-sm min-w-[56px] text-center tracking-widest shadow">
+                                •••
+                            </div>
+                        </div>
+                        <p class="text-xs opacity-60 text-center mt-3">{% trans "CVV / CVC Security Code" %}</p>
+                        <span class="flip-hint">{% trans "click to flip" %} ↩</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-base-100 shadow-md border border-base-200">
+                <div class="card-body gap-4 p-6">
+                    <h2 class="card-title text-base font-semibold">
+                        <i class="fa-regular fa-credit-card text-primary"></i>
+                        {% trans "Card Details" %}
+                    </h2>
+                    <form id="payment-form"
+                          method="POST"
+                          autocomplete="off"
+                          action="{ url 'shop:payment-internal-process' payment.payment_id %}"
+                          novalidate
+                          class="flex flex-col gap-4">
+                        {# honeypot — suppresses browser autofill on some browsers
+                    #}
+                        <input type="text" style="display: none" tabindex="-1" autocomplete="off" />
+                        {% csrf_token %}
+                        <div id="wrap-card_number" class="form-control">
+                            <label class="label" for="card_number">
+                                <span class="label-text font-medium">{% trans "Card Number" %}</span>
+                                <span class="label-text-alt text-base flex gap-1">
+                                    <i class="fa-brands fa-cc-visa text-blue-700"></i>
+                                    <i class="fa-brands fa-cc-mastercard text-orange-500"></i>
+                                    <i class="fa-brands fa-cc-amex text-blue-500"></i>
+                                </span>
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2 pay-input">
+                                <i class="fa-regular fa-credit-card text-base-content/40 shrink-0"></i>
+                                <input id="card_number"
+                                       name="card_number"
+                                       type="text"
+                                       inputmode="numeric"
+                                       maxlength="19"
+                                       placeholder="1234 5678 9012 3456"
+                                       autocomplete="cc-number"
+                                       class="grow font-mono bg-transparent border-none outline-none"
+                                       required />
+                            </label>
+                            <p id="err-card_number" class="field-error"></p>
+                        </div>
+                        <div id="wrap-cardholder_name" class="form-control">
+                            <label class="label" for="cardholder_name">
+                                <span class="label-text font-medium">{% trans "Cardholder Name" %}</span>
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2 pay-input">
+                                <i class="fa-regular fa-user text-base-content/40 shrink-0"></i>
+                                <input id="cardholder_name"
+                                       name="cardholder_name"
+                                       type="text"
+                                       placeholder="{% trans 'As shown on card' %}"
+                                       autocomplete="cc-name"
+                                       class="grow uppercase bg-transparent border-none outline-none"
+                                       required />
+                            </label>
+                            <p id="err-cardholder_name" class="field-error"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div id="wrap-expiry" class="form-control">
+                                <label class="label" for="expiry">
+                                    <span class="label-text font-medium">{% trans "Expiry" %}</span>
+                                </label>
+                                <label class="input input-bordered flex items-center gap-2 pay-input">
+                                    <i class="fa-regular fa-calendar text-base-content/40 shrink-0"></i>
+                                    <input id="expiry"
+                                           name="expiry"
+                                           type="text"
+                                           inputmode="numeric"
+                                           maxlength="5"
+                                           placeholder="MM/YY"
+                                           autocomplete="cc-exp"
+                                           class="grow font-mono bg-transparent border-none outline-none"
+                                           required />
+                                </label>
+                                <p id="err-expiry" class="field-error"></p>
+                            </div>
+                            <div id="wrap-cvv" class="form-control">
+                                <label class="label" for="cvv">
+                                    <span class="label-text font-medium">CVV / CVC</span>
+                                    <span class="label-text-alt cursor-help text-base-content/50"
+                                          title="{% trans '3 or 4 digit security code on the back of your card' %}">
+                                        <i class="fa-solid fa-circle-question text-xs"></i>
+                                    </span>
+                                </label>
+                                <label class="input input-bordered flex items-center gap-2 pay-input">
+                                    <i class="fa-solid fa-lock text-base-content/40 shrink-0"></i>
+                                    <input id="cvv"
+                                           name="cvv"
+                                           type="password"
+                                           inputmode="numeric"
+                                           maxlength="4"
+                                           placeholder="•••"
+                                           autocomplete="cc-csc"
+                                           class="grow font-mono bg-transparent border-none outline-none"
+                                           required />
+                                </label>
+                                <p id="err-cvv" class="field-error"></p>
+                            </div>
+                        </div>
+                        <div class="form-control">
+                            <label class="label" for="billing_postcode">
+                                <span class="label-text font-medium">
+                                    {% trans "Billing Postcode" %}
+                                    <span class="badge badge-ghost badge-sm ml-1">{% trans "optional" %}</span>
+                                </span>
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2 pay-input">
+                                <i class="fa-solid fa-location-dot text-base-content/40 shrink-0"></i>
+                                <input id="billing_postcode"
+                                       name="billing_postcode"
+                                       type="text"
+                                       placeholder="e.g. SW1A 1AA"
+                                       autocomplete="postal-code"
+                                       class="grow bg-transparent border-none outline-none" />
+                            </label>
+                        </div>
+                        <button id="submit-btn"
+                                type="submit"
+                                class="btn btn-primary w-full rounded-xl h-12 text-base font-semibold tracking-wide mt-2">
+                            <span id="btn-idle" class="flex items-center gap-2">
+                                <i class="fa-solid fa-lock text-sm"></i>
+                                {% trans "Pay" %}
+                                <strong>{{ payment.amount_display }}</strong>
+                            </span>
+                            <span id="btn-busy" class="flex items-center gap-2">
+                                <span class="loading loading-spinner loading-sm"></span>
+                                {% trans "Authorising…" %}
+                            </span>
+                        </button>
+                        <div id="global-error"
+                             class="alert alert-error text-sm gap-2"
+                             role="alert">
+                            <i class="fa-solid fa-triangle-exclamation shrink-0"></i>
+                            <span id="global-error-text"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <p class="text-center text-xs text-base-content/50 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-check text-success"></i>
+                {% trans "Your card details are encrypted end-to-end and never
+                    stored on our servers." %}
+            </p>
+        </section>
+        <aside class="lg:col-span-2">
+            <div class="card bg-base-100 shadow-md border border-base-200 sticky top-24">
+                <div class="card-body gap-4 p-6">
+                    <h2 class="card-title text-base font-semibold">
+                        <i class="fa-solid fa-bag-shopping text-primary"></i>
+                        {% trans "Order Summary" %}
+                    </h2>
+                    <ul class="divide-y divide-base-200 -mx-1">
+                        {% for item in order_items %}
+                            <li class="py-3 px-1 flex items-start justify-between gap-3 text-sm">
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-medium truncate">{{ item.product_name }}</p>
+                                    <p class="text-xs text-base-content/50 mt-0.5">
+                                        <i class="fa-solid fa-xmark text-[10px] mr-0.5"></i>{{ item.quantity }}
+                                    </p>
+                                </div>
+                                <span class="font-mono text-sm shrink-0 tabular-nums">{{ item.subtotal_display }}</span>
+                            </li>
+                        {% empty %}
+                            <li class="py-4 text-sm text-center text-base-content/40">
+                                <i class="fa-regular fa-face-sad-tear block text-xl mb-1"></i>
+                                {% trans "No items found." %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="space-y-2 text-sm pt-1">
+                        <div class="flex justify-between text-base-content/60">
+                            <span>{% trans "Subtotal" %}</span>
+                            <span class="font-mono tabular-nums">{{ order.subtotal_amount_display }}</span>
+                        </div>
+                        {% if order.off_code %}
+                            <div class="flex justify-between text-success">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-tag text-xs"></i>
+                                    <span class="badge badge-success badge-sm font-mono">{{ order.off_code.code }}</span>
+                                </span>
+                                <span class="font-mono tabular-nums">−{{
+                                    order.coupon_discount_amount.amount|floatformat:2
+                                }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="flex justify-between text-xs text-base-content/50">
+                            <span>{% trans "VAT" %} ({{ payment.value_added_tax
+                            }}%)</span>
+                            <span class="font-mono tabular-nums">{{ payment.vat_amount_display }}</span>
+                        </div>
+                        <div class="divider my-1"></div>
+                        <div class="flex justify-between font-bold text-base">
+                            <span>{% trans "Total" %}</span>
+                            <span class="font-mono text-primary tabular-nums">{{ payment.amount_display }}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 p-3 rounded-xl text-xs bg-info/10 text-info border border-info/20">
+                        <i class="fa-solid fa-coins shrink-0"></i>
+                        <span>{% trans "Currency" %}:
+                            <strong>{{ order.currency }}</strong></span>
+                    </div>
+                    <div class="bg-base-200 rounded-xl px-4 py-3 text-xs">
+                        <p class="font-medium text-base-content/60 mb-1">{% trans "Payment Reference" %}</p>
+                        <p class="font-mono break-all text-base-content">{{ payment.payment_id }}</p>
+                    </div>
+                    <div class="flex items-center justify-center flex-wrap gap-x-3 gap-y-1 text-xs text-base-content/40 pt-1">
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-success"></i> 256-bit
+                            SSL
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-primary"></i>
+                            PCI DSS
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span class="flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> {% trans "Refund
+                            Policy" %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+    <div id="processing-overlay"
+         class="fixed inset-0 z-50 flex items-center justify-center"
+         style="background: rgba(15, 23, 42, 0.78)"
+         aria-live="assertive"
+         aria-label="{% trans 'Processing payment' %}">
+        <div class="card bg-base-100 shadow-2xl w-72">
+            <div class="card-body items-center gap-4 py-10">
+                <div class="relative w-16 h-16 flex items-center justify-center">
+                    <span class="loading loading-ring text-primary"
+                          style="width: 4rem;
+                                 height: 4rem"></span>
+                    <i class="fa-solid fa-lock text-primary absolute text-lg"></i>
+                </div>
+                <div class="text-center">
+                    <p class="font-semibold text-base">{% trans "Authorising payment…" %}</p>
+                    <p class="text-sm text-base-content/50 mt-1 max-w-[200px]">{% trans "Please don't close this window." %}</p>
+                </div>
+                <div class="w-full h-1.5 rounded-full overflow-hidden bg-base-200">
+                    <div class="h-full shimmer rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %} {% block script %} {# Inject translated strings for JS —
+avoids Django template tags inside .js files. All strings here are the only
+translations the JS file needs. #}
+    <script>
+    window.PAY_I18N = {
+        invalidCard:
+            "{% trans 'Please enter a valid card number.'                           %}",
+        invalidName:
+            "{% trans 'Please enter the cardholder name.'                          %}",
+        invalidExpiry:
+            "{% trans 'Please enter a valid expiry date.'                           %}",
+        invalidCvv:
+            "{% trans 'CVV must be {n} digits.'                                    %}",
+        luhnFail:
+            "{% trans 'Card number is invalid. Please check and try again.'         %}",
+        payFailed:
+            "{% trans 'Payment failed. Please try again or use a different card.'   %}",
+        networkErr:
+            "{% trans 'A network error occurred. Please check your connection.'     %}",
+    };
+    </script>
+    <script src="{% static 'scripts/catalog/payment/internal.js' %}"></script>
+{% endblock script %}

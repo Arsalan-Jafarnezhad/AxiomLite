@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load weblog_tags %}
+{% block content %}
+    <div class="mx-auto max-w-7xl space-y-10">
+        <section class="relative overflow-hidden rounded-3xl border border-base-300 bg-base-200">
+            <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="pointer-events-none absolute -bottom-32 -left-20 h-64 w-64 rounded-full bg-secondary/10 blur-3xl"></div>
+            <div class="relative px-6 py-12 md:px-12 md:py-16">
+                <div class="flex justify-center">
+                    <a href="{% url 'weblog:dashboard:index' %}"
+                       class="btn btn-sm btn-ghost gap-2 rounded-full border border-base-300 bg-base-100/70 backdrop-blur">
+                        <span class="material-symbols-rounded text-[18px]">dashboard</span>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="mx-auto mt-7 max-w-3xl text-center">
+                    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
+                        <span class="material-symbols-rounded text-[16px]">auto_stories</span>
+                        Weblog
+                    </div>
+                    <h1 class="text-4xl font-black tracking-tight md:text-5xl lg:text-6xl">Articles</h1>
+                    <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-base-content/60 md:text-lg">
+                        Explore ideas, tutorials, stories, and the latest articles
+                        from our weblog.
+                    </p>
+                </div>
+                <div class="mt-9 flex justify-center">
+                    <div class="stats overflow-hidden border border-base-300 bg-base-100/70 shadow-sm backdrop-blur">
+                        <div class="stat px-6 py-4">
+                            <div class="stat-title text-xs">Articles</div>
+                            <div class="stat-value text-2xl">
+                                {{ page_obj.paginator.count|default:articles|length
+                                }}
+                            </div>
+                        </div>
+                        <div class="stat hidden px-6 py-4 sm:block">
+                            <div class="stat-title text-xs">Reading</div>
+                            <div class="stat-value text-2xl">
+                                <span class="material-symbols-rounded align-middle text-2xl">menu_book</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="flex flex-col gap-4 rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm md:flex-row md:items-center">
+                <form method="get" class="group relative flex-1">
+                    <span class="material-symbols-rounded pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-base-content/40 transition group-focus-within:text-primary">
+                        search
+                    </span>
+                    <input type="search"
+                           name="search"
+                           value="{{ request.GET.search|default:'' }}"
+                           placeholder="Search articles..."
+                           autocomplete="off"
+                           class="input input-bordered h-12 w-full rounded-xl bg-base-200 pl-12 pr-24 transition focus:border-primary focus:bg-base-100 focus:outline-none focus:ring-2 focus:ring-primary/10" />
+                    <button type="submit"
+                            class="btn btn-primary btn-sm absolute right-1.5 top-1/2 h-9 -translate-y-1/2 rounded-lg">
+                        Search
+                    </button>
+                </form>
+                <div class="hidden items-center gap-2 rounded-xl bg-base-200 px-4 py-3 text-xs text-base-content/50 lg:flex">
+                    <span class="material-symbols-rounded text-[18px]">tips_and_updates</span>
+                    Search by title or keyword
+                </div>
+            </div>
+        </section>
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight">Latest articles</h2>
+                <p class="mt-1 text-sm text-base-content/50">Fresh content from the weblog.</p>
+            </div>
+            {% if request.GET.search %}
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-base-content/50">Results for</span>
+                    <span class="badge badge-primary badge-outline max-w-[220px] truncate">"{{ request.GET.search }}"</span>
+                    <a href="{% url 'weblog:articles' %}"
+                       class="btn btn-ghost btn-xs"
+                       title="Clear search">
+                        <span class="material-symbols-rounded text-[17px]">close</span>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        {% if articles %}
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {% for article in articles %}
+                    <div class="group animate-[fade-in_.4s_ease-out]">{% include "partials/article_card.html" %}</div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="flex min-h-[360px] flex-col items-center justify-center rounded-3xl border border-dashed border-base-300 bg-base-200/50 px-6 text-center">
+                <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-base-300 text-base-content/40">
+                    <span class="material-symbols-rounded text-4xl">
+                        {% if request.GET.search %} search_off {% else %} auto_stories
+                        {% endif %}
+                    </span>
+                </div>
+                <h3 class="mt-6 text-xl font-bold">
+                    {% if request.GET.search %} No articles found {% else %} No articles
+                        yet {% endif %}
+                </h3>
+                <p class="mt-2 max-w-md text-sm leading-6 text-base-content/50">
+                    {% if request.GET.search %} We couldn't find any articles matching
+                        "{{ request.GET.search }}". Try a different keyword. {% else %}
+                        There aren't any published articles available yet. Check back soon
+                        for new content. {% endif %}
+                </p>
+                {% if request.GET.search %}
+                    <a href="{% url 'weblog:articles' %}"
+                       class="btn btn-primary mt-6 gap-2 rounded-xl">
+                        <span class="material-symbols-rounded text-[18px]">restart_alt</span>
+                        Clear search
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if is_paginated %}
+            <div class="border-t border-base-300 pt-8">{% include "partials/pagination.html" %}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block style %}
+    <style>
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /*
+     * Give article cards a subtle lift without
+     * requiring changes to article_card.html.
+     */
+
+    .markdown-article-list > * {
+        transition:
+            transform 180ms ease,
+            box-shadow 180ms ease;
+    }
+
+    /*
+     * Search box keyboard focus.
+     */
+
+    form:has(input[name="search"]:focus) {
+        z-index: 2;
+    }
+    </style>
+{% endblock %}
+{% block script %}
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.querySelector('input[name="search"]');
+
+        if (!searchInput) {
+            return;
+        }
+
+        /*
+         * Ctrl/Cmd + K focuses the search box.
+         */
+
+        document.addEventListener("keydown", (event) => {
+            if (
+                (event.ctrlKey || event.metaKey) &&
+                event.key.toLowerCase() === "k"
+            ) {
+                event.preventDefault();
+
+                searchInput.focus();
+
+                searchInput.select();
+            }
+        });
+
+        /*
+         * Escape clears the search box.
+         */
+
+        searchInput.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && searchInput.value) {
+                searchInput.value = "";
+
+                searchInput.form.submit();
+            }
+        });
+    });
+    </script>
+{% endblock %}

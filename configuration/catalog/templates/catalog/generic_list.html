@@ -1,0 +1,143 @@
+{% extends "base.html" %} {% load catalog_extras %} {% block title %}{{
+    model_label_plural }}{% endblock %} {% block content %}
+    <div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+        <div>
+            <p class="text-primary font-mono text-xs tracking-widest uppercase mb-1">Catalog Admin</p>
+            <h1 class="text-3xl font-black">{{ model_label_plural }}</h1>
+            <p class="text-sm text-base-content/50 mt-1">{{ rows|length }} item{{ rows|length|pluralize }}</p>
+        </div>
+        {% if create_url_name %}
+            <a class="btn btn-primary gap-2 shadow-lg shadow-primary/20"
+               href="{% url create_url_name %}">
+                <span class="material-symbols-rounded text-lg">add</span>
+                Add {{ model_label }}
+            </a>
+        {% endif %}
+    </div>
+    {% block filters %}{% endblock %}
+    {% if rows %}
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for row in rows %}
+                {% with obj=row.obj %}
+                    <div class="group card bg-base-100 border border-base-300 shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300 overflow-hidden">
+                        <a href="{{ row.detail_url }}"
+                           class="relative block aspect-[4/3] bg-base-200 overflow-hidden">
+                            {% with img=obj|getattribute:"image" %}
+                                {% if img %}
+                                    <img src="{{ img.url }}"
+                                         alt="{{ obj }}"
+                                         loading="lazy"
+                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-base-content/15">
+                                        <span class="material-symbols-rounded" style="font-size: 56px">inventory_2</span>
+                                    </div>
+                                {% endif %} {% endwith %} {% with
+                                status_class=obj|getattribute:"status_class" %} {% if status_class
+                                    %}
+                                    <span class="badge badge-{{ status_class }} absolute top-3 left-3 shadow-md">{{ obj.get_status_display }}</span>
+                                {% endif %} {% endwith %} {% with
+                                discount=obj|getattribute:"has_discount" %} {% if discount %}
+                                <span class="badge badge-error absolute top-3 right-3 shadow-md gap-1">
+                                    <span class="material-symbols-rounded text-xs">local_offer</span>
+                                    -{{ obj.discount_percentage_display }}
+                                </span>
+                            {% endif %}
+                {% endwith %}
+                <div class="absolute inset-0 bg-base-300/0 group-hover:bg-base-300/10 transition-colors"></div>
+                </a>
+                <div class="card-body p-4 gap-2">
+                    <a href="{{ row.detail_url }}"
+                       class="font-bold leading-snug line-clamp-2 hover:text-primary transition-colors">{{ obj }}</a>
+                    <div class="flex items-center justify-between mt-1">
+                        {% with price=obj|getattribute:"final_price_display" %} {% with
+                            amount=obj|getattribute:"amount_display" %} {% with
+                                final=obj|getattribute:"final_amount_display" %} {% if price %}
+                                <span class="text-lg font-black text-primary">{{ price }}</span>
+                            {% elif amount %}
+                                <span class="text-lg font-black text-primary">{{ amount }}</span>
+                            {% elif final %}
+                                <span class="text-lg font-black text-primary">{{ final }}</span>
+                            {% else %}
+                                <span class="text-xs font-mono text-base-content/30">#{{ obj.pk }}</span>
+                            {% endif %} {% endwith %} {% endwith %} {% endwith %} {% with
+                            rating=obj|getattribute:"average_rating" %} {% if rating %}
+                            <span class="flex items-center gap-1 text-xs text-base-content/60">
+                                <span class="material-symbols-rounded text-amber-400 text-sm">star</span>
+                                {{ rating }}
+                                <span class="opacity-50">({{ obj.rating_count }})</span>
+                            </span>
+                        {% endif %}
+            {% endwith %}
+        </div>
+        <div class="flex items-center gap-3 text-xs text-base-content/40 mt-1">
+            {% with stock=obj|getattribute:"stock" %} {% if stock or stock
+                == 0 %}
+                <span class="flex items-center gap-1">
+                    <span class="material-symbols-rounded text-sm">package_2</span>
+                    {{ stock }} in stock
+                </span>
+            {% endif %} {% endwith %} {% with
+            cat=obj|getattribute:"category" %} {% if cat %}
+            <span class="flex items-center gap-1 truncate">
+                <span class="material-symbols-rounded text-sm">category</span>
+                {{ cat }}
+            </span>
+    {% endif %}
+{% endwith %}
+</div>
+<div class="divider my-1"></div>
+<div class="flex items-center justify-between">
+    <span class="text-xs font-mono text-base-content/30">#{{ obj.pk }}</span>
+    <div class="flex gap-1">
+        <a class="btn btn-xs btn-ghost tooltip"
+           data-tip="View"
+           href="{{ row.detail_url }}">
+            <span class="material-symbols-rounded text-base">visibility</span>
+        </a>
+        <a class="btn btn-xs btn-ghost text-primary tooltip"
+           data-tip="Edit"
+           href="{{ row.update_url }}">
+            <span class="material-symbols-rounded text-base">edit</span>
+        </a>
+        <a class="btn btn-xs btn-ghost text-error tooltip"
+           data-tip="Delete"
+           href="{{ row.delete_url }}">
+            <span class="material-symbols-rounded text-base">delete</span>
+        </a>
+    </div>
+</div>
+</div>
+</div>
+{% endwith %}
+{% endfor %}
+</div>
+{% else %}
+<div class="card bg-base-100 border border-dashed border-base-300">
+    <div class="card-body items-center text-center py-20">
+        <span class="material-symbols-rounded text-5xl text-base-content/15 mb-3">inventory_2</span>
+        <p class="text-base-content/50 font-medium">No {{ model_label_plural|lower }} yet.</p>
+        {% if create_url_name %}
+            <a class="btn btn-primary btn-sm gap-2 mt-4"
+               href="{% url create_url_name %}">
+                <span class="material-symbols-rounded text-base">add</span>
+                Add {{ model_label }}
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% if is_paginated %}
+    <div class="join mt-10 flex justify-center">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+               class="join-item btn btn-sm">«</a>
+        {% endif %}
+        <span class="join-item btn btn-sm btn-disabled">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+               class="join-item btn btn-sm">»</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

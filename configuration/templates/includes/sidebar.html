@@ -1,0 +1,117 @@
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/base/includes/sidebar.css' %}" />
+{% endblock style %}
+{% block sidebar %}
+    <aside id="sidebar"
+           class="sidebar max-lg:hidden flex flex-col shrink-0 min-h-full bg-base-200 border-e border-base-300">
+        <!-- =========================================================
+         Sidebar header
+         ========================================================= -->
+        <div class="h-20 flex items-center px-5 border-b border-base-300">
+            <a href="/" class="flex items-center gap-3 group min-w-0">
+                <div class="w-11 h-11 shrink-0 rounded-xl bg-base-100 border border-base-300 flex items-center justify-center overflow-hidden shadow-sm">
+                    <img src="{% static 'images/logo.webp' %}"
+                         alt="AxiomLite"
+                         loading="lazy"
+                         decoding="async"
+                         draggable="false"
+                         class="w-9 h-9 object-contain transition duration-300 group-hover:scale-105" />
+                </div>
+                <div class="min-w-0">
+                    <div class="font-black text-primary truncate">AxiomLite</div>
+                    <div class="text-[11px] opacity-50 truncate">Programming • Linux • Django</div>
+                </div>
+            </a>
+        </div>
+        <!-- =========================================================
+         Navigation
+         ========================================================= -->
+        <nav class="flex-1 overflow-y-auto p-3">
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider opacity-40">Navigation</div>
+            <ul class="menu gap-1 p-0">
+                <li>
+                    <a href="/" class="rounded-xl">
+                        <span class="material-symbols-rounded">home</span>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'catalog:index' %}" class="rounded-xl">
+                        <span class="material-symbols-rounded">storefront</span>
+                        <span>Shop</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'weblog:index' %}" class="rounded-xl">
+                        <span class="material-symbols-rounded">article</span>
+                        <span>Weblog</span>
+                    </a>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+                <div class="px-3 mt-7 mb-2 text-[11px] font-bold uppercase tracking-wider opacity-40">Account</div>
+                <ul class="menu gap-1 p-0">
+                    <li>
+                        <a href="{% url 'accounts:account' %}" class="rounded-xl">
+                            <span class="material-symbols-rounded">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:profile' user.username %}" class="rounded-xl">
+                            <span class="material-symbols-rounded">badge</span>
+                            <span>Public Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:account-detail' %}" class="rounded-xl">
+                            <span class="material-symbols-rounded">manage_accounts</span>
+                            <span>Account Details</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:account-edit' %}" class="rounded-xl">
+                            <span class="material-symbols-rounded">edit</span>
+                            <span>Edit Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+            {% if user.is_staff %}
+                <div class="px-3 mt-7 mb-2 text-[11px] font-bold uppercase tracking-wider opacity-40">Administration</div>
+                <ul class="menu gap-1 p-0">
+                    <li>
+                        <a href="/admin/" class="rounded-xl text-primary">
+                            <span class="material-symbols-rounded">admin_panel_settings</span>
+                            <span>Admin Panel</span>
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        </nav>
+        <!-- =========================================================
+         Sidebar footer
+         ========================================================= -->
+        <div class="p-3 border-t border-base-300">
+            {% if user.is_authenticated %}
+                <button type="button"
+                        class="sign-out btn btn-ghost w-full justify-start rounded-xl text-error gap-3">
+                    <span class="material-symbols-rounded">logout</span>
+                    Sign Out
+                </button>
+            {% else %}
+                <a href="{% url 'accounts:sign-in' %}"
+                   class="btn btn-primary w-full rounded-xl gap-2">
+                    <span class="material-symbols-rounded">login</span>
+                    Sign In
+                </a>
+            {% endif %}
+            <div class="text-center text-xs opacity-40 mt-3">© Urmia City</div>
+        </div>
+    </aside>
+{% endblock sidebar %}
+{% block script %}
+    <script src="{% static 'scripts/base/includes/sidebar.js' %}"></script>
+{% endblock script %}

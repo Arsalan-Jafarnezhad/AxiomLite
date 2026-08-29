@@ -1,0 +1,4 @@
+/* Replace the hex codes with your own colors */
+.card-gradient {
+    background: linear-gradient(to right, #1e3a8a, #1e40af, #1d4ed8);
+}

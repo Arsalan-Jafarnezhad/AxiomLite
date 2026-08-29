@@ -1,0 +1,795 @@
+/* =========================================================
+   Article Editor Page
+   ========================================================= */
+
+.article-editor-page {
+    --editor-bg: #080d1c;
+    --card-bg: #11192b;
+    --card-bg-hover: #151f34;
+    --field-bg: #192338;
+    --field-bg-focus: #1d2942;
+    --toolbar-bg: #0d1527;
+    --border: #293752;
+    --border-light: #34435f;
+    --text: #f4f7fb;
+    --text-secondary: #aeb9ca;
+    --text-muted: #7f8ba0;
+    --primary: #3b9cf5;
+    --primary-hover: #2588e3;
+    --danger: #ef5b67;
+    --success: #4ade80;
+
+    min-height: 100vh;
+    padding: 28px 30px 120px;
+    color: var(--text);
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(59, 156, 245, 0.06),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 30%,
+            rgba(72, 92, 150, 0.05),
+            transparent 25%
+        ),
+        var(--editor-bg);
+}
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.article-editor-header {
+    margin-bottom: 28px;
+}
+
+.article-editor-heading {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.article-editor-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 6px;
+
+    color: #aeb9ca;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.article-editor-eyebrow .material-symbols-rounded {
+    font-size: 17px;
+}
+
+.article-editor-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.article-editor-title {
+    margin: 0;
+
+    color: #f5f7fb;
+    font-size: clamp(32px, 4vw, 42px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.article-editor-description {
+    margin: 8px 0 0;
+
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.article-editor-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 7px;
+    padding: 9px 14px;
+
+    color: #c4cedd;
+    background: #111a2c;
+    border: 1px solid #2a3852;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.article-editor-meta .material-symbols-rounded {
+    font-size: 17px;
+}
+
+/* =========================================================
+   Main layout
+   ========================================================= */
+
+.article-editor-form {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.article-editor-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.article-editor-main {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.article-editor-sidebar {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+
+.article-card,
+.editor-sidebar-card {
+    position: relative;
+
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 45%),
+        var(--card-bg);
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.article-card {
+    overflow: hidden;
+}
+
+.article-details-card {
+    padding: 18px;
+}
+
+/* =========================================================
+   Card headers
+   ========================================================= */
+
+.article-card-header {
+    margin-bottom: 20px;
+}
+
+.article-card-title,
+.editor-panel-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.article-card-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    color: #62adff;
+    background: rgba(59, 156, 245, 0.1);
+    border: 1px solid rgba(59, 156, 245, 0.16);
+    border-radius: 7px;
+}
+
+.article-card-icon .material-symbols-rounded {
+    font-size: 19px;
+}
+
+.article-card-title h2,
+.editor-panel-title h2 {
+    margin: 0;
+
+    color: #f1f4f9;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.article-card-title p,
+.editor-panel-title p {
+    margin: 3px 0 0;
+
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   Fields grid
+   ========================================================= */
+
+.article-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px 18px;
+}
+
+.article-field {
+    min-width: 0;
+}
+
+.article-field[data-field="summary"],
+.article-field[data-field="content"],
+.article-field[data-field="cover"] {
+    grid-column: 1 / -1;
+}
+
+/* =========================================================
+   Labels
+   ========================================================= */
+
+.article-field-label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    margin: 0 0 7px 1px;
+
+    color: #dce3ee;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.article-field-label .text-error {
+    color: var(--danger);
+}
+
+/* =========================================================
+   Form controls
+   ========================================================= */
+
+.article-field-control {
+    position: relative;
+}
+
+.article-field-control input:not([type="checkbox"]):not([type="file"]),
+.article-field-control select,
+.article-field-control textarea,
+.article-field > input:not([type="checkbox"]):not([type="file"]),
+.article-field > select,
+.article-field > textarea {
+    width: 100%;
+    min-height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 9px 12px;
+
+    color: #e9eef6;
+    background: var(--field-bg);
+
+    border: 1px solid #2b3a56;
+    border-radius: 7px;
+
+    outline: none;
+
+    font: inherit;
+    font-size: 13px;
+
+    transition:
+        border-color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.article-field-control input:not([type="checkbox"]):not([type="file"]):hover,
+.article-field-control select:hover,
+.article-field-control textarea:hover {
+    background: var(--field-bg-hover, #1c2740);
+    border-color: #3a4b69;
+}
+
+.article-field-control input:not([type="checkbox"]):not([type="file"]):focus,
+.article-field-control select:focus,
+.article-field-control textarea:focus {
+    background: var(--field-bg-focus);
+    border-color: rgba(59, 156, 245, 0.8);
+
+    box-shadow: 0 0 0 3px rgba(59, 156, 245, 0.1);
+}
+
+.article-field-control textarea {
+    min-height: 90px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.article-field-control select {
+    cursor: pointer;
+}
+
+.article-field-control input::placeholder,
+.article-field-control textarea::placeholder {
+    color: #65738b;
+}
+
+/* =========================================================
+   File input
+   ========================================================= */
+
+.article-field-control input[type="file"] {
+    width: 100%;
+    min-height: 38px;
+
+    box-sizing: border-box;
+
+    padding: 5px;
+
+    color: #aeb9ca;
+    background: var(--field-bg);
+
+    border: 1px solid #2b3a56;
+    border-radius: 7px;
+
+    font-size: 12px;
+}
+
+.article-field-control input[type="file"]::file-selector-button {
+    margin-right: 10px;
+
+    padding: 6px 11px;
+
+    color: #dfe7f2;
+    background: #26344d;
+
+    border: 1px solid #3a4a65;
+    border-radius: 5px;
+
+    font: inherit;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.article-field-control input[type="file"]::file-selector-button:hover {
+    background: #30415e;
+    border-color: #4a5d7a;
+}
+
+/* =========================================================
+   Help text
+   ========================================================= */
+
+.article-field-help {
+    margin: 6px 2px 0;
+
+    color: #758298;
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   Errors
+   ========================================================= */
+
+.article-field-error,
+.editor-field-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+
+    margin-top: 7px;
+    padding: 9px 10px;
+
+    color: #ff9ca4;
+    background: rgba(239, 91, 103, 0.08);
+
+    border: 1px solid rgba(239, 91, 103, 0.2);
+    border-radius: 6px;
+
+    font-size: 12px;
+}
+
+.article-field-error .material-symbols-rounded,
+.editor-field-error .material-symbols-rounded {
+    flex: 0 0 auto;
+    font-size: 17px;
+}
+
+/* =========================================================
+   Checkbox cards
+   ========================================================= */
+
+.article-fields-grid:has(.article-field-checkbox) {
+    row-gap: 12px;
+}
+
+.article-field-checkbox {
+    grid-column: span 1;
+
+    padding: 12px;
+
+    background: #151f33;
+    border: 1px solid #2a3955;
+    border-radius: 8px;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.article-field-checkbox:hover {
+    background: #19243a;
+    border-color: #3a4b69;
+}
+
+.article-checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    min-height: 38px;
+
+    cursor: pointer;
+}
+
+.article-checkbox-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    min-width: 0;
+}
+
+.article-checkbox-text .article-field-label {
+    margin: 0;
+}
+
+.article-checkbox-help {
+    color: #78859a;
+    font-size: 10px;
+}
+
+.article-checkbox-control {
+    flex: 0 0 auto;
+}
+
+.article-checkbox-control input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   Sidebar
+   ========================================================= */
+
+.editor-sidebar-card {
+    padding: 18px;
+}
+
+.editor-sidebar-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+
+    margin-bottom: 18px;
+}
+
+.editor-sidebar-heading > .material-symbols-rounded {
+    flex: 0 0 auto;
+
+    margin-top: 1px;
+
+    color: #69aefb;
+    font-size: 20px;
+}
+
+.editor-sidebar-heading h3 {
+    margin: 0;
+
+    color: #f0f3f8;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.editor-sidebar-heading p {
+    margin: 4px 0 0;
+
+    color: #818da1;
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   Writing tips
+   ========================================================= */
+
+.editor-tip-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.editor-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    color: #b9c3d2;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.editor-tip .material-symbols-rounded {
+    flex: 0 0 auto;
+
+    margin-top: 1px;
+
+    color: #77869d;
+    font-size: 17px;
+}
+
+/* =========================================================
+   Shortcuts
+   ========================================================= */
+
+.editor-shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.editor-shortcuts > div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #aeb9ca;
+    font-size: 11px;
+}
+
+.editor-shortcuts > div > span:first-child {
+    flex: 1;
+}
+
+.editor-shortcuts kbd {
+    min-width: 25px;
+
+    padding: 4px 7px;
+
+    color: #dbe4f0;
+    background: #0c1425;
+    border: 1px solid #2e3c57;
+    border-radius: 5px;
+
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 650;
+    text-align: center;
+}
+
+/* =========================================================
+   Editing status
+   ========================================================= */
+
+.editor-sidebar-status {
+    min-height: 115px;
+}
+
+.editor-sidebar-status .editor-sidebar-heading > .material-symbols-rounded {
+    color: #69dc8d;
+}
+
+/* =========================================================
+   Bottom actions
+   ========================================================= */
+
+.article-editor-actions {
+    position: fixed;
+    z-index: 100;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 12px 30px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 22, 39, 0.94),
+        rgba(11, 17, 31, 0.98)
+    );
+
+    border-top: 1px solid #26344d;
+
+    box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.2);
+
+    backdrop-filter: blur(14px);
+}
+
+.article-save-state {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #8491a6;
+    font-size: 11px;
+}
+
+.article-save-state .material-symbols-rounded {
+    color: #8291a7;
+    font-size: 18px;
+}
+
+.article-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.article-cancel-btn,
+.article-save-btn {
+    min-height: 40px;
+
+    border-radius: 7px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+.article-cancel-btn {
+    padding: 0 20px !important;
+
+    color: #bac5d5 !important;
+    background: #131d30 !important;
+
+    border: 1px solid #2d3b55 !important;
+}
+
+.article-cancel-btn:hover {
+    color: #e4e9f1 !important;
+    background: #1a263c !important;
+    border-color: #3a4b68 !important;
+}
+
+.article-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 0 20px !important;
+
+    color: white !important;
+    background: #258ee8 !important;
+
+    border: 1px solid #42a2f4 !important;
+
+    box-shadow: 0 5px 15px rgba(37, 142, 232, 0.2);
+}
+
+.article-save-btn:hover {
+    background: #197ed5 !important;
+
+    box-shadow: 0 7px 20px rgba(37, 142, 232, 0.28);
+}
+
+.article-save-btn .material-symbols-rounded {
+    font-size: 17px;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .article-editor-layout {
+        grid-template-columns: minmax(0, 1fr) 290px;
+    }
+}
+
+@media (max-width: 900px) {
+    .article-editor-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .article-editor-sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .editor-sidebar-status {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .article-editor-page {
+        padding: 20px 14px 110px;
+    }
+
+    .article-editor-title-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .article-fields-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .article-field-checkbox {
+        grid-column: 1;
+    }
+
+    .article-editor-sidebar {
+        display: flex;
+    }
+
+    .article-editor-actions {
+        padding: 10px 14px;
+    }
+
+    .article-save-state {
+        display: none;
+    }
+
+    .article-action-buttons {
+        width: 100%;
+    }
+
+    .article-cancel-btn,
+    .article-save-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 450px) {
+    .article-details-card,
+    .editor-sidebar-card {
+        padding: 14px;
+    }
+
+    .article-editor-title {
+        font-size: 30px;
+    }
+}

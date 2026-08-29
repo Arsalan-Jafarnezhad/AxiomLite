@@ -1,0 +1,314 @@
+<style>
+
+
+    .badge-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+    }
+    .badge-container {
+        position: relative;
+        
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: badgeEntrance 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .badge-container svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    /* ── Entrance ── */
+    @keyframes badgeEntrance {
+        0% {
+            opacity: 0;
+            transform: scale(0.72) translateY(24px);
+            filter: blur(12px);
+        }
+        60% {
+            opacity: 1;
+            filter: blur(0);
+        }
+        100% {
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+    }
+
+    /* ── Continuous ambient glow pulse ── */
+    @keyframes glowPulse {
+        0%,
+        100% {
+            filter: drop-shadow(0 0 18px #0af) drop-shadow(0 0 36px #006fff55);
+        }
+        50% {
+            filter: drop-shadow(0 0 28px #0cf) drop-shadow(0 0 54px #0af66);
+        }
+    }
+    .badge-glow-group {
+        animation: glowPulse 3.6s ease-in-out infinite;
+        animation-delay: 1.4s;
+    }
+
+    /* ── Light sweep ── */
+    @keyframes sweep {
+        0% {
+            opacity: 0;
+            transform: translateX(-160%) skewX(-12deg);
+        }
+        20% {
+            opacity: 0.55;
+        }
+        60% {
+            opacity: 0.55;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(260%) skewX(-12deg);
+        }
+    }
+    .sweep-layer {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        pointer-events: none;
+        animation: sweepOuter 4.8s ease-in-out infinite;
+        animation-delay: 1.8s;
+    }
+    .sweep-bar {
+        position: absolute;
+        top: -10%;
+        left: 0;
+        width: 28%;
+        height: 120%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(100, 200, 255, 0.18),
+            rgba(180, 240, 255, 0.32),
+            rgba(100, 200, 255, 0.18),
+            transparent
+        );
+        animation: sweep 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation-delay: 1.8s;
+    }
+
+    /* ── Gear rotation ── */
+    @keyframes gearSpin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    .gear-group {
+        transform-origin: 210px 210px;
+        animation: gearSpin 22s linear infinite;
+    }
+
+    /* ── Circuit trace draw ── */
+    @keyframes traceDraw {
+        0% {
+            stroke-dashoffset: 320;
+        }
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+    .circuit-trace {
+        stroke-dasharray: 320;
+        stroke-dashoffset: 320;
+        animation: traceDraw 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: 0.8s;
+    }
+
+    /* ── Letter A fade+rise ── */
+    @keyframes letterRise {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    .letter-a {
+        animation: letterRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+    }
+
+    /* ── BACKEND text ── */
+    @keyframes textReveal {
+        0% {
+            opacity: 0;
+            letter-spacing: 0.4em;
+        }
+        100% {
+            opacity: 1;
+            letter-spacing: 0.22em;
+        }
+    }
+    .backend-text {
+        animation: textReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: 1s;
+        opacity: 0;
+    }
+
+    /* ── Hover: 3D tilt ── */
+    .badge-container {
+        transition: transform 0.12s ease;
+        transform-style: preserve-3d;
+    }
+    .badge-container:hover {
+        transform: perspective(700px) rotateX(-4deg) rotateY(6deg) scale(1.03);
+        cursor: pointer;
+    }
+    .badge-container:hover .badge-glow-group {
+        filter: drop-shadow(0 0 38px #0ff) drop-shadow(0 0 70px #08f88);
+    }
+
+    /* ── Dot blink ── */
+    @keyframes dotBlink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.3;
+        }
+    }
+    .dot-l {
+        animation: dotBlink 2.4s ease-in-out infinite;
+        animation-delay: 0.2s;
+    }
+    .dot-r {
+        animation: dotBlink 2.4s ease-in-out infinite;
+        animation-delay: 1.4s;
+    }
+
+    /* ── Corner accent blink ── */
+    @keyframes accentBlink {
+        0%,
+        100% {
+            opacity: 0.7;
+        }
+        50% {
+            opacity: 0.2;
+        }
+    }
+    .corner-l {
+        animation: accentBlink 3.2s ease-in-out infinite;
+    }
+    .corner-r {
+        animation: accentBlink 3.2s ease-in-out infinite;
+        animation-delay: 1.6s;
+    }
+</style>
+<div class="badge-wrap">
+    <div class="badge-container">
+        <div class="sweep-layer">
+            <div class="sweep-bar"></div>
+        </div>
+        <svg viewBox="0 0 420 440"
+             xmlns="http://www.w3.org/2000/svg"
+             role="img"
+             aria-label="Backend — brand badge">
+            <defs>
+            <filter id="hexGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+            </feMerge>
+            </filter>
+            <linearGradient id="aGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#5ae4ff" />
+            <stop offset="100%" stop-color="#1677ff" />
+            </linearGradient>
+            <radialGradient id="gearFill" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#141f36" />
+            <stop offset="100%" stop-color="#0a1122" />
+            </radialGradient>
+            <radialGradient id="hexFill" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#0d1a2e" />
+            <stop offset="100%" stop-color="#050c18" />
+            </radialGradient>
+            <filter id="circuitGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+            </feMerge>
+            </filter>
+            <filter id="letterGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+            </feMerge>
+            </filter>
+            </defs>
+            <g class="badge-glow-group">
+            <polygon points="210,18 370,108 370,288 210,378 50,288 50,108" fill="none" stroke="#0a4aff22" stroke-width="20" stroke-linejoin="round" />
+            <polygon points="210,24 364,112 364,284 210,372 56,284 56,112" fill="url(#hexFill)" stroke="#1c3a6e" stroke-width="2.5" stroke-linejoin="round" />
+            <polygon points="210,30 356,116 356,280 210,364 64,280 64,116" fill="none" stroke="#0a9fff" stroke-width="1.2" stroke-linejoin="round" filter="url(#hexGlow)" />
+            <polygon points="210,40 344,122 344,274 210,354 76,274 76,122" fill="none" stroke="#0a4eff44" stroke-width="1" stroke-linejoin="round" />
+            <rect x="48" y="178" width="3" height="40" rx="1.5" fill="#00c3ff" class="corner-l" />
+            <rect x="369" y="178" width="3" height="40" rx="1.5" fill="#00c3ff" class="corner-r" />
+            <rect x="205" y="18" width="10" height="3" rx="1.5" fill="#00c3ff" class="corner-l" />
+            <g class="gear-group">
+            <circle cx="210" cy="198" r="134" fill="url(#gearFill)" stroke="#1a3260" stroke-width="1" />
+            <g fill="#111e35" stroke="#1b3770" stroke-width="1">
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(0,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(22.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(45,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(67.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(90,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(112.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(135,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(157.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(180,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(202.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(225,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(247.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(270,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(292.5,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(315,210,198)" />
+            <rect x="200" y="56" width="20" height="26" rx="3" transform="rotate(337.5,210,198)" />
+            </g>
+            <circle cx="210" cy="198" r="116" fill="#0c1626" stroke="#152a52" stroke-width="1.5" />
+            <circle cx="210" cy="198" r="113" fill="none" stroke="#0a4fff30" stroke-width="1" />
+            </g>
+            <circle cx="210" cy="198" r="108" fill="#080f1d" opacity="0.7" />
+            <circle cx="102" cy="198" r="5" fill="#00a8ff" class="dot-l" />
+            <circle cx="318" cy="198" r="5" fill="#00a8ff" class="dot-r" />
+            <circle cx="210" cy="198" r="90" fill="none" stroke="#0a5fff20" stroke-width="1" stroke-dasharray="4 4" />
+            <path d="M 128,270 A 90,90 0 0,0 292,270" fill="none" stroke="#00aaff" stroke-width="1.2" filter="url(#circuitGlow)" />
+            <g class="letter-a" transform="translate(210,198)">
+            <path d="M -48,58 L 0,-62 L 48,58 M -28,20 L 28,20" fill="none" stroke="#00d4ff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" filter="url(#letterGlow)" opacity="0.45" />
+            <path d="M -44,54 L 0,-58 L 44,54 M -24,18 L 24,18" fill="none" stroke="url(#aGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <g filter="url(#circuitGlow)">
+            <polyline class="circuit-trace" points="252,188 286,188 286,218 310,218" fill="none" stroke="#00b4ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="animation-delay: 0.9s" />
+            <circle cx="310" cy="218" r="4.5" fill="none" stroke="#00c8ff" stroke-width="1.6" style="opacity: 0; animation: letterRise 0.5s ease forwards; animation-delay: 2.4s;" />
+            <circle cx="310" cy="218" r="2" fill="#00c8ff" style="opacity: 0; animation: letterRise 0.5s ease forwards; animation-delay: 2.4s;" />
+            <polyline class="circuit-trace" points="258,208 278,208 278,232 304,232" fill="none" stroke="#00b4ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="animation-delay: 1.1s" />
+            <circle cx="304" cy="232" r="4.5" fill="none" stroke="#00c8ff" stroke-width="1.6" style="opacity: 0; animation: letterRise 0.5s ease forwards; animation-delay: 2.6s;" />
+            <circle cx="304" cy="232" r="2" fill="#00c8ff" style="opacity: 0; animation: letterRise 0.5s ease forwards; animation-delay: 2.6s;" />
+            </g>
+            <g class="backend-text">
+            <line x1="72" y1="406" x2="96" y2="406" stroke="#00a0ff" stroke-width="1.5" stroke-linecap="round" />
+            <line x1="324" y1="406" x2="348" y2="406" stroke="#00a0ff" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="100" cy="406" r="2.5" fill="#00a0ff" />
+            <circle cx="320" cy="406" r="2.5" fill="#00a0ff" />
+            <text x="210" y="413" text-anchor="middle" font-family="'Courier New',monospace" font-size="22" font-weight="700" letter-spacing="8" fill="#00c3ff" filter="url(#circuitGlow)">
+            ARSALAN
+            </text>
+            </g>
+            </g>
+        </svg>
+    </div>
+</div>

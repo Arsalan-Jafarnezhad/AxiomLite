@@ -1,0 +1,229 @@
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/base/includes/footer.css' %}">
+{% endblock style %}
+<footer class="relative overflow-hidden bg-base-300 text-base-content border-t border-base-content/10">
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+        <div class="absolute -top-40 -left-32 w-96 h-96 rounded-full bg-primary blur-3xl"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-secondary blur-3xl"></div>
+    </div>
+    <div class="relative">
+        <div class="h-1 bg-gradient-to-r from-primary via-secondary to-accent"></div>
+        <div class="max-w-7xl mx-auto px-6 py-16">
+            <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
+                <aside class="sm:col-span-2 lg:col-span-4 space-y-6">
+                    <div class="flex items-center gap-5">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-base-100 shadow-xl flex items-center justify-center shrink-0">
+                            <img src="{% static 'images/logo.webp' %}"
+                                 alt="Arsalan Jafarnezhad logo"
+                                 class="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+                                 loading="lazy">
+                        </div>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-black">Arsalan</h2>
+                            <p class="text-base-content/70 font-medium">Django Developer</p>
+                        </div>
+                    </div>
+                    <span class="badge badge-success badge-outline gap-2 py-3">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        Available for freelance work
+                    </span>
+                    <p class="leading-8 text-base-content/70">
+                        Passionate about building scalable web applications,
+                        beautiful user interfaces, reusable backend systems,
+                        and high-performance Django projects.
+                    </p>
+                    <div>
+                        <h4 class="font-bold mb-3">Tech Stack</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="badge badge-primary badge-outline">Django</span>
+                            <span class="badge badge-secondary badge-outline">Python</span>
+                            <span class="badge badge-accent badge-outline">DRF</span>
+                            <span class="badge badge-success badge-outline">TailwindCSS</span>
+                            <span class="badge badge-warning badge-outline">DaisyUI</span>
+                            <span class="badge badge-info badge-outline">PostgreSQL</span>
+                            <span class="badge badge-error badge-outline">Docker</span>
+                        </div>
+                    </div>
+                </aside>
+                <nav class="lg:col-span-2" aria-label="Projects">
+                    <h3 class="footer-title">Projects</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://github.com/Arsalan-Jafarnezhad/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Django Shop</a></li>
+                        <li><a href="https://github.com/Arsalan-Jafarnezhad/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Django Blog</a></li>
+                        <li><a href="https://github.com/Arsalan-Jafarnezhad/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">URL Shortener</a></li>
+                        <li><a href="https://github.com/Arsalan-Jafarnezhad/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Full Website</a></li>
+                    </ul>
+                </nav>
+                <nav class="lg:col-span-2" aria-label="Collaborations">
+                    <h3 class="footer-title">Collaborations</h3>
+                    <ul class="space-y-3">
+                        <li><a href="https://urumverse.com/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">UrumVerse</a></li>
+                        <li><a href="https://py.taifgostar.ir/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Taif Gostar</a></li>
+                        <li><a href="https://py.taifgostar.ir/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Python Platform</a></li>
+                        <li><a href="https://py.taifgostar.ir/"
+   class="footer-link"
+   target="_blank"
+   rel="noopener">Online Courses</a></li>
+                    </ul>
+                </nav>
+                <nav class="lg:col-span-2" aria-label="Quick links">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/about/" class="footer-link">About Me</a></li>
+                        <li><a href="/projects/" class="footer-link">Projects</a></li>
+                        <li><a href="/portfolio/" class="footer-link">Portfolio</a></li>
+                        <li><a href="/resume/" class="footer-link">Resume</a></li>
+                    </ul>
+                </nav>
+                <aside class="sm:col-span-2 lg:col-span-2 space-y-5">
+                    <h3 class="footer-title">Stay Connected</h3>
+                    <p class="text-sm text-base-content/70 leading-7">
+                        Let's build something amazing together.
+                        Follow my work, open-source projects,
+                        and latest updates.
+                    </p>
+                    <a href="/contact/" class="btn btn-primary btn-sm rounded-xl">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Contact Me
+                    </a>
+                </aside>
+            </div>
+        </div>
+        <div class="border-y border-base-content/10">
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                <h3 class="text-xl font-bold text-center mb-8">
+                    <i class="fas fa-compass text-primary mr-2"></i>
+                    Quick Navigation
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <a href="/" class="quick-link-card">
+                        <i class="fas fa-house text-primary text-2xl"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="/about/" class="quick-link-card">
+                        <i class="fas fa-user text-secondary text-2xl"></i>
+                        <span>About</span>
+                    </a>
+                    <a href="/projects/" class="quick-link-card">
+                        <i class="fas fa-code text-success text-2xl"></i>
+                        <span>Projects</span>
+                    </a>
+                    <a href="/portfolio/" class="quick-link-card">
+                        <i class="fas fa-images text-warning text-2xl"></i>
+                        <span>Portfolio</span>
+                    </a>
+                    <a href="/resume/" class="quick-link-card">
+                        <i class="fas fa-file-lines text-info text-2xl"></i>
+                        <span>Resume</span>
+                    </a>
+                    <a href="/contact/" class="quick-link-card">
+                        <i class="fas fa-envelope text-error text-2xl"></i>
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://github.com/Arsalan-Jafarnezhad/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social github"
+                   aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/Arsalan-Jafarnezhad/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social linkedin"
+                   aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://t.me/ArsalanJafarnezhad/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social telegram"
+                   aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://instagram.com/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social instagram"
+                   aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social youtube"
+                   aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://x.com/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social twitter"
+                   aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://discord.gg/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social discord"
+                   aria-label="Discord"><i class="fab fa-discord"></i></a>
+                <a href="https://facebook.com/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social facebook"
+                   aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://whatsapp.com/"
+                   target="_blank"
+                   rel="noopener"
+                   class="footer-social whatsapp"
+                   aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="divider my-0 opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <img src="{% static 'images/logo.webp' %}"
+                         alt="Logo"
+                         class="w-14 h-14 rounded-xl shadow-lg footer-logo">
+                    <div>
+                        <div class="font-bold">© 2024 - {% now "Y" %} Arsalan Jafarnezhad</div>
+                        <div class="text-sm opacity-70">
+                            Crafted with <span class="text-error animate-pulse">❤</span> using Django, TailwindCSS &amp; DaisyUI
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="badge badge-outline badge-lg"><i class="fas fa-code mr-2"></i>Python Developer</div>
+                    <div class="badge badge-outline badge-lg"><i class="fas fa-globe mr-2"></i>Open Source</div>
+                    <div class="badge badge-outline badge-lg"><i class="fas fa-bolt mr-2"></i>Full Stack</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="backToTop"
+            type="button"
+            class="back-to-top btn btn-circle btn-primary shadow-xl"
+            aria-label="Back to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+</footer>
+{% block script %}
+    <script src="{% static 'scripts/base/includes/footer.js' %}" defer></script>
+{% endblock script %}

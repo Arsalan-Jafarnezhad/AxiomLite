@@ -1,0 +1,181 @@
+/* ==========================================
+   Header
+========================================== */
+
+.navbar {
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+/* ==========================================
+   Glass Effect
+========================================== */
+
+@supports (backdrop-filter: blur(16px)) {
+    .navbar {
+        backdrop-filter: blur(18px);
+    }
+}
+
+/* ==========================================
+   Navigation Links
+========================================== */
+
+.navbar .menu > li > a {
+    border-radius: 0.9rem;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+
+    font-weight: 600;
+}
+
+.navbar .menu > li > a:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   Buttons
+========================================== */
+
+.btn {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   Logo
+========================================== */
+
+.navbar img {
+    transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+}
+
+.navbar .group:hover img {
+    transform: rotate(6deg) scale(1.06);
+}
+
+/* ==========================================
+   Dropdown
+========================================== */
+
+.dropdown-content {
+    animation: dropdownAppear 0.18s ease;
+}
+
+@keyframes dropdownAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ==========================================
+   Avatar
+========================================== */
+
+.avatar > div {
+    transition: transform 0.2s ease;
+}
+
+.avatar:hover > div {
+    transform: scale(1.08);
+}
+
+/* ==========================================
+   Scrollbar
+========================================== */
+
+.dropdown-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+
+    background: hsl(var(--bc) / 0.22);
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p));
+}
+
+/* ==========================================
+   Mobile
+========================================== */
+
+@media (max-width: 640px) {
+    .navbar {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .dropdown-content {
+        width: 18rem;
+    }
+}
+
+/* ==========================================
+   Large Desktop
+========================================== */
+
+@media (min-width: 1536px) {
+    .navbar {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+/* ==========================================
+   Active Link
+========================================== */
+
+.menu a.active {
+    background: hsl(var(--p));
+
+    color: hsl(var(--pc));
+}
+
+/* ==========================================
+   Focus
+========================================== */
+
+.menu a:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid hsl(var(--p));
+
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   Theme Preview Squares
+========================================== */
+
+[data-theme] {
+    transition: transform 0.2s ease;
+}
+
+button:hover [data-theme] {
+    transform: scale(1.08);
+}

@@ -1,0 +1,110 @@
+{% extends "catalog/generic_detail.html" %}
+{% block extra %}
+    <div class="card bg-base-100 shadow-sm border border-base-300 mt-6">
+        <div class="card-body p-0">
+            <h2 class="font-bold flex items-center gap-2 p-4 border-b border-base-300">
+                <i class="material-symbols-rounded text-sky-400">shopping_bag</i>
+                Items
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-wider text-base-content/40">
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>
+                                    {% if item.product_slug %}
+                                        <a href="{% url 'catalog:product-detail' slug=item.product_slug %}"
+                                           class="link link-hover">{{ item.product_name }}</a>
+                                    {% else %}
+                                        <span class="text-base-content/40 italic">{{ item.product_name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price_display }}</td>
+                                <td class="font-semibold">{{ item.subtotal_display }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-base-content/40 py-8">No items on this order.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-sm uppercase tracking-wider text-base-content/50">
+                    <i class="material-symbols-rounded text-emerald-400">
+                        calculate
+                    </i>
+                    Amounts
+                </h2>
+                <ul class="mt-2 divide-y divide-base-300">
+                    <li class="flex justify-between py-2">
+                        <span>Subtotal</span>
+                        <strong>{{ object.subtotal_amount_display }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Coupon discount</span>
+                        <strong>{{ object.coupon_discount_amount }}</strong>
+                    </li>
+                    <li class="flex justify-between py-2">
+                        <span>Final amount</span>
+                        <strong class="text-primary">{{ object.final_amount_display }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body">
+                <h2 class="card-title text-sm uppercase tracking-wider text-base-content/50">
+                    <i class="material-symbols-rounded text-primary">credit_card</i>
+                    Payment
+                </h2>
+                {% if payment %}
+                    <p class="mt-2">
+                        Status:
+                        <span class="badge badge-{{ payment.status_class }}">{{ payment.get_status_display }}</span>
+                    </p>
+                    <a class="btn btn-sm btn-outline mt-3 gap-1 w-fit"
+                       href="{% url 'catalog:payment-detail' payment_id=payment.payment_id %}">
+                        <i class="material-symbols-rounded text-sm">visibility</i>
+                        View payment
+                    </a>
+                {% else %}
+                    <p class="text-base-content/40 mt-2">No payment record yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="card bg-base-100 shadow-sm border border-base-300 mt-6">
+        <div class="card-body">
+            <h2 class="card-title text-sm uppercase tracking-wider text-base-content/50 mb-3">
+                <i class="material-symbols-rounded text-amber-400">sync_alt</i>
+                Status transitions
+            </h2>
+            <div class="flex flex-wrap gap-2">
+                {% for action, label in transitions %}
+                    <form method="post"
+                          action="{% url 'catalog:order-transition' order_id=object.order_id action=action %}">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-outline" type="submit">Mark as {{ label }}</button>
+                    </form>
+                {% empty %}
+                    <p class="text-base-content/40 text-sm">No further transitions available from this status.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

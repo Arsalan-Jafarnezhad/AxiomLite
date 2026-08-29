@@ -1,0 +1,131 @@
+{% csrf_token %}
+<!-- {% block style%}
+<link rel="stylesheet" href="{ static 'styles/weblog/markdown.css' %}">
+ -->
+<div class="markdown-editor"
+     data-markdown-editor
+     data-upload-url="{% url 'weblog:articles-upload-image' %}">
+    <div class="markdown-toolbar">
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="bold"
+                    title="Bold">
+                <span class="material-symbols-rounded">format_bold</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="italic"
+                    title="Italic">
+                <span class="material-symbols-rounded">format_italic</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="strikethrough"
+                    title="Strikethrough">
+                <span class="material-symbols-rounded">strikethrough_s</span>
+            </button>
+        </div>
+        <div class="markdown-toolbar-divider"></div>
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="h1"
+                    title="Heading 1">
+                <span class="material-symbols-rounded">format_h1</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="h2"
+                    title="Heading 2">
+                <span class="material-symbols-rounded">format_h2</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="h3"
+                    title="Heading 3">
+                <span class="material-symbols-rounded">format_h3</span>
+            </button>
+        </div>
+        <div class="markdown-toolbar-divider"></div>
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="bullet-list"
+                    title="Bulleted list">
+                <span class="material-symbols-rounded">format_list_bulleted</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="numbered-list"
+                    title="Numbered list">
+                <span class="material-symbols-rounded">format_list_numbered</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="quote"
+                    title="Blockquote">
+                <span class="material-symbols-rounded">format_quote</span>
+            </button>
+        </div>
+        <div class="markdown-toolbar-divider"></div>
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="link"
+                    title="Insert link">
+                <span class="material-symbols-rounded">link</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="image"
+                    title="Upload image">
+                <span class="material-symbols-rounded">image</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="code"
+                    title="Inline code">
+                <span class="material-symbols-rounded">code</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="code-block"
+                    title="Code block">
+                <span class="material-symbols-rounded">terminal</span>
+            </button>
+        </div>
+        <div class="markdown-toolbar-divider"></div>
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="horizontal-rule"
+                    title="Horizontal rule">
+                <span class="material-symbols-rounded">horizontal_rule</span>
+            </button>
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="table"
+                    title="Insert table">
+                <span class="material-symbols-rounded">table</span>
+            </button>
+        </div>
+        <div class="markdown-toolbar-spacer"></div>
+        <div class="markdown-toolbar-group">
+            <button type="button"
+                    class="markdown-tool-btn"
+                    data-action="preview"
+                    title="Preview">
+                <span class="material-symbols-rounded">visibility</span>
+                <!-- <span class="markdown-tool-label">
+                    Preview
+                </span> -->
+            </button>
+        </div>
+    </div>
+    <textarea name="content" class="markdown-textarea" data-markdown-input placeholder="Write your article in Markdown...">
+{{ form.content.value|default_if_none:"" }}</textarea>
+    <div class="markdown-preview markdown-body hidden" data-markdown-preview></div>
+    <input type="file" accept="image/*" data-markdown-image-input hidden />
+    <div class="markdown-status" data-markdown-status></div>
+</div>

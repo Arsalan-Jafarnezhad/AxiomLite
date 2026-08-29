@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+{% load weblog_tags %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/article/detail.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/weblog/markdown.css' %}" />
+{% endblock %}
+{% block content %}
+    <main class="article-page">
+        <div class="article-progress" aria-hidden="true">
+            <span id="article-progress-bar"></span>
+        </div>
+        {% include "components/breadcrumbs.html" %}
+        <header class="article-header">
+            {% if article.category or article.tags.exists %}
+                <div class="article-taxonomy">
+                    {% if article.category %}
+                        <a href="{{ article.category.get_absolute_url }}"
+                           class="badge badge-primary badge-sm gap-1">
+                            <span class="material-symbols-rounded text-sm">folder</span>
+                            {{ article.category.name }}
+                        </a>
+                    {% endif %}
+                    {% for tag in article.tags.all %}
+                        <a href="{{ tag.get_absolute_url }}" class="article-tag">#{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="article-heading">
+                <h1 class="article-title">{{ article.title }}</h1>
+                {% if article.subtitle %}
+                    <p class="article-subtitle">{{ article.subtitle }}</p>
+                {% endif %}
+            </div>
+            <div class="article-meta">
+                <div class="article-author">
+                    <div class="avatar placeholder shrink-0">
+                        {% if article.author.profile.avatar %}
+                            <div class="size-12 overflow-hidden rounded-full">
+                                <img src="{{ article.author.profile.avatar.url }}"
+                                     alt="{{ article.author.username }}"
+                                     class="size-full object-cover" />
+                            </div>
+                        {% else %}
+                            <div class="size-12 rounded-full bg-primary text-primary-content">
+                                <span class="font-semibold">{{ article.author.username|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="font-semibold">{{ article.author }}</div>
+                        <div class="article-date">
+                            {% if article.published_at %} {{
+                                article.published_at|date:"M d, Y" }} {% else %} Draft
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="article-stats">
+                    <span class="article-stat">
+                        <span class="material-symbols-rounded">schedule</span>
+                        {{ article.reading_time }} min read
+                    </span>
+                    <span class="article-stat">
+                        <span class="material-symbols-rounded">visibility</span>
+                        {{ article.views_count }}
+                    </span>
+                    <span class="article-stat">
+                        <span class="material-symbols-rounded">chat_bubble</span>
+                        {{ article.comments_count }}
+                    </span>
+                </div>
+            </div>
+        </header>
+        <nav class="article-toolbar" aria-label="Article actions">
+            <div class="article-toolbar-inner">
+                <span class="article-toolbar-label">
+                    <span class="material-symbols-rounded">menu_book</span>
+                    Reading
+                </span>
+                <div class="flex items-center gap-1">
+                    <button id="copy-article-link"
+                            type="button"
+                            class="btn btn-sm btn-ghost gap-2"
+                            title="Copy article link">
+                        <span class="material-symbols-rounded text-lg">link</span>
+                        <span class="hidden sm:inline">Copy link</span>
+                    </button>
+                    <button id="share-article" type="button" class="btn btn-sm btn-primary gap-2">
+                        <span class="material-symbols-rounded text-lg">share</span>
+                        <span class="hidden sm:inline">Share</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        {% if article.cover %}
+            <figure class="article-cover">
+                <img src="{{ article.cover.url }}"
+                     alt="{{ article.title }}"
+                     loading="eager" />
+            </figure>
+        {% endif %}
+        <article id="article-content" class="article-content markdown-body">
+            {{ article.content|render_article_markdown }}
+        </article>
+        <footer class="article-footer">
+            <div class="article-footer-divider"></div>
+            <div class="article-footer-content">
+                <div class="article-footer-tags">
+                    {% for tag in article.tags.all %}
+                        <a href="{{ tag.get_absolute_url }}"
+                           class="badge badge-outline hover:badge-primary transition-colors">#{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                <button id="back-to-top" type="button" class="btn btn-sm btn-ghost gap-2">
+                    <span class="material-symbols-rounded text-lg">keyboard_arrow_up</span>
+                    Back to top
+                </button>
+            </div>
+        </footer>
+        <section class="article-author-card">
+            <div class="article-author-inner">
+                <div class="avatar placeholder shrink-0">
+                    {% if article.author.profile.avatar %}
+                        <div class="size-16 overflow-hidden rounded-2xl">
+                            <img src="{{ article.author.profile.avatar.url }}"
+                                 alt="{{ article.author.username }}"
+                                 class="size-full object-cover" />
+                        </div>
+                    {% else %}
+                        <div class="size-16 rounded-2xl bg-primary text-primary-content">
+                            <span class="text-xl font-bold">{{ article.author.username|first|upper }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h2 class="text-lg font-bold">{{ article.author }}</h2>
+                        <span class="badge badge-primary badge-sm">Author</span>
+                    </div>
+                    {% if article.author.bio %}
+                        <p class="article-author-bio">{{ article.author.bio }}</p>
+                    {% else %}
+                        <p class="article-author-bio">Author of this article.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <section class="article-comments">
+            {% include "partials/comments.html" %}
+        </section>
+    </main>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'scripts/libraries/prism/prism.js' %}" data-manual></script>
+    <script type="module" src="{% static 'scripts/weblog/article/detail.js' %}"></script>
+{% endblock %}

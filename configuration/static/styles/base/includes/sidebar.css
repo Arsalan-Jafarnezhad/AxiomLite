@@ -1,0 +1,63 @@
+/* =========================================================
+   Sidebar
+========================================================= */
+
+.sidebar {
+    width: 16rem;
+    flex: 0 0 16rem;
+
+    overflow: hidden;
+
+    transition:
+        width 0.3s ease,
+        flex-basis 0.3s ease,
+        opacity 0.2s ease;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   Closed
+========================================================= */
+
+.sidebar.sidebar-closed {
+    width: 0;
+    flex-basis: 0;
+
+    opacity: 0;
+
+    border-width: 0;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   Sidebar inner content
+========================================================= */
+
+.sidebar > * {
+    width: 16rem;
+    min-width: 16rem;
+}
+
+
+/* =========================================================
+   Prevent content from appearing during collapse
+========================================================= */
+
+.sidebar.sidebar-closed > * {
+    visibility: hidden;
+}
+
+
+/* =========================================================
+   Desktop only
+========================================================= */
+
+@media (max-width: 1023px) {
+    .sidebar {
+        display: none;
+    }
+}

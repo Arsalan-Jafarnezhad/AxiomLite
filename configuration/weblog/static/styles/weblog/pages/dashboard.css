@@ -1,0 +1,19 @@
+.dashboard-card {
+    transition: box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-table tr {
+    transition: background 0.2s ease;
+}
+
+.dashboard-table tr:hover {
+    background: oklch(var(--b2));
+}
+
+.form-field textarea {
+    min-height: 250px;
+}

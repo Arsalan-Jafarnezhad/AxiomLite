@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'styles/questions/detail.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="min-h-screen bg-base-200/40">
+        <div class="container mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <div class="mb-5 flex items-center gap-2 text-sm text-base-content/50">
+                <a href="{% url 'questions:list' %}"
+                   class="transition-colors hover:text-primary">Questions</a>
+                <span class="material-symbols-rounded text-[16px]">chevron_right</span>
+                <span class="truncate text-base-content/70">{{ question.title }}</span>
+            </div>
+            <!-- Question Header -->
+            <header class="mb-7">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                    <div class="min-w-0">
+                        <!-- Metadata -->
+                        <div class="mb-3 flex flex-wrap items-center gap-2">
+                            <!-- Difficulty -->
+                            {% if question.get_difficulty_display == "Easy" %}
+                                <span class="badge badge-success gap-1.5 px-3 py-3">
+                                    <span class="material-symbols-rounded text-[15px]">signal_cellular_alt</span>
+                                    {{ question.get_difficulty_display }}
+                                </span>
+                            {% elif question.get_difficulty_display == "Medium" %}
+                                <span class="badge badge-warning gap-1.5 px-3 py-3">
+                                    <span class="material-symbols-rounded text-[15px]">signal_cellular_alt</span>
+                                    {{ question.get_difficulty_display }}
+                                </span>
+                            {% elif question.get_difficulty_display == "Hard" %}
+                                <span class="badge badge-error gap-1.5 px-3 py-3">
+                                    <span class="material-symbols-rounded text-[15px]">signal_cellular_alt</span>
+                                    {{ question.get_difficulty_display }}
+                                </span>
+                            {% else %}
+                                <span class="badge badge-outline px-3 py-3">{{ question.get_difficulty_display }}</span>
+                            {% endif %}
+                            <!-- Language -->
+                            <span class="badge badge-ghost gap-1.5 px-3 py-3">
+                                <span class="material-symbols-rounded text-[16px]">terminal</span>
+                                {{ question.language.name }}
+                            </span>
+                            <!-- Tags -->
+                            {% for tag in question.tags.all %}
+                                <span class="badge badge-outline badge-sm">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Title -->
+                        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{{ question.title }}</h1>
+                        <!-- Solve state -->
+                        {% if user.is_authenticated %}
+                            <div class="mt-4">
+                                {% if solved %}
+                                    <div class="inline-flex items-center gap-2 rounded-xl bg-success/10 px-3.5 py-2 text-sm font-medium text-success">
+                                        <span class="material-symbols-rounded text-[19px]">check_circle</span>
+                                        You solved this problem
+                                    </div>
+                                {% elif best_score != None %}
+                                    <div class="inline-flex items-center gap-2 rounded-xl bg-warning/10 px-3.5 py-2 text-sm font-medium text-warning">
+                                        <span class="material-symbols-rounded text-[19px]">pending</span>
+                                        You have attempted this problem
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Desktop action -->
+                    {% if user.is_authenticated %}
+                        <a href="#submit-solution"
+                           class="btn btn-primary hidden shrink-0 gap-2 lg:inline-flex">
+                            <span class="material-symbols-rounded text-[20px]">code</span>
+                            Submit solution
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}"
+                           class="btn btn-primary hidden shrink-0 gap-2 lg:inline-flex">
+                            <span class="material-symbols-rounded text-[20px]">login</span>
+                            Sign in to solve
+                        </a>
+                    {% endif %}
+                </div>
+            </header>
+            <!-- Main Content -->
+            <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+                <!-- Problem -->
+                <main class="min-w-0">
+                    <article class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                        <!-- Problem content -->
+                        <div class="px-5 py-7 sm:px-8 sm:py-9 lg:px-10">
+                            <div class="questions-markdown markdown-body">{{ description_html|safe }}</div>
+                        </div>
+                    </article>
+                    <!-- Submission -->
+                    {% if user.is_authenticated %}
+                        <section id="submit-solution"
+                                 class="mt-6 overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                            <!-- Editor header -->
+                            <div class="border-b border-base-300">
+                                <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h2 class="font-semibold">Submit solution</h2>
+                                        <p class="mt-0.5 text-xs text-base-content/50">Write your solution and submit it for evaluation.</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="badge badge-ghost badge-sm gap-1.5">
+                                            <span class="material-symbols-rounded text-[14px]">terminal</span>
+                                            {{ question.language.name }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Form -->
+                            <form method="post" action="{% url 'questions:submit' question.slug %}">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                    <div class="px-4 pt-4 sm:px-5">
+                                        <div class="alert alert-error">
+                                            <span class="material-symbols-rounded">error</span>
+                                            <div>
+                                                <p class="font-medium">Your submission could not be sent.</p>
+                                                <div class="mt-1 text-sm">{{ form.code.errors }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!-- Code editor -->
+                                <div class="question-code-editor m-4 overflow-hidden rounded-xl border border-base-300 bg-base-100 sm:m-5"
+                                     data-code-editor>
+                                    <!-- Editor header -->
+                                    <div class="flex h-11 items-center justify-between border-b border-base-300 bg-base-200/70 px-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="h-2.5 w-2.5 rounded-full bg-error/70"></span>
+                                            <span class="h-2.5 w-2.5 rounded-full bg-warning/70"></span>
+                                            <span class="h-2.5 w-2.5 rounded-full bg-success/70"></span>
+                                            <span class="ml-2 text-xs text-base-content/50">solution</span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-xs text-base-content/40" data-line-count>1 line</span>
+                                            <span class="text-xs text-base-content/40" data-char-count>0 characters</span>
+                                            <span class="text-xs text-base-content/40">{{ question.language.name }}</span>
+                                        </div>
+                                            
+                                    </div>
+                                    <!-- Editor -->
+                                    <div class="relative flex">
+                                        <!-- Line numbers -->
+                                        <div data-line-numbers
+                                             aria-hidden="true"
+                                             class="question-line-numbers hidden shrink-0 select-none overflow-hidden border-r border-base-300 bg-base-200/40 py-4 text-right font-mono text-sm leading-6 text-base-content/35 sm:block">
+                                        </div>
+                                        <!-- Code -->
+                                        <textarea id="id_code"
+                                                  name="code"
+                                                  rows="16"
+                                                  spellcheck="false"
+                                                  autocomplete="off"
+                                                  autocapitalize="off"
+                                                  autocorrect="off"
+                                                  wrap="off"
+                                                  data-code-input
+                                                  class="question-code-textarea block min-h-[360px] min-w-0 flex-1 resize-none border-0 bg-base-100 px-4 py-4 font-mono text-sm leading-6 text-base-content outline-none focus:ring-0"
+                                                  placeholder="Write your solution here...">{{ form.code.value|default_if_none:"" }}</textarea>
+                                    </div>
+                                </div>
+                                <!-- Submit footer -->
+                                <div class="flex flex-col gap-3 border-t border-base-300 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+                                    <div class="flex items-center gap-2 text-xs text-base-content/50">
+                                        <span class="material-symbols-rounded text-[17px]">info</span>
+                                        <span>Your code will be evaluated after submission.</span>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary gap-2">
+                                        <span class="material-symbols-rounded text-[20px]">play_arrow</span>
+                                        Submit solution
+                                    </button>
+                                </div>
+                            </form>
+                        </section>
+                    {% else %}
+                        <!-- Login CTA -->
+                        <section class="mt-6 overflow-hidden rounded-2xl border border-primary/20 bg-primary/5">
+                            <div class="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                        <span class="material-symbols-rounded">lock</span>
+                                    </div>
+                                    <div>
+                                        <h2 class="font-semibold">Ready to solve it?</h2>
+                                        <p class="mt-1 text-sm text-base-content/60">Sign in to submit your solution and track your progress.</p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'login' %}" class="btn btn-primary shrink-0">Sign in</a>
+                            </div>
+                        </section>
+                    {% endif %}
+                </main>
+                <!-- Sidebar -->
+                <aside class="space-y-4 xl:sticky xl:top-6 xl:self-start">
+                    <!-- Statistics -->
+                    <section class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                        <div class="border-b border-base-300 px-5 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-rounded text-[20px]">monitoring</span>
+                                <h2 class="font-semibold">Statistics</h2>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <!-- Solved -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10 text-success">
+                                        <span class="material-symbols-rounded text-[19px]">check_circle</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">Solved</p>
+                                        <p class="text-xs text-base-content/40">Users who solved</p>
+                                    </div>
+                                </div>
+                                <strong class="text-lg">{{ statistics.solved_users }}</strong>
+                            </div>
+                            <div class="my-4 border-t border-base-300"></div>
+                            <!-- Attempts -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-warning/10 text-warning">
+                                        <span class="material-symbols-rounded text-[19px]">group</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium">Attempts</p>
+                                        <p class="text-xs text-base-content/40">Users who tried</p>
+                                    </div>
+                                </div>
+                                <strong class="text-lg">{{ statistics.attempting_users }}</strong>
+                            </div>
+                            <div class="my-4 border-t border-base-300"></div>
+                            <!-- Success rate -->
+                            <div>
+                                <div class="mb-2 flex items-center justify-between">
+                                    <span class="text-sm font-medium">Success rate</span>
+                                    <strong class="text-sm">{{ statistics.solve_rate }}%</strong>
+                                </div>
+                                <progress class="progress progress-success w-full"
+                                          value="{{ statistics.solve_rate }}"
+                                          max="100"></progress>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Your progress -->
+                    {% if user.is_authenticated %}
+                        <section class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                            <div class="border-b border-base-300 px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-rounded text-[20px]">person</span>
+                                    <h2 class="font-semibold">Your progress</h2>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                {% if solved %}
+                                    <div class="mb-4 rounded-xl bg-success/10 p-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-success text-success-content">
+                                                <span class="material-symbols-rounded">check</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-success">Solved</p>
+                                                <p class="text-xs text-base-content/50">Great job!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif best_score != None %}
+                                    <div class="mb-4 rounded-xl bg-warning/10 p-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-warning/10 text-warning">
+                                                <span class="material-symbols-rounded">pending</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold">Keep trying</p>
+                                                <p class="text-xs text-base-content/50">You have already attempted this problem.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="mb-4 rounded-xl bg-base-200/70 p-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-base-300 text-base-content/50">
+                                                <span class="material-symbols-rounded">flag</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold">Not attempted</p>
+                                                <p class="text-xs text-base-content/50">Give this problem a try.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <div class="mb-1 flex items-center justify-between">
+                                        <span class="text-sm text-base-content/60">Best score</span>
+                                        <strong class="text-lg">
+                                            {% if best_score != None %}
+                                                {{ best_score }}%
+                                            {% else %}
+                                                —
+                                            {% endif %}
+                                        </strong>
+                                    </div>
+                                    {% if best_score != None %}
+                                        <progress class="progress progress-primary w-full"
+                                                  value="{{ best_score }}"
+                                                  max="100"></progress>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </section>
+                    {% endif %}
+                    <!-- Problem info -->
+                    <section class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+                        <div class="border-b border-base-300 px-5 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-rounded text-[20px]">info</span>
+                                <h2 class="font-semibold">Problem info</h2>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-base-300">
+                            <div class="flex items-center justify-between px-5 py-3.5">
+                                <span class="text-sm text-base-content/50">Difficulty</span>
+                                <span class="text-sm font-medium">{{ question.get_difficulty_display }}</span>
+                            </div>
+                            <div class="flex items-center justify-between px-5 py-3.5">
+                                <span class="text-sm text-base-content/50">Language</span>
+                                <span class="text-sm font-medium">{{ question.language.name }}</span>
+                            </div>
+                            <div class="flex items-center justify-between px-5 py-3.5">
+                                <span class="text-sm text-base-content/50">Evaluation</span>
+                                <span class="text-sm font-medium">{{ question.get_evaluation_type_display }}</span>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'scripts/questions/detail.js' %}"></script>
+{% endblock script %}

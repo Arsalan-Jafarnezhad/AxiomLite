@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/pages/dashboard.css' %}" />
+{% endblock styles %}
+{% block content %}
+    <main id="weblog-dashboard"
+          class="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:py-8">
+        <section class="dashboard-header">
+            <div class="dashboard-header-content">
+                <div>
+                    <div class="dashboard-eyebrow">
+                        <span class="material-symbols-rounded">dashboard</span>
+                        Weblog Dashboard
+                    </div>
+                    <h1 class="dashboard-title">Welcome back</h1>
+                    <p class="dashboard-description">
+                        Manage your articles, monitor your content, and keep your
+                        Weblog organized.
+                    </p>
+                </div>
+                <div class="dashboard-header-actions">
+                    <a href="{% url 'weblog:index' %}"
+                       class="btn btn-outline rounded-xl gap-2">
+                        <span class="material-symbols-rounded">language</span>
+                        View Weblog
+                    </a>
+                    <a href="{% url 'accounts:account' %}"
+                       class="btn btn-primary rounded-xl gap-2">
+                        <span class="material-symbols-rounded">account_circle</span>
+                        Account
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="dashboard-section-heading">
+                <div>
+                    <span class="dashboard-section-label">
+                        <span class="material-symbols-rounded">monitoring</span>
+                        Overview
+                    </span>
+                    <h2>Content at a glance</h2>
+                </div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-stat">
+                    <div class="dashboard-stat-icon text-primary bg-primary/10">
+                        <span class="material-symbols-rounded">article</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="dashboard-stat-label">Total Articles</div>
+                        <div class="dashboard-stat-value">{{ total_articles }}</div>
+                        <div class="dashboard-stat-description">All your articles</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat">
+                    <div class="dashboard-stat-icon text-success bg-success/10">
+                        <span class="material-symbols-rounded">public</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="dashboard-stat-label">Published</div>
+                        <div class="dashboard-stat-value">{{ published_articles }}</div>
+                        <div class="dashboard-stat-description">Visible to readers</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat">
+                    <div class="dashboard-stat-icon text-warning bg-warning/10">
+                        <span class="material-symbols-rounded">edit_note</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="dashboard-stat-label">Drafts</div>
+                        <div class="dashboard-stat-value">{{ draft_articles }}</div>
+                        <div class="dashboard-stat-description">Still in progress</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat">
+                    <div class="dashboard-stat-icon text-secondary bg-secondary/10">
+                        <span class="material-symbols-rounded">forum</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="dashboard-stat-label">Comments</div>
+                        <div class="dashboard-stat-value">{{ total_comments }}</div>
+                        <div class="dashboard-stat-description">Community discussion</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="grid gap-6 xl:grid-cols-[1.5fr_.7fr]">
+            <div class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                    <div>
+                        <span class="dashboard-section-label">
+                            <span class="material-symbols-rounded">history</span>
+                            Content
+                        </span>
+                        <h2 class="mt-2">Latest Articles</h2>
+                        <p>Your most recently created or updated articles.</p>
+                    </div>
+                    <a href="{% url 'weblog:dashboard:articles' %}"
+                       class="btn btn-sm btn-primary rounded-xl gap-2">
+                        <span class="material-symbols-rounded text-[18px]">manage_search</span>
+                        Manage
+                    </a>
+                </div>
+                {% if latest_articles %}
+                    <div class="dashboard-article-list">
+                        {% for article in latest_articles %}
+                            <a href="{{ article.get_absolute_url }}"
+                               class="dashboard-article-row group">
+                                <div class="dashboard-article-icon">
+                                    <span class="material-symbols-rounded">article</span>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        {% if article.status %}
+                                            <span class="badge badge-sm badge-outline">{{ article.status }}</span>
+                                        {% endif %}
+                                        {% if article.category %}
+                                            <span class="text-xs text-base-content/45">{{ article.category.name }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <h3 class="mt-1 truncate font-bold transition group-hover:text-primary">{{ article.title }}</h3>
+                                    <div class="mt-1 flex flex-wrap items-center gap-3 text-xs text-base-content/45">
+                                        {% if article.updated_at %}
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-symbols-rounded text-[15px]">update</span>
+                                                {{ article.updated_at|date:"M d, Y" }}
+                                            </span>
+                                        {% elif article.created_at %}
+                                            <span class="flex items-center gap-1">
+                                                <span class="material-symbols-rounded text-[15px]">calendar_today</span>
+                                                {{ article.created_at|date:"M d, Y" }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <span class="material-symbols-rounded shrink-0 text-base-content/30 transition group-hover:translate-x-1 group-hover:text-primary">
+                                    arrow_forward
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="dashboard-empty">
+                        <span class="material-symbols-rounded">article</span>
+                        <h3>No articles yet</h3>
+                        <p>Your latest articles will appear here.</p>
+                        <a href="{% url 'weblog:dashboard:articles' %}"
+                           class="btn btn-primary btn-sm rounded-xl mt-3">Manage Articles</a>
+                    </div>
+                {% endif %}
+            </div>
+            <aside class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                    <div>
+                        <span class="dashboard-section-label">
+                            <span class="material-symbols-rounded">bolt</span>
+                            Shortcuts
+                        </span>
+                        <h2 class="mt-2">Quick Actions</h2>
+                    </div>
+                </div>
+                <div class="dashboard-actions">
+                    <a href="{% url 'weblog:dashboard:articles' %}"
+                       class="dashboard-action group">
+                        <div class="dashboard-action-icon text-primary bg-primary/10">
+                            <span class="material-symbols-rounded">article</span>
+                        </div>
+                        <div>
+                            <h3>Manage Articles</h3>
+                            <p>View and manage your content.</p>
+                        </div>
+                        <span class="material-symbols-rounded dashboard-action-arrow">arrow_forward</span>
+                    </a>
+                    <a href="{% url 'weblog:dashboard:comments' %}"
+                       class="dashboard-action group">
+                        <div class="dashboard-action-icon text-secondary bg-secondary/10">
+                            <span class="material-symbols-rounded">forum</span>
+                        </div>
+                        <div>
+                            <h3>Manage Comments</h3>
+                            <p>View and manage your community discussions.</p>
+                        </div>
+                        <span class="material-symbols-rounded dashboard-action-arrow">arrow_forward</span>
+                    </a>
+                    <a href="{% url 'weblog:articles' %}" class="dashboard-action group">
+                        <div class="dashboard-action-icon text-success bg-success/10">
+                            <span class="material-symbols-rounded">library_books</span>
+                        </div>
+                        <div>
+                            <h3>Browse Articles</h3>
+                            <p>See the public article collection.</p>
+                        </div>
+                        <span class="material-symbols-rounded dashboard-action-arrow">arrow_forward</span>
+                    </a>
+                    <a href="{% url 'weblog:index' %}" class="dashboard-action group">
+                        <div class="dashboard-action-icon text-info bg-info/10">
+                            <span class="material-symbols-rounded">public</span>
+                        </div>
+                        <div>
+                            <h3>View Weblog</h3>
+                            <p>Visit the public Weblog homepage.</p>
+                        </div>
+                        <span class="material-symbols-rounded dashboard-action-arrow">arrow_forward</span>
+                    </a>
+                    <a href="{% url 'accounts:account' %}" class="dashboard-action group">
+                        <div class="dashboard-action-icon text-warning bg-warning/10">
+                            <span class="material-symbols-rounded">manage_accounts</span>
+                        </div>
+                        <div>
+                            <h3>Account Settings</h3>
+                            <p>Manage your account and profile.</p>
+                        </div>
+                        <span class="material-symbols-rounded dashboard-action-arrow">arrow_forward</span>
+                    </a>
+                </div>
+            </aside>
+        </section>
+        <section class="dashboard-panel">
+            <div class="dashboard-panel-header">
+                <div>
+                    <span class="dashboard-section-label">
+                        <span class="material-symbols-rounded">insights</span>
+                        Content Overview
+                    </span>
+                    <h2 class="mt-2">Publishing status</h2>
+                    <p>A quick look at how your articles are distributed.</p>
+                </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-3">
+                <div class="dashboard-breakdown">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="dashboard-breakdown-icon text-success bg-success/10">
+                                <span class="material-symbols-rounded">check_circle</span>
+                            </span>
+                            <span class="font-semibold">Published</span>
+                        </div>
+                        <strong>{{ published_articles }}</strong>
+                    </div>
+                    {% if total_articles %}
+                        <progress class="progress progress-success mt-4 w-full"
+                                  value="{{ published_articles }}"
+                                  max="{{ total_articles }}"></progress>
+                    {% endif %}
+                </div>
+                <div class="dashboard-breakdown">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="dashboard-breakdown-icon text-warning bg-warning/10">
+                                <span class="material-symbols-rounded">edit_note</span>
+                            </span>
+                            <span class="font-semibold">Drafts</span>
+                        </div>
+                        <strong>{{ draft_articles }}</strong>
+                    </div>
+                    {% if total_articles %}
+                        <progress class="progress progress-warning mt-4 w-full"
+                                  value="{{ draft_articles }}"
+                                  max="{{ total_articles }}"></progress>
+                    {% endif %}
+                </div>
+                <div class="dashboard-breakdown">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="dashboard-breakdown-icon text-secondary bg-secondary/10">
+                                <span class="material-symbols-rounded">forum</span>
+                            </span>
+                            <span class="font-semibold">Comments</span>
+                        </div>
+                        <strong>{{ total_comments }}</strong>
+                    </div>
+                    <div class="mt-4 h-2 overflow-hidden rounded-full bg-base-300">
+                        <div class="h-full rounded-full bg-secondary dashboard-comment-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="dashboard-navigation">
+            <div>
+                <span class="dashboard-section-label">
+                    <span class="material-symbols-rounded">explore</span>
+                    Explore
+                </span>
+                <h2 class="mt-2">Weblog</h2>
+                <p>Everything you need to manage and explore your Weblog.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'weblog:index' %}"
+                   class="btn btn-ghost rounded-xl gap-2">
+                    <span class="material-symbols-rounded">home</span>
+                    Weblog Home
+                </a>
+                <a href="{% url 'weblog:articles' %}"
+                   class="btn btn-primary rounded-xl gap-2">
+                    <span class="material-symbols-rounded">library_books</span>
+                    Browse Articles
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock content %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/dashboard/index.css' %}" />
+{% endblock style %}
+{% block script %}
+    <script src="{% static 'scripts/weblog/dashboard/index.js' %}" defer></script>
+{% endblock script %}

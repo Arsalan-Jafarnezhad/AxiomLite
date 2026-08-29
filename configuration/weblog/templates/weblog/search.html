@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'styles/weblog/pages/search.css' %}" />
+{% endblock %}
+{% block content %}
+    <section class="space-y-8">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-rounded text-5xl text-primary">search</span>
+            <div>
+                <h1 class="text-4xl font-bold">Search Results</h1>
+                {% if query %}
+                    <p class="text-base-content/60">Results for "{{ query }}"</p>
+                {% endif %}
+            </div>
+        </div>
+        <form method="get" class="card bg-base-200 shadow-xl">
+            <div class="card-body">
+                <div class="join w-full">
+                    <input type="text"
+                           name="q"
+                           value="{{ query }}"
+                           placeholder="Search articles..."
+                           class="input input-bordered join-item flex-1" />
+                    <button class="btn btn-primary join-item">
+                        <span class="material-symbols-rounded">search</span>
+                        Search
+                    </button>
+                </div>
+                <div class="flex flex-wrap gap-3 mt-4">
+                    {% if filters.category %}
+                        <div class="badge badge-primary">Category: {{ filters.category }}</div>
+                    {% endif %}
+                    {% if filters.tag %}
+                        <div class="badge badge-secondary">Tag: {{ filters.tag }}</div>
+                    {% endif %}
+                    {% if filters.featured %}
+                        <div class="badge badge-warning">Featured</div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for article in articles %}
+                {% include "partials/article_card.html" %}
+            {% empty %}
+                {% include "components/empty_state.html" %}
+            {% endfor %}
+        </div>
+        {% include "partials/pagination.html" %}
+    </section>
+{% endblock %}

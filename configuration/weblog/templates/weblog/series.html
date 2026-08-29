@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+    <section class="space-y-8">
+        <div class="card bg-base-200">
+            <div class="card-body">
+                <div class="flex items-center gap-4">
+                    <span class="material-symbols-rounded text-5xl text-secondary">collections_bookmark</span>
+                    <div>
+                        <h1 class="text-4xl font-bold">{{ series.title }}</h1>
+                        {% if series.description %}
+                            <p class="text-base-content/70">{{ series.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for article in articles %}
+                {% include "partials/article_card.html" %}
+            {% empty %}
+                {% include "components/empty_state.html" %}
+            {% endfor %}
+        </div>
+        {% include "partials/pagination.html" %}
+    </section>
+{% endblock %}

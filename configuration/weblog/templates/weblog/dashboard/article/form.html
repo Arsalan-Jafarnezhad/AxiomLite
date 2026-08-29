@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/markdown-editor.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'styles/weblog/dashboard/article/form.css' %}">
+{% endblock style %}
+{% block content %}
+    <div class="article-editor-page">
+        <!-- =========================================================
+         Header
+         ========================================================= -->
+        <header class="article-editor-header">
+            <div class="article-editor-heading">
+                <div class="article-editor-eyebrow">
+                    <span class="material-symbols-rounded">edit_document</span>
+                    {% if object %}
+                        Editing article
+                    {% else %}
+                        New article
+                    {% endif %}
+                </div>
+                <div class="article-editor-title-row">
+                    <div>
+                        <h1 class="article-editor-title">
+                            {% if object %}
+                                Edit Article
+                            {% else %}
+                                Create Article
+                            {% endif %}
+                        </h1>
+                        <p class="article-editor-description">
+                            {% if object %}
+                                Update your article, refine the content,
+                                and save your changes.
+                            {% else %}
+                                Write, format, and publish a new article.
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% if object %}
+                        <div class="article-editor-meta">
+                            <span class="material-symbols-rounded">history</span>
+                            <span>Editing existing article</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+        <!-- =========================================================
+         Form
+         ========================================================= -->
+        <form method="post"
+              enctype="multipart/form-data"
+              class="article-editor-form"
+              data-article-form
+              novalidate>
+            {% csrf_token %}
+            <div class="article-editor-layout">
+                <!-- =================================================
+                 Main content
+                 ================================================= -->
+                <main class="article-editor-main">
+                    <!-- =================================================
+                     Article details
+                     ================================================= -->
+                    <section class="article-card article-details-card">
+                        <div class="article-card-header">
+                            <div class="article-card-title">
+                                <span class="article-card-icon">
+                                    <span class="material-symbols-rounded">tune</span>
+                                </span>
+                                <div>
+                                    <h2>Article details</h2>
+                                    <p>
+                                        Add the information readers will see
+                                        before your content.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="article-fields-grid">
+                            {% for field in form %}
+                                {% if field.name != "content" %}
+                                    <div class="article-field {% if field.field.widget.input_type == 'checkbox' %} article-field-checkbox {% endif %}"
+                                         data-field="{{ field.name }}">
+                                        {% if field.field.widget.input_type == "checkbox" %}
+                                            <label for="{{ field.id_for_label }}" class="article-checkbox-label">
+                                                <span class="article-checkbox-text">
+                                                    <span class="article-field-label">
+                                                        {{ field.label }}
+                                                        {% if field.field.required %}
+                                                            <span class="text-error">*</span>
+                                                        {% endif %}
+                                                    </span>
+                                                    {% if field.help_text %}
+                                                        <span class="article-checkbox-help">{{ field.help_text }}</span>
+                                                    {% endif %}
+                                                </span>
+                                                <span class="article-checkbox-control">{{ field }}</span>
+                                            </label>
+                                        {% else %}
+                                            <label for="{{ field.id_for_label }}" class="article-field-label">
+                                                <span>{{ field.label }}</span>
+                                                {% if field.field.required %}
+                                                    <span class="text-error" aria-hidden="true">*</span>
+                                                {% endif %}
+                                            </label>
+                                            <div class="article-field-control">{{ field }}</div>
+                                            {% if field.help_text %}
+                                                <p class="article-field-help">{{ field.help_text }}</p>
+                                            {% endif %}
+                                            {% if field.errors %}
+                                                <div class="article-field-error">
+                                                    <span class="material-symbols-rounded">error</span>
+                                                    <div>{{ field.errors }}</div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </section>
+                    <!-- =================================================
+                     Markdown editor
+                     ================================================= -->
+                    {% for field in form %}
+                        {% if field.name == "content" %}
+                            <section class="article-card editor-panel">
+                                <div class="editor-panel-header">
+                                    <div class="editor-panel-title">
+                                        <span class="article-card-icon">
+                                            <span class="material-symbols-rounded">article</span>
+                                        </span>
+                                        <div>
+                                            <h2>{{ field.label }}</h2>
+                                            {% if field.help_text %}
+                                                <p>{{ field.help_text }}</p>
+                                            {% else %}
+                                                <p>Write your article using Markdown.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="editor-format-badge">
+                                        <span class="material-symbols-rounded">code</span>
+                                        Markdown
+                                    </div>
+                                </div>
+                                <div class="markdown-editor"
+                                     data-markdown-editor
+                                     data-upload-url="{% url 'weblog:articles-upload-image' %}">
+                                    <div class="markdown-toolbar">{% include "partials/markdown/toolbar.html" %}</div>
+                                    <input type="file"
+                                           accept="image/*"
+                                           class="markdown-image-input"
+                                           data-markdown-image-input>
+                                    <div class="markdown-editor-body">
+                                        <textarea name="{{ field.html_name }}"
+                                                  id="{{ field.id_for_label }}"
+                                                  data-markdown-input
+                                                  class="markdown-textarea"
+                                                  placeholder="Start writing your article..."
+                                                  {% if field.field.disabled %} disabled {% endif %}>{{ field.value|default_if_none:"" }}</textarea>
+                                        <div class="divider hidden" data-markdown-preview-divider><b class="text-lg">Preview</b></div>
+                                        <div data-markdown-preview class="markdown-preview hidden"></div>
+                                    </div>
+                                    <div class="markdown-statusbar">
+                                        <span data-markdown-status>0 words · 0 characters</span>
+                                        <span class="markdown-status-spacer"></span>
+                                        <span class="markdown-status-message">Markdown supported</span>
+                                        <span class="markdown-status-dot"></span>
+                                    </div>
+                                </div>
+                                {% if field.errors %}
+                                    <div class="editor-field-error">
+                                        <span class="material-symbols-rounded">error</span>
+                                        <div>{{ field.errors }}</div>
+                                    </div>
+                                {% endif %}
+                            </section>
+                        {% endif %}
+                    {% endfor %}
+                </main>
+                <!-- =================================================
+                 Sidebar
+                 ================================================= -->
+                <aside class="article-editor-sidebar">
+                    <section class="editor-sidebar-card">
+                        <div class="editor-sidebar-heading">
+                            <span class="material-symbols-rounded">lightbulb</span>
+                            <div>
+                                <h3>Writing tips</h3>
+                                <p>
+                                    Small things that make your article easier
+                                    to read.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="editor-tip-list">
+                            <div class="editor-tip">
+                                <span class="material-symbols-rounded">title</span>
+                                <span>Use clear headings to organize your article.</span>
+                            </div>
+                            <div class="editor-tip">
+                                <span class="material-symbols-rounded">format_paragraph</span>
+                                <span>Keep paragraphs short and focused.</span>
+                            </div>
+                            <div class="editor-tip">
+                                <span class="material-symbols-rounded">image</span>
+                                <span>Add images when they improve understanding.</span>
+                            </div>
+                            <div class="editor-tip">
+                                <span class="material-symbols-rounded">visibility</span>
+                                <span>Preview your Markdown before saving.</span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="editor-sidebar-card">
+                        <div class="editor-sidebar-heading">
+                            <span class="material-symbols-rounded">keyboard</span>
+                            <div>
+                                <h3>Shortcuts</h3>
+                                <p>Useful Markdown editor shortcuts.</p>
+                            </div>
+                        </div>
+                        <div class="editor-shortcuts">
+                            <div>
+                                <span>Bold</span>
+                                <kbd>Ctrl</kbd>
+                                <span>+</span>
+                                <kbd>B</kbd>
+                            </div>
+                            <div>
+                                <span>Italic</span>
+                                <kbd>Ctrl</kbd>
+                                <span>+</span>
+                                <kbd>I</kbd>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="editor-sidebar-card editor-sidebar-status">
+                        {% if object %}
+                            <div class="editor-sidebar-heading">
+                                <span class="material-symbols-rounded">edit_note</span>
+                                <div>
+                                    <h3>Editing mode</h3>
+                                    <p>Saving will update the current article.</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="editor-sidebar-heading">
+                                <span class="material-symbols-rounded">add_circle</span>
+                                <div>
+                                    <h3>New article</h3>
+                                    <p>Fill in the details and start writing.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </section>
+                </aside>
+            </div>
+            <!-- =====================================================
+             Actions
+             ===================================================== -->
+            <div class="article-editor-actions">
+                <div class="article-save-state">
+                    <span class="material-symbols-rounded">cloud_done</span>
+                    <span>Changes are saved when you submit.</span>
+                </div>
+                <div class="article-action-buttons">
+                    <a href="{% url 'weblog:dashboard:articles' %}"
+                       class="btn btn-ghost article-cancel-btn">Cancel</a>
+                    <button type="submit" class="btn btn-primary article-save-btn">
+                        <span class="material-symbols-rounded">save</span>
+                        <span>
+                            {% if object %}
+                                Save Changes
+                            {% else %}
+                                Save Article
+                            {% endif %}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'scripts/weblog/markdown-editor.js' %}"></script>
+    <script src="{% static 'scripts/weblog/dashboard/article/form.js' %}"></script>
+{% endblock script %}
