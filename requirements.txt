@@ -117,3 +117,4 @@ uvicorn
 django-celery-beat
 django-celery-results
 dj-database-url
+openai
