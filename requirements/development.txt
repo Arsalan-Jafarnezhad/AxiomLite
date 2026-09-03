@@ -1,0 +1,24 @@
+-r base.txt
+
+django-debug-toolbar
+django-extensions
+
+pytest
+pytest-django
+model-bakery
+
+pylint
+pylint-django
+isort
+
+djlint
+cssbeautifier
+jsbeautifier
+EditorConfig
+
+build
+pip-tools
+
+rich
+tqdm
+typer
