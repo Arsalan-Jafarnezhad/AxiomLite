@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Arsalan-Jafarnezhad/AxiomLite/main/configuration/static/images/logo.png" alt="AxiomLite" width="120">
+  <img src="https://raw.githubusercontent.com/Arsalan-Jafarnezhad/AxiomLite/main/configuration/static/images/logo.webp" alt="AxiomLite" width="120">
 </p>
 
 ---
