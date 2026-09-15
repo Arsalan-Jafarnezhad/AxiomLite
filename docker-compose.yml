@@ -1,0 +1,77 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: axiomlite-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  db:
+    image: postgres:16-alpine
+    container_name: axiomlite-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: axiomlite
+      POSTGRES_USER: axiomlite
+      POSTGRES_PASSWORD: axiomlite
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U axiomlite"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: .
+    container_name: axiomlite-web
+    command: python manage.py runserver 0.0.0.0:8000
+    working_dir: /app/configuration
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file: ./configuration/.env
+    environment:
+      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
+      REDIS_URL: redis://redis:6379/1
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  worker:
+    build: .
+    container_name: axiomlite-worker
+    command: celery -A configuration worker -l info
+    working_dir: /app/configuration
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock   # lets Celery spawn sandbox containers on the HOST daemon
+    env_file: ./configuration/.env
+    environment:
+      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
+      REDIS_URL: redis://redis:6379/1
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  tailwind:
+    image: node:20-alpine
+    container_name: axiomlite-tailwind
+    working_dir: /app
+    command: sh -c "npm install && npm run dev:css"
+    volumes:
+      - .:/app
+
+volumes:
+  redis-data:
+  pg-data:
