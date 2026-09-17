@@ -201,50 +201,70 @@ WSGI_APPLICATION = "configuration.wsgi.application"
 # Database
 # -----------------------------------------------------------------------------
 
-DATABASE_ENGINE = env("DATABASE_ENGINE", "sqlite").lower()
+DATABASE_URL = env("DATABASE_URL")
 
-SUPPORTED_DATABASES = {
-    "sqlite": "django.db.backends.sqlite3",
-    "mysql": "django.db.backends.mysql",
-    "postgresql": "django.db.backends.postgresql",
-}
-
-if DATABASE_ENGINE not in SUPPORTED_DATABASES:
-    raise ImproperlyConfigured(
-        "DATABASE_ENGINE must be one of: sqlite, mysql, postgresql."
-    )
-
-if DATABASE_ENGINE == "sqlite":
+if DATABASE_URL:
     DATABASES = {
-        "default": {
-            "ENGINE": SUPPORTED_DATABASES["sqlite"],
-            "NAME": BASE_DIR / env("SQLITE_NAME", "db.sqlite3"),
-            "CONN_MAX_AGE": env_int("DATABASE_CONN_MAX_AGE", 600),
-            "CONN_HEALTH_CHECKS": env_bool(
+        "default": database_config(
+            DATABASE_URL,
+            conn_max_age=env_int("DATABASE_CONN_MAX_AGE", 600),
+            conn_health_checks=env_bool(
                 "DATABASE_CONN_HEALTH_CHECKS",
                 True,
             ),
-        }
+        )
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": SUPPORTED_DATABASES[DATABASE_ENGINE],
-            "NAME": env("DATABASE_NAME"),
-            "USER": env("DATABASE_USER"),
-            "PASSWORD": env("DATABASE_PASSWORD"),
-            "HOST": env("DATABASE_HOST", "127.0.0.1"),
-            "PORT": env(
-                "DATABASE_PORT",
-                "3306" if DATABASE_ENGINE == "mysql" else "5432",
-            ),
-            "CONN_MAX_AGE": env_int("DATABASE_CONN_MAX_AGE", 600),
-            "CONN_HEALTH_CHECKS": env_bool(
-                "DATABASE_CONN_HEALTH_CHECKS",
-                True,
-            ),
-        }
+    DATABASE_ENGINE = env("DATABASE_ENGINE", "sqlite").lower()
+
+    SUPPORTED_DATABASES = {
+        "sqlite": "django.db.backends.sqlite3",
+        "mysql": "django.db.backends.mysql",
+        "postgresql": "django.db.backends.postgresql",
     }
+
+    if DATABASE_ENGINE not in SUPPORTED_DATABASES:
+        raise ImproperlyConfigured(
+            "DATABASE_ENGINE must be one of: sqlite, mysql, postgresql."
+        )
+
+    if DATABASE_ENGINE == "sqlite":
+        DATABASES = {
+            "default": {
+                "ENGINE": SUPPORTED_DATABASES["sqlite"],
+                "NAME": BASE_DIR / env("SQLITE_NAME", "db.sqlite3"),
+                "CONN_MAX_AGE": env_int(
+                    "DATABASE_CONN_MAX_AGE",
+                    600,
+                ),
+                "CONN_HEALTH_CHECKS": env_bool(
+                    "DATABASE_CONN_HEALTH_CHECKS",
+                    True,
+                ),
+            }
+        }
+    else:
+        DATABASES = {
+            "default": {
+                "ENGINE": SUPPORTED_DATABASES[DATABASE_ENGINE],
+                "NAME": env("DATABASE_NAME"),
+                "USER": env("DATABASE_USER"),
+                "PASSWORD": env("DATABASE_PASSWORD"),
+                "HOST": env("DATABASE_HOST", "127.0.0.1"),
+                "PORT": env(
+                    "DATABASE_PORT",
+                    "3306" if DATABASE_ENGINE == "mysql" else "5432",
+                ),
+                "CONN_MAX_AGE": env_int(
+                    "DATABASE_CONN_MAX_AGE",
+                    600,
+                ),
+                "CONN_HEALTH_CHECKS": env_bool(
+                    "DATABASE_CONN_HEALTH_CHECKS",
+                    True,
+                ),
+            }
+        }
 
 # -----------------------------------------------------------------------------
 # Password validation
