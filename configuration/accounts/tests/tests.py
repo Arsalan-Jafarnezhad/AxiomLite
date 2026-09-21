@@ -26,7 +26,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 
-from accounts.forms import (
+from configuration.accounts.forms.forms import (
     AccountForm,
     AccountLoginForm,
     AccountSignUpForm,

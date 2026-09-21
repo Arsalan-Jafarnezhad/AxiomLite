@@ -12,7 +12,7 @@ from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 import phonenumbers
 
-from accounts.managers import UserManager
+from accounts.managers.user import UserManager
 from .soft_delete import SoftDeleteModel
 
 OFFICIAL_GROUPS = ["Founder", "Owner", "Manager"]
