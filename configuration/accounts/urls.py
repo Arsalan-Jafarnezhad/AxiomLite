@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from django.views.generic import RedirectView
 
 app_name = "accounts"
 
@@ -12,6 +13,16 @@ urlpatterns = [
         views.SignInView.as_view(),
         name="sign-in",
     ),
+    # path(
+    #     "login/",
+    #     RedirectView.as_view("accounts:sign-in"),
+    #     name="login-redirect",
+    # ),
+    # path(
+    #     "logout/",
+    #     RedirectView.as_view("accounts:sign-out"),
+    #     name="logout-redirect",
+    # ),
     path(
         "sign-up/",
         views.SignUpView.as_view(),
