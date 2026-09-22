@@ -1,13 +1,23 @@
-"""Shared ID generation helpers, built entirely on the stdlib ``uuid`` module."""
+"""Utilities for generating public identifiers and slugs."""
 
-import uuid
+import secrets
+import string
 
-
-def generate_public_id() -> str:
-    """Opaque identifier safe to expose in URLs/API responses (no dashes)."""
-    return uuid.uuid4().hex
+from django.utils.text import slugify
 
 
-def generate_slug() -> str:
-    """Dash-grouped unique token, handy for generated filenames."""
-    return str(uuid.uuid4())
+PUBLIC_ID_ALPHABET = string.ascii_letters + string.digits
+PUBLIC_ID_LENGTH = 16
+
+
+def generate_public_id(length: int = PUBLIC_ID_LENGTH) -> str:
+    """Generate a cryptographically secure public identifier."""
+    return "".join(
+        secrets.choice(PUBLIC_ID_ALPHABET)
+        for _ in range(length)
+    )
+
+
+def generate_slug(value: str) -> str:
+    """Generate a normalized URL-friendly slug."""
+    return slugify(value.strip())

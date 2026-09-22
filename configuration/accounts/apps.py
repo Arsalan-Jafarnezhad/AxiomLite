@@ -6,4 +6,4 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self) -> None:
-        from . import signals  # noqa: F401  (registers the post_save receiver)
+        from accounts.signals import user  # noqa: F401

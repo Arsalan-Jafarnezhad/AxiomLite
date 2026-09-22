@@ -1,22 +1,48 @@
-"""Upload-path builders for FileField/ImageField ``upload_to`` callables."""
+"""Upload path helpers for accounts-related media."""
 
-from mimetypes import guess_extension, guess_type
+from pathlib import Path
 
-from .ids import generate_slug
+from django.core.exceptions import ValidationError
+
+
+ALLOWED_IMAGE_EXTENSIONS = {
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+    ".gif",
+}
 
 
 def safe_extension(filename: str) -> str:
-    """Guesses a safe file extension from *filename*, falling back to .jpg."""
-    guessed = guess_extension(guess_type(filename)[0] or "")
-    return guessed or ".jpg"
+    """Return a normalized and validated file extension."""
+    extension = Path(filename).suffix.lower()
+
+    if extension not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValidationError(
+            "Unsupported file extension.",
+        )
+
+    return extension
 
 
 def profile_image_upload_path(instance, filename: str) -> str:
+    """Return the upload path for a user's profile image."""
+    extension = safe_extension(filename)
+
     return (
-        f"accounts/profiles/{instance.user.public_id}/"
-        f"{generate_slug()}{safe_extension(filename)}"
+        f"accounts/profiles/"
+        f"{instance.user.public_id}/"
+        f"avatar{extension}"
     )
 
 
 def rank_image_upload_path(instance, filename: str) -> str:
-    return f"accounts/ranks/{generate_slug()}{safe_extension(filename)}"
+    """Return the upload path for a rank image."""
+    extension = safe_extension(filename)
+
+    return (
+        f"accounts/ranks/"
+        f"{instance.public_id}/"
+        f"image{extension}"
+    )

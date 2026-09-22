@@ -1,7 +1,13 @@
-"""
-Importing these submodules (rather than star-importing them) registers each
-ModelAdmin via its `@admin.register(...)` decorator without leaking their
-internals into this package's namespace.
-"""
+"""Django admin configuration for the accounts application."""
 
-from . import address, profile, rank, user  # noqa: F401
+from .address import AddressAdmin
+from .profile import ProfileAdmin
+from .rank import RankAdmin
+from .user import UserAdmin
+
+__all__ = [
+    "AddressAdmin",
+    "ProfileAdmin",
+    "RankAdmin",
+    "UserAdmin",
+]
