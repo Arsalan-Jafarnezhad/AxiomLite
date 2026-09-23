@@ -2,7 +2,8 @@ from django.db import transaction
 from django.utils import timezone
 
 from weblog.models import Comment
-
+from weblog.services.comment_moderation import CommentModerationService
+from django.utils import timezone
 
 @transaction.atomic
 def create_comment(
@@ -12,16 +13,28 @@ def create_comment(
     body,
     parent=None,
 ):
+    moderation = CommentModerationService().moderate(body)
+
     comment = Comment.objects.create(
         article=article,
         author=author,
         parent=parent,
         body=body,
-        status=Comment.Status.PENDING,
+        status=(
+            Comment.Status.APPROVED
+            if moderation["publishable"]
+            else Comment.Status.PENDING
+        ),
     )
-
+    comment.moderated_at = timezone.now()
+    comment.moderation_analysis = moderation["raw"]
+    comment.moderation_score = moderation["raw"]["answers"]["is_constructive"]["noul"]
+    comment.save()
+    print(comment.moderated_at)
+    print(comment.moderation_analysis)
+    print(comment.moderation_score)
+    
     return comment
-
 
 @transaction.atomic
 def update_comment(

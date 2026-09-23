@@ -1,4 +1,4 @@
-"""API package for the accounts application.""" """URL configuration for the accounts API."""
+"""URL configuration for the accounts API."""
 
 from django.urls import path
 from rest_framework.routers import DefaultRouter
@@ -10,7 +10,7 @@ from accounts.api.views import (
     PublicProfileAPIView,
 )
 
-app_name = "accounts_api"
+app_name = "api"
 
 router = DefaultRouter()
 router.register(
@@ -25,7 +25,7 @@ urlpatterns = [
     path(
         "profiles/<str:username>/",
         PublicProfileAPIView.as_view(),
-        name="profile",
+        name="public-profile",
     ),
 ]
 

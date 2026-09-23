@@ -138,6 +138,7 @@ LOCAL_APPS = [
     "catalog.apps.CatalogConfig",
     "weblog.apps.WeblogConfig",
     "questions.apps.QuestionsConfig",
+    "pricing.apps.PricingConfig",
 ]
 
 HIGH_PRIORITY_APPS = [
@@ -424,8 +425,9 @@ AXES_LOCKOUT_PARAMETERS = env_list(
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
@@ -547,7 +549,7 @@ UNFOLD = {
             "950": "#172554",
         }
     },
-    "STYLES": [lambda request: static("vendor/material-symbols/rounded.css")],
+    "STYLES": [lambda request: static("styles/rounded.css")],
     "SCRIPTS": [lambda request: static("admin/custom.js")],
 }
 

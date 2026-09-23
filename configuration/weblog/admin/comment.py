@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from unfold.admin import ModelAdmin
 
 from weblog.models import Comment
@@ -6,13 +7,14 @@ from weblog.models import Comment
 
 @admin.register(Comment)
 class CommentAdmin(ModelAdmin):
-
     list_display = (
         "article",
         "author",
         "status",
         "sentiment_label",
         "sentiment_score",
+        "moderation_score",
+        "moderated_at",
         "created_at",
     )
 
@@ -20,6 +22,7 @@ class CommentAdmin(ModelAdmin):
         "status",
         "sentiment_label",
         "created_at",
+        "moderated_at",
     )
 
     search_fields = (
@@ -34,7 +37,68 @@ class CommentAdmin(ModelAdmin):
         "parent",
     )
 
-    readonly_fields = ("created_at",)
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "sentiment_score",
+        "sentiment_label",
+        "moderation_score",
+        "moderation_analysis",
+        "moderated_at",
+    )
+
+    fieldsets = (
+        (
+            "Comment",
+            {
+                "fields": (
+                    "article",
+                    "author",
+                    "parent",
+                    "body",
+                ),
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "status",
+                    # "allow_comments",
+                ),
+            },
+        ),
+        (
+            "Sentiment Analysis",
+            {
+                "fields": (
+                    "sentiment_label",
+                    "sentiment_score",
+                ),
+            },
+        ),
+        (
+            "AI Moderation",
+            {
+                "fields": (
+                    "moderation_score",
+                    "moderation_analysis",
+                    "moderated_at",
+                ),
+            },
+        ),
+        (
+            "Timestamps",
+            {
+                "fields": (
+                    "created_at",
+                    "updated_at",
+                    "deleted_at",
+                ),
+            },
+        ),
+    )
 
     actions = (
         "approve_comments",

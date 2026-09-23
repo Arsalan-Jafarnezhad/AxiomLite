@@ -71,6 +71,23 @@ class Comment(models.Model):
         blank=True,
         db_index=True,
     )
+    moderation_score = models.FloatField(
+        null=True,
+        blank=True,
+        editable=False,
+    )
+
+    moderation_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        editable=False,
+    )
+
+    moderated_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        editable=False,
+    )
 
     objects = CommentManager()
 
@@ -178,4 +195,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author} — {self.article}"
-
