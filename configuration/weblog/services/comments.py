@@ -29,6 +29,7 @@ def create_comment(
     comment.moderated_at = timezone.now()
     comment.moderation_analysis = moderation["raw"]
     comment.moderation_score = moderation["raw"]["answers"]["is_constructive"]["noul"]
+    print(moderation["publishable"])
     comment.save()
     print(comment.moderated_at)
     print(comment.moderation_analysis)

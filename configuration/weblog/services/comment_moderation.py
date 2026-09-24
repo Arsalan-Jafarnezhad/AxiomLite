@@ -40,41 +40,39 @@ class CommentModerationService(LayaService):
         "contains_threat": {
             "type": "noul",
             "instructions": (
-                "Does the comment contain a credible or explicit threat "
-                "of violence, harm, or intimidation?"
+                "Does the comment contain a threat of violence, harm, "
+                "or intimidation?"
             ),
         },
         "contains_sexual_content": {
             "type": "noul",
             "instructions": (
-                "Does the comment contain sexually explicit or sexually "
-                "graphic content that is inappropriate for a normal "
-                "article comment section?"
+                "Does the comment contain sexually explicit or graphic "
+                "content inappropriate for an article comment section?"
             ),
         },
         "contains_malicious_content": {
             "type": "noul",
             "instructions": (
                 "Does the comment contain malicious instructions, "
-                "attempts to exploit the website, malware-related content, "
-                "or instructions intended to compromise users or systems?"
+                "exploitation attempts, malware-related content, or "
+                "instructions intended to compromise systems?"
             ),
         },
         "contains_personal_information": {
             "type": "noul",
             "instructions": (
                 "Does the comment expose sensitive personal information "
-                "such as passwords, authentication credentials, private "
-                "addresses, phone numbers, financial information, or "
-                "other private data?"
+                "such as passwords, credentials, private addresses, "
+                "phone numbers, or financial information?"
             ),
         },
         "contains_promotion": {
             "type": "noul",
             "instructions": (
-                "Is the primary purpose of the comment advertising, "
-                "self-promotion, affiliate promotion, or promoting an "
-                "unrelated product, service, website, or social account?"
+                "Is the primary purpose advertising, self-promotion, "
+                "affiliate promotion, or promoting an unrelated product, "
+                "service, website, or social account?"
             ),
         },
         "contains_suspicious_link": {
@@ -86,40 +84,26 @@ class CommentModerationService(LayaService):
         },
         "is_irrelevant": {
             "type": "noul",
-            "instructions": (
-                "Is the comment unrelated to the article or the discussion "
-                "around the article?"
-            ),
+            "instructions": ("Is the comment unrelated to the article or discussion?"),
         },
         "is_constructive": {
             "type": "noul",
             "instructions": (
-                "Does the comment contribute meaningfully to the discussion "
-                "rather than being empty, nonsensical, or purely disruptive?"
+                "Does the comment meaningfully contribute to the discussion?"
             ),
         },
     }
 
     def moderate(self, body: str) -> dict[str, Any]:
-        """
-        Moderate a comment.
-
-        Returns:
-            Structured moderation result with a final publish decision.
-        """
+        """Moderate a comment."""
         result = self.predict(body)
 
         answers = result["answers"]
 
-        flags = {
-            name: self._get_bool(answers.get(name))
-            for name in self.schema
-        }
-
-        publishable = self._is_publishable(flags)
+        flags = {name: self._get_bool(answers.get(name)) for name in self.schema}
 
         return {
-            "publishable": publishable,
+            "publishable": self._is_publishable(flags),
             "flags": flags,
             "raw": result,
         }
@@ -163,21 +147,10 @@ class CommentModerationService(LayaService):
             "contains_malicious_content",
             "contains_personal_information",
             "contains_suspicious_link",
+            "contains_harassment",
+            "contains_profanity",
+            "contains_promotion",
+            "is_irrelevant",
         }
 
-        if any(flags.get(flag, False) for flag in blocking_flags):
-            return False
-
-        if flags.get("contains_harassment"):
-            return False
-
-        if flags.get("contains_profanity"):
-            return False
-
-        if flags.get("contains_promotion"):
-            return False
-
-        if flags.get("is_irrelevant"):
-            return False
-
-        return flags.get("is_constructive", True)
+        return not any(flags.get(flag, False) for flag in blocking_flags)

@@ -869,3 +869,8 @@ QUESTIONS_PYTHON_IMAGE = env(
     "QUESTIONS_PYTHON_IMAGE",
     "questions-python:3.14-sandbox",
 )
+
+LAYA_URL = env(
+    "LAYA_URL",
+    default="http://127.0.0.1:8000",
+)
