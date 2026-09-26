@@ -31,56 +31,12 @@ services:
       timeout: 3s
       retries: 5
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: axiomlite-app:dev
-    container_name: axiomlite-web
-    command: python manage.py runserver 0.0.0.0:8000
-    working_dir: /app/configuration
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    env_file: ./configuration/.env
-    environment:
-      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
-      REDIS_URL: redis://redis:6379/1
-    depends_on:
-      db: { condition: service_healthy }
-      redis: { condition: service_healthy }
-
-  worker:
-    image: axiomlite-app:dev
-    container_name: axiomlite-worker
-    command: celery -A configuration worker -l info
-    working_dir: /app/configuration
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock   # lets Celery spawn sandbox containers on the HOST daemon
-    env_file: ./configuration/.env
-    environment:
-      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
-      REDIS_URL: redis://redis:6379/1
-    depends_on:
-      web: { condition: service_started }
-      db: { condition: service_healthy }
-      redis: { condition: service_healthy }
-
-  tailwind:
-    image: node:20-alpine
-    container_name: axiomlite-tailwind
-    working_dir: /app
-    command: sh -c "npm install && npm run dev:css"
-    volumes:
-      - .:/app
   laya:
     build:
-      context: ./laya
+      context: ./configuration/laya
       dockerfile: Dockerfile
-
-    container_name: shopping-website-laya
+    image: axiomlite-laya:dev
+    container_name: axiomlite-laya
 
     restart: unless-stopped
 
@@ -93,9 +49,6 @@ services:
       LAYA_LOG_LEVEL: info
       HF_HOME: /home/laya/.cache/huggingface
       USE_TF: "0"
-
-    ports:
-      - "127.0.0.1:8000:8000"
 
     volumes:
       - laya-model-cache:/home/laya/.cache/huggingface
@@ -121,6 +74,63 @@ services:
       timeout: 5s
       retries: 30
       start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: axiomlite-app:dev
+    container_name: axiomlite-web
+    command: python manage.py runserver 0.0.0.0:8000
+    working_dir: /app/configuration
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file: ./configuration/.env
+    environment:
+      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
+      REDIS_URL: redis://redis:6379/1
+      LAYA_URL: http://laya:8000
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      laya:
+        condition: service_healthy
+
+  worker:
+    image: axiomlite-app:dev
+    container_name: axiomlite-worker
+    command: celery -A configuration worker -l info
+    working_dir: /app/configuration
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file: ./configuration/.env
+    environment:
+      DATABASE_URL: postgres://axiomlite:axiomlite@db:5432/axiomlite
+      REDIS_URL: redis://redis:6379/1
+      LAYA_URL: http://laya:8000
+    depends_on:
+      web:
+        condition: service_started
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      laya:
+        condition: service_healthy
+
+  tailwind:
+    image: node:20-alpine
+    container_name: axiomlite-tailwind
+    working_dir: /app
+    command: sh -c "npm install && npm run dev:css"
+    volumes:
+      - .:/app
+
 
 volumes:
   redis-data:

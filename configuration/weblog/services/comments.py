@@ -3,7 +3,26 @@ from django.utils import timezone
 
 from weblog.models import Comment
 from weblog.services.comment_moderation import CommentModerationService
-from django.utils import timezone
+
+#: Maps a CommentModerationService decision to the resulting comment status.
+#: "review" is only ever returned for new comments (see decide_edit(), which
+#: never returns it), so an edit can only land on APPROVED or REJECTED.
+_MODERATION_STATUS = {
+    "approve": Comment.Status.APPROVED,
+    "reject": Comment.Status.REJECTED,
+    "review": Comment.Status.PENDING,
+}
+
+
+def _apply_moderation(comment, decision, moderation):
+    """Stamp a comment with the outcome of an AI moderation pass."""
+    comment.status = _MODERATION_STATUS[decision]
+    comment.moderated_at = timezone.now()
+    comment.moderation_analysis = moderation["raw"]
+    comment.moderation_score = moderation["confidence"]
+
+    return comment
+
 
 @transaction.atomic
 def create_comment(
@@ -13,29 +32,36 @@ def create_comment(
     body,
     parent=None,
 ):
-    moderation = CommentModerationService().moderate(body)
+    """
+    Create a comment and run it through AI moderation.
+
+    Laya decides, per its calibrated confidence, whether the comment is
+    published immediately, rejected immediately, or held for the
+    article's author to verify manually (when Laya isn't confident
+    either way — e.g. around 50/50 — or the Laya server is unreachable).
+    """
+    decision, moderation = CommentModerationService().decide(body)
 
     comment = Comment.objects.create(
         article=article,
         author=author,
         parent=parent,
         body=body,
-        status=(
-            Comment.Status.APPROVED
-            if moderation["publishable"]
-            else Comment.Status.PENDING
-        ),
     )
-    comment.moderated_at = timezone.now()
-    comment.moderation_analysis = moderation["raw"]
-    comment.moderation_score = moderation["raw"]["answers"]["is_constructive"]["noul"]
-    print(moderation["publishable"])
-    comment.save()
-    print(comment.moderated_at)
-    print(comment.moderation_analysis)
-    print(comment.moderation_score)
-    
+
+    _apply_moderation(comment, decision, moderation)
+
+    comment.save(
+        update_fields=[
+            "status",
+            "moderated_at",
+            "moderation_analysis",
+            "moderation_score",
+        ]
+    )
+
     return comment
+
 
 @transaction.atomic
 def update_comment(
@@ -43,7 +69,18 @@ def update_comment(
     *,
     body,
 ):
+    """
+    Update a comment's body and re-run AI moderation on the new text.
+
+    Edits are never sent to the author for manual verification: Laya's
+    verdict (publish or reject) is applied directly, whatever its
+    confidence.
+    """
+    decision, moderation = CommentModerationService().decide_edit(body)
+
     comment.body = body
+
+    _apply_moderation(comment, decision, moderation)
 
     comment.save()
 
